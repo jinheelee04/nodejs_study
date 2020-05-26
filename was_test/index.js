@@ -9,23 +9,47 @@ var connection = mysql.createConnection({
 });
 
 
+function handleDisconnect() {
+  connection.connect(function(err) {            
+    if(err) {                            
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000); 
+    }                                   
+  });                                 
+                                         
+  connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      return handleDisconnect();                      
+    } else {                                    
+      throw err;                              
+    }
+  });
+}
+
+
+
+
 var app = express();
 
 // configuration ===============================================================
 app.set('port', process.env.PORT || 3006);
 
 app.get('/', function(req, res){
+  
   res.send('Root');
 });
 
 //client 정보조회
 app.get('/clients', function(req, res){
+  handleDisconnect();
   connection.query('SELECT * from client_info', function(err, rows) {
     if(err) throw err;
 
     console.log('The solution is: ', rows);
     res.send(rows);
   });
+  connection.end();
 });
 
 //client 및 zone 정보조회
@@ -37,6 +61,7 @@ app.get('/zone', function(req, res){
     console.log('The solution is: ', rows);
     res.send(rows);
   });
+  connection.end();
 });
 
 //client_info 테이블  데이터 추가
@@ -54,7 +79,7 @@ app.get('/clients/add',(req, res)=>{
     }
     res.redirect('/success');
   });
-  
+  connection.end();
 });
 
 //zone_info 테이블  데이터 추가
@@ -72,7 +97,7 @@ app.get('/zone/add',(req, res)=>{
     }
     res.redirect('/success');
   });
-  
+  connection.end();
 });
 
 //성공시 메세지 출력
