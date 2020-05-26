@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><%= title%></title>
+    <style>
+        table, th, td {
+        border: 1px solid #bcbcbc;
+      }
+      table{
+          border-collapse :collapse;
+      }
+    </style>
+</head>
+    <body>
+    <h1>전체회원정보 </h1>
+    <table>
+        <th>client ID</th>
+        <th>client name</th>
+        <% for(let data of results) { %>
+            <tr>
+                <td><%= data.client_id %></td>
+                <td><%= data.client_name %></td>
+            </tr>
+        <% } %>
+    </table>
+
+    </body>
+</html>
