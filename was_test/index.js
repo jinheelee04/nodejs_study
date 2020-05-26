@@ -4,30 +4,9 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'testuser',
   password : '1234',
-  port :3006,
+  port :3306,
   database : 'test_db'
 });
-
-
-function handleDisconnect() {
-  connection.connect(function(err) {            
-    if(err) {                            
-      console.log('error when connecting to db:', err);
-      setTimeout(handleDisconnect, 2000); 
-    }                                   
-  });                                 
-                                         
-  connection.on('error', function(err) {
-    console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
-      return handleDisconnect();                      
-    } else {                                    
-      throw err;                              
-    }
-  });
-}
-
-
 
 
 var app = express();
@@ -36,20 +15,17 @@ var app = express();
 app.set('port', process.env.PORT || 3006);
 
 app.get('/', function(req, res){
-  
   res.send('Root');
 });
 
 //client 정보조회
 app.get('/clients', function(req, res){
-  handleDisconnect();
   connection.query('SELECT * from client_info', function(err, rows) {
     if(err) throw err;
 
     console.log('The solution is: ', rows);
     res.send(rows);
   });
-  connection.end();
 });
 
 //client 및 zone 정보조회
@@ -61,15 +37,14 @@ app.get('/zone', function(req, res){
     console.log('The solution is: ', rows);
     res.send(rows);
   });
-  connection.end();
 });
 
 //client_info 테이블  데이터 추가
 app.get('/clients/add',(req, res)=>{
   var sql = "INSERT INTO client_info (client_id, client_name) VALUES ?";
   var values = [
-    [ 10, 'test1'],
-    [ 11, 'test2']
+    [ 13, 'test13'],
+    [ 14, 'test14']
   ];
 
   connection.query(sql, [values], function(err, result, field){
@@ -77,17 +52,19 @@ app.get('/clients/add',(req, res)=>{
       console.log(err);
       res.status(500).send('Internal Server  Error');
     }
+    console.log('The solution is: ', result);
     res.redirect('/success');
   });
-  connection.end();
+  
 });
 
 //zone_info 테이블  데이터 추가
 app.get('/zone/add',(req, res)=>{
   var sql = "INSERT INTO zone_info (client_id, zone_id, zone_name) VALUES ?";
   var values = [
-    [ 1, 1, 'zone1'],
-    [ 1, 2,'zone2']
+    [ 2, 20, '피아노학원'],
+    [ 2, 21,'학교'],
+    [ 2, 22,'집']
   ];
 
   connection.query(sql, [values], function(err, result, field){
@@ -95,9 +72,10 @@ app.get('/zone/add',(req, res)=>{
       console.log(err);
       res.status(500).send('Internal Server  Error');
     }
+    console.log('The solution is: ', result);
     res.redirect('/success');
   });
-  connection.end();
+  
 });
 
 //성공시 메세지 출력
