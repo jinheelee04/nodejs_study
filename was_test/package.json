@@ -1,0 +1,18 @@
+{
+  "name": "was_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "insert.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connection": "^1.1.0",
+    "dbconfig": "^1.1.7",
+    "express": "4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
