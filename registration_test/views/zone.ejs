@@ -13,18 +13,18 @@
       }
     </style>
     <script>
-        //회원탈퇴
-        function client_delete(clientID){
-            var id = Number(clientID);
+        //공간정보 삭제
+        function zone_delete(id){
+            var id = Number(id);
             console.log("id=",id);
             $.ajax({
-                url: '/clients/delete',
-                data: { 'data' : id},
+                url: '/zone/delete',
+                data: { 'id' : id},
                 type: 'POST',
                 dataType: 'json',
                 success : function (res) {
                     if ( res['result'] == true ) {
-                      alert("아이디 [ "+res['data']+" ]가 삭제되었습니다.");
+                      alert("삭제되었습니다.");
                      location.reload();
                   }
                 },
@@ -33,20 +33,21 @@
                 }
             });
         }
-        //회원정보 수정
-        function client_update(clientID, t){
-            var id = Number(clientID);
-            var name = $(t).parent().parent().find('.clientName').val();
+        //공간정보 변경
+        function zone_update(id, t){
+            var id = Number(id);
+            var zoneID = $(t).parent().parent().find('.zoneID').val();
+            var name = $(t).parent().parent().find('.zoneName').val();
             console.log("id=",id);
             console.log("name=",name);
             $.ajax({
-                url: '/clients/update',
-                data: { 'id' : id, 'name': name},
+                url: '/zone/update',
+                data: { 'id' : id, 'zoneID': zoneID, 'name': name},
                 type: 'POST',
                 dataType: 'json',
                 success : function (res) {
                     if ( res['result'] == true ) {
-                      alert("회원 정보가 수정되었습니다.");
+                      alert("공간 정보가 수정되었습니다.");
                      location.reload();
                   }
                 },
@@ -58,25 +59,31 @@
     </script>
 </head>
     <body>
-    <h1>전체회원정보 </h1>
-    <table id="clientTable">
+    <h1>아이공간 관리 </h1>
+    <table>
+        <th>ID</th>
         <th>client ID</th>
         <th>client name</th>
+        <th>zone ID</th>
+        <th>zone name</th>
         <th></th>
         <% for(let data of results) { %>
             <tr>
+                <td><%= data.id %></td>
+                <td><%= data.client_id %></td>
+                <td><%= data.client_name %></td>
                 <td>
-                    <%= data.client_id %>
+                    <input type="number" name="zoneID" class="zoneID" value=<%= data.zone_id %> >
                 </td>
                 <td>
-                    <input type="text" name="clientName" class="clientName" value= <%= data.client_name %> >
+                    <input type="text" name="zoneName" class="zoneName" value=<%= data.zone_name %> >
                 </td>
                 <td>
-                    <button onclick='client_update(<%= data.client_id %>, this);'>수정</button>
-                    <button onclick='client_delete(<%= data.client_id %>);'>탈퇴</button>
+                    <button onclick='zone_update(<%= data.id %>, this);'>변경</button>
+                    <button onclick='zone_delete(<%= data.id %>);'>삭제</button>
                 </td>
             </tr>
-            <% } %>
+        <% } %>
     </table>
 
     </body>
