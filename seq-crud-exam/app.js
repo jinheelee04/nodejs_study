@@ -7,6 +7,16 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const models = require("./models/index.js");
+
+//DB 연결 sync()
+models.sequelize.sync().then(()=>{
+  console.log("DB 연결 성공");
+}).catch(err=>{
+  console.log("DB 연결 실패");
+  console.log(err);
+});
+
 var app = express();
 
 // view engine setup

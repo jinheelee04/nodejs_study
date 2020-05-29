@@ -40,12 +40,39 @@ globalRouter.post("/sign_up", function(req, res,next){
             console.log(err);
             res.status(500).send('Internal Server  Error');
         }else{
-            console.log('client 정보 등록 성공');
-            res.redirect("/");
-
+            console.log('회원 정보 등록 성공');
+            res.json({msg:true});
         }
       });
 })
+
+
+//회원 아이디 체크 get
+globalRouter.get("/clients/idCheck", function(req, res, next){
+    var id = req.query.clientID;
+    console.log("id=", id);
+    
+    var sql = "select count(*) cnt from client_info where client_id = ?"
+    connection.query(sql, id , function(err, result, field){
+        console.log("result=", result[0])
+        if(err){
+            console.log(err);
+            throw err;
+        }
+        else if(result[0].cnt ==1){
+            console.log('회원 정보 있음');
+            res.json({msg:true});
+         
+        }
+        else if(result[0].cnt ==0){
+            console.log('회원 정보 없음');
+            res.json({msg:false });
+            //res.json({result:false });
+        }
+ 
+    });
+
+});
 
 //client 정보 수정 post
 globalRouter.post("/clients/update", function(req, res,next){
@@ -99,13 +126,13 @@ globalRouter.post("/zone/add", function(req, res,next){
 
     connection.query(sql, 
         [body.clientID, body.zoneID, body.zoneName], function(err, result, field){
-        if(err){
-            console.log(err);
-            res.status(500).send('Internal Server  Error');
-        }else{
-            console.log('zone 정보 등록 성공');
-            res.redirect("/");
-        }
+            if(err){
+                console.log(err);
+                res.status(500).send('Internal Server  Error');
+            }else{
+                console.log('zone 정보 등록 성공');
+                res.send({result:true});
+            }
       });
 })
 

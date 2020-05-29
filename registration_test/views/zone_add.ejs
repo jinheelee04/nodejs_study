@@ -3,15 +3,71 @@
 <head>
     <meta charset="utf-8">
     <title><%= title%></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+     $(document).ready(function(){
+        //아이디 유효성 검사
+        $("#client_id").blur(function(){
+            var clientID =  $("#client_id").val();
+            console.log("clientID="+clientID);
+           
+            $.ajax({
+               url: '/clients/idCheck?clientID='+clientID,
+               type: 'get',
+               success : function(res){
+                   
+                   console.log("res=", res);
+                if (res['msg']== false) {
+					// 1 : 아이디가 중복되는 문구
+					$("#id_check").text(" 존재하지 않는 아이디 입니다. :p");
+					$("#id_check").css("color", "red");
+					$("#reg_submit").attr("disabled", true);
+				} else  {
+					$("#id_check").text("사용가능한 아이디입니다 :)");
+                    $("#id_check").css("color", "blue");
+                    $("#reg_submit").attr("disabled", false);	
+                   	
+				}
+
+               }, error : function(){
+                   console.log("실패");
+               }
+            });
+        });
+
+    });
+    //공간등록
+     function zone_add(){
+            var clientID = $("#client_id").val();
+            var zoneID = $("#zone_id").val();
+            var zoneName = $("#zone_name").val();     
+            $.ajax({
+                url: '/zone/add',
+                data: { 'clientID' : clientID, 'zoneID' : zoneID, 'zoneName' : zoneName },
+                type: 'POST',
+                dataType: 'json',
+                success : function (res) {
+                    if ( res['result'] == true ) {
+                      alert("등록되었습니다.");
+                     location.reload();
+                  }
+                },
+                error: function (xhr) {
+                    alert("실패하였습니다.");
+                }
+            });
+    }
+    </script>
 </head>
     <body>
     <h1>아이공간 등록 </h1>
-    <form action="/zone/add" method="POST">
-        client ID : <input type="number" name="clientID"><br>
-        zone ID : <input type="number" name="zoneID"><br>
-        장소 이름 : <input type="text" name="zoneName"><br>
-        <input type="submit" value="등록">
-    </form>
+
+        client ID : <input type="number" id="client_id" name="clientID"><br>
+        <div class="check_font" id="id_check"></div>
+        zone ID : <input type="number" id="zone_id" name="zoneID"><br>
+        장소 이름 : <input type="text" id="zone_name" name="zoneName"><br>
+        <button id="reg_submit" onclick='zone_add();'> 등록</button>
+
 
     </body>
 </html>
