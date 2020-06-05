@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <form action="/map/google" method="GET">
+      <input type="submit" value="구글 지도">
+  </form>
+  <form action="/map/naver" method="GET">
+      <input type="submit" value="네이버 지도">
+  </form>
+  <form action="/map/kakao" method="GET">
+      <input type="submit" value="카카오 지도">
+  </form>
+  <form action="/map/kt" method="GET">
+      <input type="submit" value="KT 지도">
+  </form>
+  </body>
+</html>
