@@ -5,7 +5,7 @@ const naver = require('./Naver');
 const kakao = require('./Kakao');
 const vstrStatus = require('./vstrStatus');
 const vstrLocation = require('./vstrLocation');
-
+const user = require('./user');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -16,6 +16,8 @@ router.use('/map/kakao', kakao);
 
 router.use('/vstrStatus', vstrStatus);
 router.use('/vstrLocation', vstrLocation);
+
+router.use('/user', user);
 
 router.all('*', (req, res, next) => {
   next(createError(404, '페이지 없음'));

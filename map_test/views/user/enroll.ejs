@@ -365,8 +365,8 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            출입자 현황
-            <small>advanced tables</small>
+            사용자 등록
+            <small>user enroll</small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -376,101 +376,36 @@
         </section>
 
         <!-- Main content -->
-        <section class="content">
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="box">
+        <section class="content" style="margin:0 auto; position: relative">
+          <div class="row" >
+            <!-- left column -->
+            <div class="col-md-8" >
+              <!-- general form elements -->
+              <div class="box box-primary" >
                 <div class="box-header">
-                  <!-- <h3 class="box-title">Data Table With Full Features</h3> -->
+                  <!-- <h3 class="box-title">Quick Example</h3> -->
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                  <!--검색창-->
-                  <form>
-                    <div class="search__container">
-                      <input class="search__input" type="text" placeholder="출입자 번호 또는 성명을 입력하세요.">
-                       <!-- checkbox -->
-                      <div class="form-group">
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          전체
-                        </label>
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          정상출입
-                        </label>
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          보안구역부근
-                        </label>
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          보안구역진입
-                        </label>
-                      </div>
+                <!-- form start -->
+                <form role="form">
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label for="userName">이름</label>
+                      <input type="email" class="form-control" name="userName" id="userName" placeholder="">
                     </div>
-                  </form>
-                  <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th>출입자번호</th>
-                        <th>성명</th>
-                        <th>소속</th>
-                        <th>위치</th>
-                        <th>출입자상태</th>
-                        <th>지도</th> 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>01031533424</td>
-                        <td>이진희</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>송경민</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>김용수</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>김지훈</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>출입자번호</th>
-                        <th>성명</th>
-                        <th>소속</th>
-                        <th>위치</th>
-                        <th>출입자상태</th>
-                        <th>지도</th> 
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div><!-- /.box-body -->
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Password</label>
+                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
               </div><!-- /.box -->
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </section><!-- /.content -->
-      </div><!-- /.content-wrapper -->
+            </div><!-- /.content -->
+          </section>
+        </div><!-- /.content-wrapper -->
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.0

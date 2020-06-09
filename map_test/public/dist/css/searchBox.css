@@ -9,7 +9,7 @@ width: 430px;
 margin: 0 auto;
 font-family: 'Raleway', sans-serif;
     /* padding-top: 64px; */
-padding-bottom : 30px;
+padding-bottom : 15px;
 }
 
 .search__title {
@@ -22,7 +22,7 @@ padding-bottom : 30px;
 .search__input {
     width: 100%;
     padding: 12px 24px;
-
+    margin-bottom: 8px;
     background-color: transparent;
     transition: transform 250ms ease-in-out;
     font-size: 14px;
