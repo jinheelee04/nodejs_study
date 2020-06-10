@@ -51,6 +51,62 @@
         padding-top: 9px;
       }
     </style>
+
+<script>
+  $(document).ready(function(){
+      //아이디 유효성 검사
+      $("#user_id").blur(function(){
+          var clientID =  $("#user_id").val();
+          console.log("clientID="+clientID);
+         
+          $.ajax({
+             url: '/clients/idCheck?clientID='+clientID,
+             type: 'get',
+             success : function(res){
+                 
+                 console.log("res=", res);
+              if (res['msg']== true) {
+        // 1 : 아이디가 중복되는 문구
+        $("#id_check").text("사용중인 아이디입니다 :p");
+        $("#id_check").css("color", "red");
+        $("#reg_submit").attr("disabled", true);
+      } else  {
+        $("#id_check").text("사용가능한 아이디입니다 :)");
+                  $("#id_check").css("color", "blue");
+                  $("#reg_submit").attr("disabled", false);	
+                   
+      }
+
+             }, error : function(){
+                 console.log("실패");
+             }
+          });
+      });
+
+  });
+
+   //회원등록
+   function enroll(){
+          var userPhone = $("#userPhone").val();
+          var userName = $("#userName").val();
+          var userDept = $("#userDept").find("option:selected").val();
+          $.ajax({
+              url: '/user/enroll',
+              data: { 'userPhone' : userPhone, 'userName' : userName, 'userDept' : userDept },
+              type: 'POST',
+              dataType: 'json',
+              success : function (res) {
+                  if ( res['msg'] == true ) {
+                    alert("등록되었습니다.");
+                   location.reload();
+                }
+              },
+              error: function (xhr) {
+                  alert("실패하였습니다.");
+              }
+          });
+  }
+  </script>
   </head>
   <body class="skin-blue">
     <div class="wrapper">
@@ -390,16 +446,29 @@
                   <div class="box-body">
                     <div class="form-group">
                       <label for="userName">이름</label>
-                      <input type="email" class="form-control" name="userName" id="userName" placeholder="">
+                      <input type="text" class="form-control" name="userName" id="userName" placeholder="" required>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                      <label for="userPhone">핸드폰</label>
+                      <input type="text" class="form-control" name="userPhone" id="userPhone" placeholder='ex) 01012341234' required>
+                    </div>
+                    <!-- select -->
+                    <div class="form-group">
+                      <label>소속</label>
+                      <select class="form-control" name="userDept" id="userDept" required>
+                        <option value="" disabled selected>선택</option>
+                        <option value="대표이사">대표이사</option>
+                        <option value="사업전략실">사업전략실</option>
+                        <option value="사업개발실">사업개발실</option>
+                        <option value="솔루션개발실">솔루션개발실</option>
+                        <option value="경영관리팀">경영관리팀</option>
+                        <option value="">해당 없음</option>
+                      </select>
                     </div>
                   </div><!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" onclick="enroll();">등록</button>
                   </div>
                 </form>
               </div><!-- /.box -->

@@ -20,12 +20,11 @@
     
     <!-- searchBox css-->
     <link href="/static/dist/css/searchBox.css" rel="stylesheet" type="text/css" />  
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+    <!--toggle button css-->
+    <link href="/static/dist/css/toggleBtn.css" rel="stylesheet" type="text/css" /> 
+    <!--toggle button css-->
+    <link href="/static/dist/css/toggleBtn2.css" rel="stylesheet" type="text/css" />   
+
     <style>
       .skin-blue .main-header .navbar{
         background-color: #557ac2 !important;
@@ -38,6 +37,7 @@
       }
       #status-data{
         float: right;
+        padding-right: 20px;
       }
       .loc-img{
         width: 25px;
@@ -50,6 +50,42 @@
       .form-check{
         padding-top: 9px;
       }
+
+
+      #map-container{
+        padding-top:20px;
+        /* padding-bottom: 5px; */
+        width: 97%;
+        height: 800px;
+        margin: 0 auto;
+      } 
+
+      .chk-la{
+        padding-left: 5px;
+      }
+      .tb-h{
+        background: #d2d6de;
+      }
+      tr, td{
+        border: 1px solid #d2d6de !important;
+      }
+      /*네이버지도*/
+      #map_v3 {
+            height:100%;
+            margin:0 auto;
+            max-width:100%;
+            width:100%;
+        }
+        div#img-con {
+        transform: rotate(268deg);
+        left: 220px;
+        width: 700px;
+        top: 150px;
+        position: absolute;
+        }
+        img#hu-img {
+        opacity: 0.4;
+        }
     </style>
   </head>
   <body class="skin-blue">
@@ -334,6 +370,11 @@
               </ul> -->
             </li>
             <li class="treeview">
+              <a href="/user/enroll">
+                <i class="fa fa-user"></i> <span>출입자 정보 등록</span>  
+              </a>
+            </li>
+            <li class="treeview">
               <a href="#">
                 <i class="fa fa-map-marker"></i> <span>출입자 위치</span>
                 <i class="fa fa-angle-left pull-right"></i>
@@ -342,7 +383,7 @@
                   <li class="active"><a href="/vstrLocation/naver"><i class="fa fa-circle-o"></i>네이버 지도</a></li>
                   <li class="active"><a href="/vstrLocation/kt"><i class="fa fa-circle-o"></i>KT 지도</a></li>
                   <li class="active"><a href="/vstrLocation/kakao"><i class="fa fa-circle-o"></i>카카오 지도</a></li>
-                </ul>  
+                </ul> 
               </a>
             </li>
             <li class="treeview">
@@ -361,7 +402,7 @@
         <section class="content-header">
           <h1>
             출입자 현황
-            <small>advanced tables</small>
+            <small>구글 지도</small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -383,76 +424,105 @@
                   <form>
                     <div class="search__container">
                       <input class="search__input" type="text" placeholder="출입자 번호 또는 성명을 입력하세요.">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">일반구역</label>
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">사징실</label>
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">회의실</label>
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">연구소</label>
+                       <!-- checkbox -->
+                       <div class="form-group">
+                        <label class="chk-la">
+                          <input type="checkbox" class="flat-red" checked/>
+                          전체
+                        </label>
+                        <label class="chk-la">
+                          <input type="checkbox" class="flat-red" checked/>
+                          정상출입
+                        </label>
+                        <label class="chk-la">
+                          <input type="checkbox" class="flat-red" checked/>
+                          보안구역부근
+                        </label>
+                        <label class="chk-la">
+                          <input type="checkbox" class="flat-red" checked/>
+                          보안구역진입
+                        </label>
                       </div>
                     </div>
                   </form>
-                  <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th>출입자번호</th>
-                        <th>성명</th>
-                        <th>소속</th>
-                        <th>위치</th>
-                        <th>출입자상태</th>
-                        <th>지도</th> 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>01031533424</td>
-                        <td>이진희</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>송경민</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>김용수</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>김지훈</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>출입자번호</th>
-                        <th>성명</th>
-                        <th>소속</th>
-                        <th>위치</th>
-                        <th>출입자상태</th>
-                        <th>지도</th> 
-                      </tr>
-                    </tfoot>
-                  </table>
+                  <div calss="dataTables_wrapper form-inline" role="grid">
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <!--출입자 상태-->
+                        <div id="status-data">
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입자</span>
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입</span>
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근</span>
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입</span>
+                        </div>
+                      </div>
+                      
+
+
+                    </div>
+                  </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="box">
+                    <div class="box-body">
+                            <!--네이버 지도-->
+                              <div id="map-container">
+                                <!--지도-->
+                                <div id="map_v3"></div>
+                              </div>
+                            <!--구글 지도 끝-->
+                      </div>
+                    </div>
+                  </div>
+                <div class="col-md-4">
+                  <div class="box">
+                    <div class="box-body">
+                       <!--출입자 현황-->
+                       <!--1층-->
+                            <table class="table table-bordered" style="text-align:center; margin-bottom:20px;">
+                              <tbody>
+                              <tr>
+                                <th colspan="2" class="tb-h" style="text-align: center;">1층</th>
+                              </tr>
+                              <tr>
+                                <td style="width:70%">전체출입자</td>
+                                <td>4명</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                         <!--5층-->
+                         <table class="table table-bordered" style="text-align:center; margin-bottom:20px;">
+                          <tbody>
+                          <tr>
+                            <th colspan="2"  class="tb-h" style="text-align: center;">5층</th>
+                          </tr>
+                          <tr>
+                            <td  style="width:70%" >정상출입자</td>
+                            <td>1명</td>
+                          </tr>
+                          <tr>
+                            <td  style="width:70%" >보안구역부근 출입자</td>
+                            <td>1명</td>
+                          </tr>
+                          <tr>
+                            <td  style="width:70%" >보안구역진입 출입자</td>
+                            <td>2명</td>
+                          </tr>
+                          <tr>
+                            <td  style="width:70%" >전체출입자</td>
+                            <td>4명</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!--출입자 현황 끝-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
@@ -495,15 +565,78 @@
         });
       });
     </script>
-  <script>
+    <!--네이버 지도--> 
+    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=5eidkfj0b9"></script>
+    <script>
     $(function(){
-      var data = '<div id="status-data">'+ 
-        '<span class="loc-container"><img class="loc-img" src="/static/images/L1.png" alt="" >일반구역</span>'+
-        '<span class="loc-container"><img class="loc-img" src="/static/images/L2.png" alt="">사장실</span>'+
-        '<span class="loc-container"><img class="loc-img" src="/static/images/L3.png" alt="">회의실</span>'+
-        '<span class="loc-container"><img class="loc-img" src="/static/images/L4.png" alt="">연구소</span></div>';
-      $("#example1_filter").parent().prepend(data);
+        console.log("로그");
+        var CustomOverlay = function(options) {
+        this._element = $('<div id="img-con" >' +
+                         '<img id="hu-img" src="/static/images/9901001001_5F.png" style="width: 105%;" >' +
+                        '</div>')
+
+        this.setPosition(options.position);
+        this.setMap(options.map || null);
+        };
+
+        CustomOverlay.prototype = new naver.maps.OverlayView();
+        CustomOverlay.prototype.constructor = CustomOverlay;
+
+        CustomOverlay.prototype.setPosition = function(position) {
+            this._position = position;
+            this.draw();
+        };
+
+        CustomOverlay.prototype.getPosition = function() {
+            return this._position;
+        };
+
+        CustomOverlay.prototype.onAdd = function() {
+            var overlayLayer = this.getPanes().overlayLayer;
+
+            this._element.appendTo(overlayLayer);
+        };
+
+        CustomOverlay.prototype.draw = function() {
+            if (!this.getMap()) {
+                return;
+            }
+
+            var projection = this.getProjection(),
+                position = this.getPosition(),
+                pixelPosition = projection.fromCoordToOffset(position);
+
+            // this._element.css('left', pixelPosition.x);
+            // this._element.css('top', pixelPosition.y);
+        };
+
+        CustomOverlay.prototype.onRemove = function() {
+            var overlayLayer = this.getPanes().overlayLayer;
+
+            this._element.remove();
+            this._element.off();
+        };
+
+        var position = new naver.maps.LatLng(37.489107, 127.031398);
+        var map = new naver.maps.Map("map_v3", {
+            center: position,
+            zoom: 24
+        });
+        var overlay = new CustomOverlay({
+            map: map,
+            position: position
+        });
+
+        // naver.maps.Event.addListener(map, 'click', function(e) { //클릭한 위치에 오버레이를 추가합니다.
+        //     var overlay = new CustomOverlay({
+        //         position: e.coord
+        //     });
+
+        //     overlay.setMap(map);
+        // });
     });
-  </script>
+
+   
+    </script>
   </body>
 </html>
