@@ -103,8 +103,8 @@ const search = async(keyword) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            let query = "select * from scrt_zone_tb where zone_name like '%' ? '%'";
-            const [rows] = await connection.query(query, keyword);
+            let query = "select * from scrt_zone_tb where zone_name like '%' ? '%' or zone_id=? ";
+            const [rows] = await connection.query(query, [keyword, keyword]);
             connection.release();
 
             console.log("rows="+rows);

@@ -105,12 +105,12 @@ exports.delete = async (req,res) =>{
  */
 exports.search= async(req,res) =>{
   
-  if(isEmpty(req.body)){
+  if(isEmpty(req.query.keyword)){
     res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body가 없습니다.)'));
     return;
   }
 
-  let result = await zoneModel.search(req.body.keyword);
+  let result = await zoneModel.search(req.query.keyword);
 
   if(result.header.code == ERR_CODE.SUCCESS) {
 
