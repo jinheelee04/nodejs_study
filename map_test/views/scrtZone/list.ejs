@@ -50,6 +50,9 @@
       .form-check{
         padding-top: 9px;
       }
+      td, th{
+        vertical-align:middle !important;
+      }
     </style>
   </head>
   <body class="skin-blue">
@@ -92,7 +95,7 @@
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <!-- <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/> -->
+                            <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
                           </div>
                           <h4>
                             AdminLTE Design Team
@@ -116,7 +119,7 @@
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <!-- <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/> -->
+                            <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
                           </div>
                           <h4>
                             Sales Department
@@ -128,7 +131,7 @@
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <!-- <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/> -->
+                            <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>
                           </div>
                           <h4>
                             Reviewers
@@ -338,12 +341,12 @@
                 <i class="fa  fa-warning"></i> <span>보안구역 등록</span>  
               </a>
             </li>
-            <li class="treeview">
+            <li class="active treeview">
               <a href="/scrtZone/list">
                 <i class="fa fa-gear"></i> <span>보안구역 관리</span>  
               </a>
             </li>
-            <li class="active treeview">
+            <li class="treeview">
               <a href="/user/enroll">
                 <i class="fa fa-user"></i> <span>사용자 등록</span>  
               </a>
@@ -375,8 +378,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            사용자 등록
-            <!-- <small>user enroll</small> -->
+            보안구역 관리
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -386,50 +388,91 @@
         </section>
 
         <!-- Main content -->
-        <section class="content" style="margin:0 auto; position: relative">
-          <div class="row" >
-            <!-- left column -->
-            <div class="col-md-8" >
-              <!-- general form elements -->
-              <div class="box box-primary" >
+        <section class="content">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="box">
                 <div class="box-header">
-                  <!-- <h3 class="box-title">Quick Example</h3> -->
+                  <!-- <h3 class="box-title">Data Table With Full Features</h3> -->
                 </div><!-- /.box-header -->
-                <!-- form start -->
-         
-                  <div class="box-body">
-                    <div class="form-group">
-                      <label for="userName">이름</label>
-                      <input type="text" class="form-control" name="userName" id="userName" placeholder="" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="userPhone">핸드폰</label>
-                      <input type="text" class="form-control" name="userPhone" id="userPhone" placeholder='ex) 01012341234' required>
-                      <div id="check_txt"></div>
-                    </div>
-                    <!-- select -->
-                    <div class="form-group">
-                      <label>소속</label>
-                      <select class="form-control" name="userDept" id="userDept" required>
-                        <option value="" disabled selected>선택</option>
-                        <option value="대표이사">대표이사</option>
-                        <option value="사업전략실">사업전략실</option>
-                        <option value="사업개발실">사업개발실</option>
-                        <option value="솔루션개발실">솔루션개발실</option>
-                        <option value="경영관리팀">경영관리팀</option>
-                        <option value="">해당 없음</option>
-                      </select>
-                    </div>
-                  </div><!-- /.box-body -->
-
-                  <div class="box-footer">
-                    <button type="submit" id ="reg_submit" class="btn btn-primary" onclick="enroll();">등록</button>
+                <div class="box-body">
+                  <!--검색창-->
+                  <div class="search__container" >
+                    <input class="search__input" type="text" placeholder="보안구역명 또는 보안구역 ID를 입력하세요." onkeyup="search(this);">
                   </div>
-          
+                  <!-- 보안구역 리스트-->
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>보안구역ID</th>
+                        <th>보안구역명</th>
+                        <th>중심좌표(경도)</th>
+                        <th>중심좌표(위도)</th>
+                        <th>Rad1</th>
+                        <th>Rad2</th>
+                        <th>등록일</th>
+                        <th></th> 
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if( results !=null ) {%>
+                      <% for(let data of results) { %>
+                      <tr>
+                        <td><%= data.zone_id %></td>
+                        <td>
+                          <input type="text" style="width:150px;" name="zoneName" class="zoneName" value= <%= data.zone_name %> >
+                        </td>
+                        <td>
+                          <input type="text" style="width:150px;" name="zoneLong" class="zoneLong" value= <%= data.zone_long %> >
+                        </td>
+                        <td>
+                          <input type="text"  style="width:150px;" name="zoneLat" class="zoneLat" value= <%= data.zone_lat %> >
+                        </td>
+                        <td>
+                          <input type="text" style="width:80px; text-align: right;" name="zoneR1" class="zoneR1" value= <%= data.zone_r_1 %> > (단위 : m)
+                        </td>
+                        <td>
+                          <input type="text" style="width:80px; text-align: right;"name="zoneR2" class="zoneR2" value= <%= data.zone_r_2 %> > (단위 : m)
+                        </td>
+                        <td><%= data.enroll_date%></td>
+                        <td style="text-align: center;">
+                            <button class="btn  btn-warning" style="margin-right: 5px;" onclick='zone_update(<%= data.zone_id %>, this);'>수정</button>
+                            <button class="btn btn-danger" onclick='zone_delete(<%= data.zone_id %>, this);'>삭제</button> 
+                        </td>
+                      </tr>
+                      <% } %>
+                      <%} else{%>
+                        <tr>
+                          <td></td> 
+                          <td></td> 
+                          <td></td> 
+                          <td></td> 
+                          <td></td> 
+                          <td></td> 
+                          <td></td> 
+                          <td></td> 
+                        </tr>
+                      <% }%>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>보안구역ID</th>
+                        <th>보안구역명</th>
+                        <th>중심좌표(경도)</th>
+                        <th>중심좌표(위도)</th>
+                        <th>Rad1</th>
+                        <th>Rad2</th>
+                        <th>등록일</th>
+                        <th ></th> 
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div><!-- /.box-body -->
               </div><!-- /.box -->
-            </div><!-- /.content -->
-          </section>
-        </div><!-- /.content-wrapper -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.0
@@ -469,56 +512,101 @@
       });
     </script>
 
-    <script>
-       $(function(){
-      //아이디 유효성 검사
-      $("#userPhone").blur(function(){
-          var userPhone =  $("#userPhone").val();
-         console.log('userphone='+userPhone);
-          $.ajax({
-             url: '/user/check?userPhone='+userPhone,
-             type: 'get',
-             success : function(res){
+<script>
+  //보안구역 정보 삭제
+  function zone_delete(zoneId, t){
+      var zoneId = Number(zoneId);
+      var zoneName = $(t).parent().parent().find('.zoneName').val();
 
-                if ( res.header.msg == 'success' ){
-                  $("#check_txt").text("등록된 번호입니다 :p");
-                  $("#check_txt").css("color", "red");
-                  $("#reg_submit").attr("disabled", true);
-                } else  {
-                  $("#check_txt").text("등록 가능한 번호입니다 :)");
-                  $("#check_txt").css("color", "blue");
-                  $("#reg_submit").attr("disabled", false);	                  
-                }
-             }, error : function(){
-                 console.log("실패");
+      if(confirm(zoneName+"의 정보를 삭제하시겠습니까?")==true){
+
+        $.ajax({
+            url: '/scrtZone/delete',
+            data: { 'zoneId' : zoneId},
+            type: 'DELETE',
+            dataType: 'json',
+            success : function (res) {
+
+              if ( res.header.msg == 'success' ) {
+                alert("삭제되었습니다.");
+                location.reload();
+              }
+            },
+            error: function (xhr) {
+                alert("실패하였습니다.");
             }
-          });
         });
-    });
-    </script>  
-    <script>
-      //회원등록
-      function enroll(){
-             var userPhone = $("#userPhone").val();
-             var userName = $("#userName").val();
-             var userDept = $("#userDept").find("option:selected").val();
-             $.ajax({
-                 url: '/user/enroll',
-                 data: { 'userPhone' : userPhone, 'userName' : userName, 'userDept' : userDept },
-                 type: 'POST',
-                 dataType: 'json',
-                 success : function (res) {
-                   console.log('res=',res);
-                     if ( res.header.msg == 'success' ) {
-                       alert("등록되었습니다.");
-                      location.reload();
-                   }
-                 },
-                 error: function (xhr) {
-                     alert("실패하였습니다.");
-                 }
-             });
-     }
-     </script>
+
+      }else{
+        return false;
+      }
+  }
+  //보안구역 정보 변경
+  function zone_update(zoneId, t){
+    var zoneId = Number(zoneId);
+    var zoneName = $(t).parent().parent().find('.zoneName').val();
+    var zoneLong = $(t).parent().parent().find('.zoneLong').val();
+    var zoneLat = $(t).parent().parent().find('.zoneLat').val();
+    var zoneR1 = $(t).parent().parent().find('.zoneR1').val();
+    var zoneR2 = $(t).parent().parent().find('.zoneR2').val();
+
+    if(confirm("정보를 변경하시겠습니까?")==true){
+
+        $.ajax({
+            url: '/scrtZone/update',
+            data: { 
+                    'zoneId' : zoneId,
+                    'zoneName' : zoneName, 
+                    'zoneLong' : zoneLong, 
+                    'zoneLat' : zoneLat, 
+                    'zoneR1' : zoneR1, 
+                    'zoneR2' : zoneR2 
+                  },
+            type: 'PUT',
+            dataType: 'json',
+            success : function (res) {
+              console.log('res=',res);
+              if ( res.header.msg == 'success' ) {
+                  alert("수정되었습니다.");
+                  location.reload();
+                  }
+              },
+              error: function (xhr) {
+                 alert("실패하였습니다.");
+              }
+        });
+
+      }else{
+        return false;
+      }
+  }
+</script>
+  <script>
+    function search(t){
+      if(window.event.keyCode == 13){
+        var keyword = $(t).val();
+        $.ajax({
+            url: '/scrtZone/search',
+            data: { 
+                    'keyword' : keyword
+                  },
+            type: 'get',
+            dataType: 'json',
+            success : function (res) {
+              console.log('res=',res);
+              if ( res.header.msg == 'success' ) {
+                 console.log("res=", res.data);
+                  alert("성공");
+                  location.reload();
+                  }
+              },
+              error: function (xhr) {
+                 alert("실패하였습니다.");
+              }
+        });
+      }
+      
+    }
+  </script>
   </body>
 </html>

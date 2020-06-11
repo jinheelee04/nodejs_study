@@ -324,7 +324,7 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview">
+            <li class=" treeview">
               <a href="/">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
                 <!-- <i class="fa fa-angle-left pull-right"></i> -->
@@ -333,38 +333,38 @@
                 <li class="active"><a href="/"><i class="fa fa-circle-o"></i> Dashboard</a></li>
               </ul> -->
             </li>
-            <li class="treeview">
-              <a href="/scrtZone/add">
-                <i class="fa  fa-warning"></i> <span>보안구역 등록</span>  
-              </a>
-            </li>
-            <li class="treeview">
-              <a href="/scrtZone/list">
-                <i class="fa fa-gear"></i> <span>보안구역 관리</span>  
-              </a>
-            </li>
             <li class="active treeview">
-              <a href="/user/enroll">
-                <i class="fa fa-user"></i> <span>사용자 등록</span>  
-              </a>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-map-marker"></i> <span>출입자 위치</span>
-                <i class="fa fa-angle-left pull-right"></i>
-                <ul class="treeview-menu">
-                  <li class="active"><a href="/vstrLocation/google"><i class="fa fa-circle-o"></i>구글 지도</a></li>
-                  <li class="active"><a href="/vstrLocation/naver"><i class="fa fa-circle-o"></i>네이버 지도</a></li>
-                  <li class="active"><a href="/vstrLocation/kt"><i class="fa fa-circle-o"></i>KT 지도</a></li>
-                  <li class="active"><a href="/vstrLocation/kakao"><i class="fa fa-circle-o"></i>카카오 지도</a></li>
-                </ul> 
-              </a>
-            </li>
-            <li class="treeview">
-              <a href="/vstrStatus">
-                <i class="fa fa-table"></i> <span>출입자 현황</span>
-              </a>
-            </li>
+                <a href="/scrtZone/add">
+                  <i class="fa  fa-warning"></i> <span>보안구역 등록</span>  
+                </a>
+              </li>
+              <li class="treeview">
+                <a href="/scrtZone/list">
+                  <i class="fa fa-gear"></i> <span>보안구역 관리</span>  
+                </a>
+              </li>
+              <li class="treeview">
+                <a href="/user/enroll">
+                  <i class="fa fa-user"></i> <span>사용자 등록</span>  
+                </a>
+              </li>
+              <li class="treeview">
+                <a href="#">
+                  <i class="fa fa-map-marker"></i> <span>출입자 위치</span>
+                  <i class="fa fa-angle-left pull-right"></i>
+                  <ul class="treeview-menu">
+                    <li class="active"><a href="/vstrLocation/google"><i class="fa fa-circle-o"></i>구글 지도</a></li>
+                    <li class="active"><a href="/vstrLocation/naver"><i class="fa fa-circle-o"></i>네이버 지도</a></li>
+                    <li class="active"><a href="/vstrLocation/kt"><i class="fa fa-circle-o"></i>KT 지도</a></li>
+                    <li class="active"><a href="/vstrLocation/kakao"><i class="fa fa-circle-o"></i>카카오 지도</a></li>
+                  </ul> 
+                </a>
+              </li>
+              <li class="treeview">
+                <a href="/vstrStatus">
+                  <i class="fa fa-table"></i> <span>출입자 현황</span>
+                </a>
+              </li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -375,8 +375,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            사용자 등록
-            <!-- <small>user enroll</small> -->
+            보안구역 등록
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -399,31 +398,34 @@
          
                   <div class="box-body">
                     <div class="form-group">
-                      <label for="userName">이름</label>
-                      <input type="text" class="form-control" name="userName" id="userName" placeholder="" required>
+                      <label for="zoneName">보안구역명</label>
+                      <input type="text" class="form-control" name="zoneName" id="zoneName" placeholder="" required>
                     </div>
                     <div class="form-group">
-                      <label for="userPhone">핸드폰</label>
-                      <input type="text" class="form-control" name="userPhone" id="userPhone" placeholder='ex) 01012341234' required>
+                      <label for="zoneLong">보안구역 중심좌표 - 경도</label>
+                      <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='' required>
                       <div id="check_txt"></div>
                     </div>
-                    <!-- select -->
                     <div class="form-group">
-                      <label>소속</label>
-                      <select class="form-control" name="userDept" id="userDept" required>
-                        <option value="" disabled selected>선택</option>
-                        <option value="대표이사">대표이사</option>
-                        <option value="사업전략실">사업전략실</option>
-                        <option value="사업개발실">사업개발실</option>
-                        <option value="솔루션개발실">솔루션개발실</option>
-                        <option value="경영관리팀">경영관리팀</option>
-                        <option value="">해당 없음</option>
-                      </select>
+                      <label for="zoneLat">보안구역 중심좌표 - 위도</label>
+                      <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='' required>
+                      <div id="check_txt"></div>
                     </div>
+                    <div class="form-group">
+                      <label for="zoneR1">Radius1(진입)</label>
+                      <input type="number" class="form-control" name="zoneR1" id="zoneR1" placeholder='단위 : m' required>
+                      <div id="check_txt"></div>
+                    </div>
+                    <div class="form-group">
+                      <label for="zoneR2">Radius2(부근)</label>
+                      <input type="number" class="form-control" name="zoneR2" id="zoneR2" placeholder='단위 : m' required>
+                      <div id="check_txt"></div>
+                    </div>
+          
                   </div><!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button type="submit" id ="reg_submit" class="btn btn-primary" onclick="enroll();">등록</button>
+                    <button type="submit" id ="reg_submit" class="btn btn-primary" onclick="add();">등록</button>
                   </div>
           
               </div><!-- /.box -->
@@ -497,27 +499,36 @@
     });
     </script>  
     <script>
-      //회원등록
-      function enroll(){
-             var userPhone = $("#userPhone").val();
-             var userName = $("#userName").val();
-             var userDept = $("#userDept").find("option:selected").val();
-             $.ajax({
-                 url: '/user/enroll',
-                 data: { 'userPhone' : userPhone, 'userName' : userName, 'userDept' : userDept },
-                 type: 'POST',
-                 dataType: 'json',
-                 success : function (res) {
-                   console.log('res=',res);
-                     if ( res.header.msg == 'success' ) {
-                       alert("등록되었습니다.");
-                      location.reload();
-                   }
-                 },
-                 error: function (xhr) {
-                     alert("실패하였습니다.");
-                 }
-             });
+      //보안구역 등록
+      function add(){
+        var zoneName = $("#zoneName").val();
+        var zoneLong = $("#zoneLong").val();
+        var zoneLat = $("#zoneLat").val();
+        var zoneR1 = $("#zoneR1").val();
+        var zoneR2 = $("#zoneR2").val();
+        console.log("여기");
+       $.ajax({
+          url: '/scrtZone/add',
+          data: { 
+                  'zoneName' : zoneName, 
+                  'zoneLong' : zoneLong, 
+                  'zoneLat' : zoneLat, 
+                  'zoneR1' : zoneR1, 
+                  'zoneR2' : zoneR2 
+                },
+          type: 'POST',
+          dataType: 'json',
+          success : function (res) {
+        
+            if ( res.header.msg == 'success' ) {
+                alert("등록되었습니다.");
+                location.reload();
+                }
+            },
+            error: function (xhr) {
+               alert("실패하였습니다.");
+            }
+        });
      }
      </script>
   </body>
