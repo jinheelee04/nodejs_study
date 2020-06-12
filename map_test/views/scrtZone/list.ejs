@@ -397,9 +397,11 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <!--검색창-->
-                  <div class="search__container" >
-                    <input class="search__input" type="text" placeholder="보안구역명 또는 보안구역 ID를 입력하세요." onkeyup="search(this);">
-                  </div>
+                  <form id="search-frm" method="post">
+                  </form>
+                    <div class="search__container" >
+                      <input class="search__input" type="text" placeholder="보안구역명 또는 보안구역 ID를 입력하세요." onkeyup="search(this);">
+                    </div>
                   <!-- 보안구역 리스트-->
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
@@ -585,27 +587,15 @@
     function search(t){
       if(window.event.keyCode == 13){
         var keyword = $(t).val();
-        $.ajax({
-            url: '/scrtZone/search',
-            data: { 
-                    'keyword' : keyword
-                  },
-            type: 'get',
-            dataType: 'json',
-            success : function (res) {
-              console.log('res=',res);
-              if ( res.header.msg == 'success' ) {
-                 console.log("res=", res.data);
-                  alert("성공");
-                  location.reload();
-                  }
-              },
-              error: function (xhr) {
-                 alert("실패하였습니다.");
-              }
-        });
+
+        if(keyword==''){
+          alert("검색어를 입력하세요!");
+          return false;
+        }else{
+          var url="/scrtZone/list/"+keyword;
+          $("#search-frm").attr('action', url).submit();
+        }
       }
-      
     }
   </script>
   </body>

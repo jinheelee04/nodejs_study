@@ -10,9 +10,11 @@ exports.view= (req,res) =>{
     res.render('scrtZone/add', { title: '출입자 보안 관제 ' });
 }
 /**
- * 보안구역 관리 페이지 이동 및 부안구역 리스트 출력
+ * 보안구역 관리 페이지 이동 및 부안구역 리스트 출력 
  */
 exports.list= async(req,res) =>{
+
+  //search keyword가 없을 경우
 
   let result = await zoneModel.getAll();
 
@@ -28,6 +30,8 @@ exports.list= async(req,res) =>{
     res.status(httpErrCode).json(result);
     return;
   }
+
+
 }
 
 /**
@@ -104,22 +108,22 @@ exports.delete = async (req,res) =>{
  * 보안구역 검색
  */
 exports.search= async(req,res) =>{
-  
-  if(isEmpty(req.query.keyword)){
+  console.log("keyowrd=", req.params.keyword);
+  if(isEmpty(req.params.keyword)){
     res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body가 없습니다.)'));
     return;
   }
 
-  let result = await zoneModel.search(req.query.keyword);
+  let result = await zoneModel.search(req.params.keyword);
 
   if(result.header.code == ERR_CODE.SUCCESS) {
+  
+    res.status(200).render('scrtZone/list', { title: '출입자 보안 관제 ', results : result.data});
 
-    res.status(200).json(result);
+  } else if(result.header.code ==ERR_CODE.NO_DATA){
+    res.status(200).render('scrtZone/list', { title: '출입자 보안 관제 ', results : null});
 
-  }else if(result.header.code ==ERR_CODE.NO_DATA){
-    res.status(200).json(null);
-
-  } else {
+  }else {
     let httpErrCode = await convertHttpCode(result.header.code);
     res.status(httpErrCode).json(result);
     return;
