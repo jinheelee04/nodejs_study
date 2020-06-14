@@ -58,7 +58,7 @@
         padding-top:20px;
         /* padding-bottom: 5px; */
         width: 97%;
-        height: 690px;
+        height: 790px;
         margin: 0 auto;
       } 
       #floating-panel {
@@ -476,13 +476,15 @@
                               <div id="map-container">
                                 <!--토글 버튼(1층 or 5층)-->
                                 <div id="floating-panel">
-                                  <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio" onclick="overlay.toggle();">
+                                  <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio" onclick="removeOverlay();">
                                   <label for="toggle-on" class="btn">1F</label>
-                                  <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" onclick="overlay.toggle();" checked>
+                                  <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" onclick="addOverlay();" checked>
                                   <label for="toggle-off" class="btn">5F</label>
                                 </div>
                                 <!--지도-->
                                 <div id="map"></div>
+
+                                <div id="map2"></div>
                               </div>
                             <!--구글 지도 끝-->
                       </div>
@@ -532,6 +534,13 @@
                     </div>
                   </div>
                 </div>
+ <!--테스트용-->
+                <div>
+                  <textarea rows="20" cols="30" id="chat"></textarea><br>
+                  <input type="text" id="user"><input type="button" value="msg submit" onclick="myOnClick()"> 
+                </div>
+
+                 <!--테스트용-->
               </div>
               
 
@@ -577,153 +586,106 @@
         });
       });
     </script>
-    <!--구글 지도--> 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw"></script> 
-    <script>
-      // This example adds hide() and show() methods to a custom overlay's prototype.
-      // These methods toggle the visibility of the container <div>.
-      // Additionally, we add a toggleDOM() method, which attaches or detaches the
-      // overlay to or from the map.
+     <script>
+      // This example adds a UI control allowing users to remove the
+      // ground overlay from the map.
 
-      var overlay;
-
-      USGSOverlay.prototype = new google.maps.OverlayView();
+      var historicalOverlay;
+      var map;
 
       function initMap() {
-        var minZoomLevel =21;
-
-        var map = new google.maps.Map(document.getElementById('map'), {
+          var minZoomLevel =21;
+        map = new google.maps.Map(document.getElementById('map'), {
+          //처음 줌 값. 숫자가 작을수록 낮은 배율
           zoom: minZoomLevel,
-          center: {lat: 37.489107, lng: 127.031398}
+          center: {lat: 37.489104, lng: 127.031391}
+          //  center: {lat: 40.740, lng: -74.18}
         });
+
+        var imageBounds = {
+          north: 37.489287,
+          south: 37.488904,
+          east: 127.0315580,
+          west: 127.0312256
+
+        };
 
         google.maps.event.addListener(map, 'zoom_changed', function() {
         if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
         });
-        var bounds = new google.maps.LatLngBounds(
-            new google.maps.LatLng(37.48893386,127.0312256), //left top
-            new google.maps.LatLng(37.48932446,127.0315712), //right bottom
-            new google.maps.LatLng(37.48932308, 127.0312231), //right top
-            new google.maps.LatLng(37.48893524,127.0315736) //left bottom
+        historicalOverlay = new google.maps.GroundOverlay(
+            '/static/images/9901001001_5F.png',
+            imageBounds);
+
+        //유저 표시
+        addMarker(map);
+
+        addOverlay();
         
-        );
-        // The photograph is courtesy of the U.S. Geological Survey.
-        var srcImage = '/static/images/9901001001_5F.png';
-
-        overlay = new USGSOverlay(bounds, srcImage, map);
       }
 
-      /** @constructor */
-      function USGSOverlay(bounds, image, map) {
-
-        // Now initialize all properties.
-        this.bounds_ = bounds;
-        this.image_ = image;
-        this.map_ = map;
-
-        // Define a property to hold the image's div. We'll
-        // actually create this div upon receipt of the onAdd()
-        // method so we'll leave it null for now.
-        this.div_ = null;
-
-        // Explicitly call setMap on this overlay
-        this.setMap(map);
+      function addOverlay() {
+        historicalOverlay.setMap(map);
       }
 
-      /**
-       * onAdd is called when the map's panes are ready and the overlay has been
-       * added to the map.
-       */
-      USGSOverlay.prototype.onAdd = function() {
+      function removeOverlay() {
+        historicalOverlay.setMap(null);
+      }
+      function addMarker(map){ 
+    /*마커 시작*/
+      //마커 이미지
+      var customicon = 'http://drive.google.com/uc?export=view&id=1tZgPtboj4mwBYT6cZlcY36kYaQDR2bRM'
 
-        var div = document.createElement('div');
-        div.style.border = 'none';
-        div.style.borderWidth = '0px';
-        div.style.position = 'absolute';
+      //인포윈도우
+      var infowindow = new google.maps.InfoWindow();
 
-        // Create the img element and attach it to the div.
-        var img = document.createElement('img');
-        img.src = this.image_;
-        img.style.width = '704px';
-        img.style.height = '100%';
-        img.style.transform = 'rotate(-91deg)';
-        img.style.opacity = '10';
-        img.style.position='relative';
-        img.style.left = '-368px';
-        img.style.top = '-236px';
-        div.appendChild(img);
+      //마커 생성
+      var marker, i;
+      for (i = 0; i < 1; i++) {
+          marker = new google.maps.Marker({
+              //마커의 위치
+              position: new google.maps.LatLng(37.489107,  127.031398),
+              
+              //마커 아이콘
+              icon: customicon,
+              
+              //마커를 표시할 지도
+              map: map
+          });
 
-        this.div_ = div;
 
-        // Add the element to the "overlayImage" pane.
-        var panes = this.getPanes();
-        panes.overlayImage.appendChild(this.div_);
-      };
 
-      USGSOverlay.prototype.draw = function() {
+          if (marker) {
+              marker.addListener('click', function() {
+                  
+                  //중심 위치를 클릭된 마커의 위치로 변경
+                  map.setCenter(this.getPosition());
 
-        // We use the south-west and north-east
-        // coordinates of the overlay to peg it to the correct position and size.
-        // To do this, we need to retrieve the projection from the overlay.
-        var overlayProjection = this.getProjection();
-
-        // Retrieve the south-west and north-east coordinates of this overlay
-        // in LatLngs and convert them to pixel coordinates.
-        // We'll use these coordinates to resize the div.
-        var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
-        var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
-        var nw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthWest());
-        var se = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthEast());
-
-        // Resize the image's div to fit the indicated dimensions.
-        var div = this.div_;
-        div.style.left = sw.x + 'px';
-        div.style.top = ne.y + 'px';
-        div.style.width = (ne.x - sw.x) + 'px';
-        div.style.height = (sw.y - ne.y) + 'px';
-      };
-
-      USGSOverlay.prototype.onRemove = function() {
-        this.div_.parentNode.removeChild(this.div_);
-      };
-
-      // Set the visibility to 'hidden' or 'visible'.
-      USGSOverlay.prototype.hide = function() {
-        if (this.div_) {
-          // The visibility property must be a string enclosed in quotes.
-          this.div_.style.visibility = 'hidden';
-        }
-      };
-
-      USGSOverlay.prototype.show = function() {
-        if (this.div_) {
-          this.div_.style.visibility = 'visible';
-        }
-      };
-
-      USGSOverlay.prototype.toggle = function() {
-        if (this.div_) {
-          if (this.div_.style.visibility === 'hidden') {
-            this.show();
-          } else {
-            this.hide();
+                  //마커 클릭 시의 줌 변화
+                  map.setZoom(22);
+              });
           }
-        }
-      };
-
-      // Detach the map from the DOM via toggleDOM().
-      // Note that if we later reattach the map, it will be visible again,
-      // because the containing <div> is recreated in the overlay's onAdd() method.
-      USGSOverlay.prototype.toggleDOM = function() {
-        if (this.getMap()) {
-          // Note: setMap(null) calls OverlayView.onRemove()
-          this.setMap(null);
-        } else {
-          this.setMap(this.map_);
-        }
-      };
-     
-      google.maps.event.addDomListener(window, 'load', initMap);
+      }
+      /*마커 끝*/
+  }
     </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw&callback=initMap">
+    </script>
+ <script src='/n_mod/node_modules/socket.io-client/dist/socket.io.js'></script>
+
+
+<script>
+  var socket = io.connect('http://localhost:3100');
+    socket.on('recMsg', function (data) {
+        console.log(data.comment)
+        $('#chat').append(data.comment);
+    });
+
+    function myOnClick() {
+        socket.emit("msg", {comment: $('#user').val()});
+        $('#user').val('');
+    }
+</script>
   </body>
 </html>

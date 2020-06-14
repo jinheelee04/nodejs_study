@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('map-test:server');
+var debug = require('debug')('ctrl-exam:server');
 var http = require('http');
 
 /**

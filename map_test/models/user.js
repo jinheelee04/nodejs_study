@@ -39,7 +39,7 @@ const get = async(userPhone) => {
             console.log("row="+rows);
             if(isEmpty(rows)) {
             
-                return jsonGen.failValue(ERR_CODE.NO_DATA, 'no_data' );
+                return jsonGen.failValue(ERR_CODE.NO_DATA, '등록되지 않은 사용자입니다.' );
             } else {
                 
                 return jsonGen.successValue(rows);
