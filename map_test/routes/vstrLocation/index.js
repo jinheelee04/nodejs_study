@@ -4,7 +4,7 @@ const ctrl = require('./ctrls');
 
 
 router.get('/google', ctrl.google);
-router.put('/collect/:userPhone', ctrl.collect);
+router.put('/collect', ctrl.collect);
 router.get('/test', ctrl.test);
 
 

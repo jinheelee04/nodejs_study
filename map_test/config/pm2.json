@@ -1,0 +1,15 @@
+{
+    "script": "app.js",
+    "name": "ctrl",
+    "watch": true,
+    "ignore_watch" : ["[\\/\\\\]\\./", "node_modules"],
+    "watch_options": {
+        "followSymlinks": false
+    },
+    "merge_logs" : true,
+    "log_date_format" : "YYYY-MM-DD HH:mm:ss.SSS",
+    "max-restarts" : 3,
+    "env": {
+        "TZ": "GMT"
+    }
+}

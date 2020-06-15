@@ -30,15 +30,12 @@ exports.test= (req,res) =>{
 
 exports.collect = async (req, res) =>{
 
-    if(isEmpty(req.params.userPhone)) {
-        res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (userPhone가 없습니다)'));
-        return;
-      }else if(isEmpty(req.body)){
+    if(isEmpty(req.body)){
         res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body가 없습니다.'));
         return;
     }
     //user_tb 테이블 조회
-    let userResult = await userModel.get(req.params.userPhone);
+    let userResult = await userModel.get(req.body.userPhone);
     // user_tb 테이블에 핸드폰 정보가 없을 경우 
     if(userResult.header.code != ERR_CODE.SUCCESS ){
         let httpErrCode = await convertHttpCode(userResult.header.code);
@@ -49,10 +46,10 @@ exports.collect = async (req, res) =>{
     
 
     //location_tb 테이블 조회
-    let locResult = await locationModel.get(req.params.userPhone);
+    let locResult = await locationModel.get(req.body.userPhone);
     //location_tb 조회 성공시 update
     if(locResult.header.code == ERR_CODE.SUCCESS){
-        let updateResult = await locationModel.update(req.params.userPhone, req.body.userLong, req.body.userLat, req.body.floorInf, req.body.statusCode);
+        let updateResult = await locationModel.update(req.body.userPhone, req.body.userLong, req.body.userLat, req.body.floorInf, req.body.statusCode);
         if(updateResult.header.code == ERR_CODE.SUCCESS) {
     
             res.status(201).json(jsonGen.successValue('갱신 성공'));
@@ -68,7 +65,7 @@ exports.collect = async (req, res) =>{
     //location_tb 조회 실패시 insert
     else if(locResult.header.code == ERR_CODE.NO_DATA){
        
-        let insertResult = await locationModel.add(req.params.userPhone, req.body.userLong, req.body.userLat, req.body.floorInf, req.body.statusCode);
+        let insertResult = await locationModel.add(req.body.userPhone, req.body.userLong, req.body.userLat, req.body.floorInf, req.body.statusCode);
         if(insertResult.header.code == ERR_CODE.SUCCESS) {
     
             res.status(201).json(jsonGen.successValue('갱신 성공'));
