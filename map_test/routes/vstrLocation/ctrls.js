@@ -7,6 +7,7 @@ const userModel = require('../../models/user');
 const zoneModel = require('../../models/scrtZone');
 const { ERR_CODE } = require('../../common/errorCode');
 
+
 exports.google= (req,res) =>{
     res.render('vstrLocation/google', { title: '출입자 보안 관제 ' });
 }
@@ -31,9 +32,29 @@ exports.test= (req,res) =>{
 exports.collect = async (req, res) =>{
 
     if(isEmpty(req.body)){
-        res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body가 없습니다.'));
+        res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body가 없습니다.)'));
         return;
+    } else {
+        if( isEmpty(req.body.userPhone)) {
+          res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body의 userPhone가 없습니다)'));
+          return;
+        }
+        if( isEmpty(req.body.userLong)) {
+            res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body의 userLong가 없습니다)'));
+            return;
+        }
+        if( isEmpty(req.body.userLat)) {
+            res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body의 userLat가 없습니다)'));
+            return;
+        }
+        if( isEmpty(req.body.floorInf)) {
+            res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body의 floorInf가 없습니다)'));
+            return;
+        }
+
     }
+
+
     //user_tb 테이블 조회
     let userResult = await userModel.get(req.body.userPhone);
     // user_tb 테이블에 핸드폰 정보가 없을 경우 

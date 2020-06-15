@@ -671,20 +671,6 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw&callback=initMap">
     </script>
- <script src='/n_mod/node_modules/socket.io-client/dist/socket.io.js'></script>
 
-
-<script>
-  var socket = io.connect('http://localhost:3100');
-    socket.on('recMsg', function (data) {
-        console.log(data.comment)
-        $('#chat').append(data.comment);
-    });
-
-    function myOnClick() {
-        socket.emit("msg", {comment: $('#user').val()});
-        $('#user').val('');
-    }
-</script>
   </body>
 </html>

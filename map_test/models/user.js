@@ -47,11 +47,11 @@ const get = async(userPhone) => {
         } catch(err) {
             console.log('Query Error : ' + err);
             connection.release();
-            return jsonGen.failValue(ERR_CODE.DB_ERR, err);
+            return jsonGen.failValue(ERR_CODE.DB_ERR, '쿼리문 오류');
         }
     } catch(err) {
         console.log('DB Error : ' + err);
-        return jsonGen.failValue(ERR_CODE.DB_ERR, err);
+        return jsonGen.failValue(ERR_CODE.DB_ERR, 'DB 연동 오류');
     }
 }
 
