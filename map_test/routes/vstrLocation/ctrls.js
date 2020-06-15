@@ -4,6 +4,7 @@ const locationModel = require('../../models/location');
 var isEmpty = require('is-empty');
 const jsonGen = require( '../../common/jsonGenerator');
 const userModel = require('../../models/user');
+const zoneModel = require('../../models/scrtZone');
 const { ERR_CODE } = require('../../common/errorCode');
 
 exports.google= (req,res) =>{
@@ -45,6 +46,7 @@ exports.collect = async (req, res) =>{
         return;
     }
 
+    
 
     //location_tb 테이블 조회
     let locResult = await locationModel.get(req.params.userPhone);
