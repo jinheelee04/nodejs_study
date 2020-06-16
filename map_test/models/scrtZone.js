@@ -56,13 +56,13 @@ const getAll = async() => {
     }
 }
 
-const update = async(zoneId, zoneName, zoneLong, zoneLat, zoneR1, zoneR2 ) => {
+const update = async(zoneId, zoneName, zoneLong, zoneLat, c1Long, c1Lat, c1R1, c1R2, c2Long, c2Lat, c2R1, c2R2 ) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
 
-            let query = 'update scrt_zone_tb set zone_name = ?, zone_long=?, zone_lat=?, zone_r_1=?, zone_r_2=? where zone_id = ?';
-            let params = [zoneName, zoneLong, zoneLat, zoneR1, zoneR2, zoneId];
+            let query = 'update scrt_zone_tb set zone_name = ?, zone_long=?, zone_lat=?, c1_long=?, c1_lat=?, c1_r1 = ?, c1_r2=?, c2_long=?, c2_lat=?, c2_r1=?, c2_r2=? where zone_id = ?';
+            let params = [zoneName, zoneLong, zoneLat, c1Long, c1Lat, c1R1, c1R2, c2Long, c2Lat, c2R1, c2R2 , zoneId];
 
             const [rows] = await connection.query(query,params);
             connection.release();

@@ -410,14 +410,14 @@
                   <div class="box-body">
                     <div class="form-group">
                       <label for="zoneName">보안구역명</label>
-                      <input type="text" class="form-control" name="zoneName" id="zoneName" placeholder="" value=" <%= result.zone_name %> " required>
+                      <input type="text" class="form-control" name="zoneName" id="zoneName" placeholder="" value="<%= result.zone_name %>" required>
                     </div>
 
                     <div class= row>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="zoneLat">보안구역 중심좌표 - 위도</label>
-                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='latitude'  value=" <%= result.zone_lat %> " required>
+                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='latitude'  value="<%= result.zone_lat %>" required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -425,7 +425,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="zoneLong">보안구역 중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='longitude'  value=" <%= result.zone_long %> "required>
+                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='longitude'  value="<%= result.zone_long %>"required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -437,14 +437,14 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="c1Lat">중심좌표 - 위도 </label>
-                          <input type="text" class="form-control" name="c1Lat" id="c1Lat" placeholder='latitude'  value=" <%= result.c1_lat %>" required>
+                          <input type="text" class="form-control" name="c1Lat" id="c1Lat" placeholder='latitude'  value="<%= result.c1_lat %>" required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="c1Long">중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="c1Long" id="c1Long" placeholder='longitude'  value=" <%= result.c1_long %> "required>
+                          <input type="text" class="form-control" name="c1Long" id="c1Long" placeholder='longitude'  value="<%= result.c1_long %>"required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -454,14 +454,14 @@
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c1R1">반경(진입)</label>
-                          <input type="text" class="form-control" name="c1R1" id="c1R1" placeholder='단위 : m'  value=" <%= result.c1_r1 %>" required>
+                          <input type="text" class="form-control" name="c1R1" id="c1R1" placeholder='단위 : m'  value="<%= result.c1_r1 %>" required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c1R2">반경(부근)</label>
-                          <input type="text" class="form-control" name="c1R2" id="c1R2" placeholder='단위 : m'  value=" <%= result.c1_r2 %> " required>
+                          <input type="text" class="form-control" name="c1R2" id="c1R2" placeholder='단위 : m'  value="<%= result.c1_r2 %>" required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -475,14 +475,14 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="c2Lat">중심좌표 - 위도 </label>
-                          <input type="text" class="form-control" name="c2Lat" id="c2Lat" placeholder='latitude'  value=" <%= result.c2_lat %> "required>
+                          <input type="text" class="form-control" name="c2Lat" id="c2Lat" placeholder='latitude'  value="<%= result.c2_lat %>"required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="c2Long">중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="c2Long" id="c2Long" placeholder='longitude' value=" <%= result.c2_long %> "required>
+                          <input type="text" class="form-control" name="c2Long" id="c2Long" placeholder='longitude' value="<%= result.c2_long %>"required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -493,14 +493,14 @@
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c2R1">반경(진입)</label>
-                          <input type="text" class="form-control" name="c2R1" id="c2R1" placeholder='단위 : m' value=" <%= result.c2_r1 %> "required>
+                          <input type="text" class="form-control" name="c2R1" id="c2R1" placeholder='단위 : m' value=" <%= result.c2_r1 %>"required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c2R2">반경(부근)</label>
-                          <input type="text" class="form-control" name="c2R2" id="c2R2" placeholder='단위 : m' value=" <%= result.c2_r2 %> "required>
+                          <input type="text" class="form-control" name="c2R2" id="c2R2" placeholder='단위 : m' value=" <%= result.c2_r2 %>"required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -510,7 +510,7 @@
 
                   <div class="box-footer">
                     <button type="submit" id ="reg_submit" class="btn btn-primary" onclick="update( <%= result.zone_id %> );">수정</button>
-                    <button type="submit" id ="reg_submit" class="btn btn-primary" onclick="goBack();">뒤로가기</button>
+                    <button type="submit" id ="reg_submit" class="btn btn-primary" onclick="goBack();">돌아가기</button>
                   </div>
           
               </div><!-- /.box -->
@@ -706,7 +706,8 @@
     <script>
       //뒤로 가기
       function goBack(){
-        window.history.back();
+        // window.history.back();
+        location.href='/scrtZone/list';
       }
     </script>
 
