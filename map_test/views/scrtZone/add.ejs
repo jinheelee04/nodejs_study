@@ -444,23 +444,23 @@
                     <div class= row>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label for="zoneLat">중심좌표 - 위도 </label>
-                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='latitude' required>
+                          <label for="c1Lat">중심좌표 - 위도 </label>
+                          <input type="text" class="form-control" name="c1Lat" id="c1Lat" placeholder='latitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label for="zoneLong">중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='longitude' required>
+                          <label for="c1Long">중심좌표 - 경도</label>
+                          <input type="text" class="form-control" name="c1Long" id="c1Long" placeholder='longitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
 
                       <div class="col-md-3"> 
                         <div class="form-group">
-                          <label for="zoneR1">반경(진입)</label>
-                          <input type="number" class="form-control" name="zoneR1" id="zoneR1" placeholder='단위 : m' required>
+                          <label for="c1R1">반경(진입)</label>
+                          <input type="number" class="form-control" name="c1R1" id="c1R1" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -472,27 +472,28 @@
                     <div class= row>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label for="zoneLat">중심좌표 - 위도</label>
-                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='latitude' required>
+                          <label for="c2Lat">중심좌표 - 위도 </label>
+                          <input type="text" class="form-control" name="c2Lat" id="c2Lat" placeholder='latitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label for="zoneLong">중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='longitude' required>
+                          <label for="c2Long">중심좌표 - 경도</label>
+                          <input type="text" class="form-control" name="c2Long" id="c2Long" placeholder='longitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
 
                       <div class="col-md-3"> 
                         <div class="form-group">
-                          <label for="zoneR1">반경(진입)</label>
-                          <input type="number" class="form-control" name="zoneR1" id="zoneR1" placeholder='단위 : m' required>
+                          <label for="c2R1">반경(진입)</label>
+                          <input type="number" class="form-control" name="c2R1" id="c2R1" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                     </div>
+                
                     <hr>
                   </div><!-- /.box-body -->
 
@@ -626,20 +627,46 @@
     <script>
       //보안구역 등록
       function add(){
+        //보안구역 정보
         var zoneName = $("#zoneName").val();
-        var zoneLong = $("#zoneLong").val();
-        var zoneLat = $("#zoneLat").val();
-        var zoneR1 = $("#zoneR1").val();
-        var zoneR2 = $("#zoneR2").val();
-        console.log("여기");
+        var zoneLong = Number($("#zoneLong").val());
+        var zoneLat = Number($("#zoneLat").val());
+        var zoneR2 = Number($("#zoneR2").val());
+        
+        zoneLong = zoneLong.toFixed(9);
+        zoneLat = zoneLat.toFixed(9);
+        zoneR2 = zoneR2.toFixed(1); 
+
+        //circle1 정보
+        var c1Long = Number($('#c1Long').val());
+        var c1Lat = Number($('#c1Lat').val());
+        var c1R1 = Number($('c1R1').val());
+
+        c1Long = c1Long.toFixed(9);
+        c1Lat = c1Lat.toFixed(9);
+        c1R1 = c1R1.toFixed(1); 
+
+        //circle2 정보
+        var c2Long = Number($('#c2Long').val());
+        var c2Lat = Number($('#c2Lat').val());
+        var c2R1 = Number($('c2R1').val());
+        c2Long = c2Long.toFixed(9);
+        c2Lat = c2Lat.toFixed(9);
+        c2R1 = c2R1.toFixed(1); 
+
        $.ajax({
           url: '/scrtZone/add',
           data: { 
                   'zoneName' : zoneName, 
                   'zoneLong' : zoneLong, 
                   'zoneLat' : zoneLat, 
-                  'zoneR1' : zoneR1, 
-                  'zoneR2' : zoneR2 
+                  'zoneR2' : zoneR2,
+                  'c1Long' : c1Long,
+                  'c1Lat' : c1Lag,
+                  'c1R1' : c1R1,
+                  'c2Long' : c2Long,
+                  'c2Lat' : c2Lag,
+                  'c2R1' : c2R1
                 },
           type: 'POST',
           dataType: 'json',
@@ -759,7 +786,7 @@
       console.log(p2);
       var distance = Number(calcDistance(p1, p2));
       console.log('distance='+ distance);
-      distance = distance.toFixed(2);
+      distance = distance.toFixed(1);
       console.log('distance='+ distance);
       $('#distance').val(distance);
     }
