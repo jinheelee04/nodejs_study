@@ -8,13 +8,13 @@ var isEmpty = require('is-empty');
 
 
 
-const add = async(zoneName, zoneLong, zoneLat, zoneR1, zoneR2 ) => {
+const add = async(zoneName, zoneLong, zoneLat, c1Long, c1Lat, c1R1, c1R2, c2Long, c2Lat, c2R1, c2R2) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
 
-            let query = 'insert into scrt_zone_tb (zone_name, zone_long, zone_lat, zone_r_1, zone_r_2 , enroll_date) values ( ?, ?, ?, ?, ?, default)';
-            let params = [zoneName, zoneLong, zoneLat, zoneR1, zoneR2];
+            let query = 'insert into scrt_zone_tb (zone_name, zone_long, zone_lat, c1_long, c1_lat, c1_r1, c1_r2, c2_long, c2_lat, c2_r1 , c2_r2, enroll_date) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)';
+            let params = [zoneName, zoneLong, zoneLat, c1Long, c1Lat, c1R1, c1R2, c2Long, c2Lat, c2R1, c2R2];
 
             const [rows] = await connection.query(query,params);
             connection.release();
@@ -35,7 +35,7 @@ const getAll = async() => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            let query ="select zone_id, zone_name, zone_long, zone_lat, zone_r_1, zone_r_2, DATE_FORMAT(enroll_date, '%Y-%m-%d %H:%m:%s') enroll_date FROM scrt_zone_tb";
+            let query ="select zone_id, zone_name, zone_long, zone_lat, zone_r2, c1_long, c1_lat, c1_r1, c2_long, c2_lat, c2_r1 ,  DATE_FORMAT(enroll_date, '%Y-%m-%d %H:%m:%s') enroll_date FROM scrt_zone_tb";
             const [rows] = await connection.query(query);
             connection.release();
       

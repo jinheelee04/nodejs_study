@@ -43,7 +43,9 @@ exports.add= async (req,res) =>{
         return;
     }
 
-    let insertResult = await zoneModel.add(req.body.zoneName, req.body.zoneLong, req.body.zoneLat, req.body.zoneR1, req.body.zoneR2);
+    let insertResult = await zoneModel.add(req.body.zoneName, req.body.zoneLong, req.body.zoneLat
+                                            , req.body.c1Long, req.body.c1Lat, req.body.c1R1, req.body.c1R2
+                                            , req.body.c2Long, req.body.c2Lat, req.body.c2R1, req.body.c2R2);
     
     if(insertResult.header.code == ERR_CODE.SUCCESS) {
 
