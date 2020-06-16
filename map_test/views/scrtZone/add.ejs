@@ -462,14 +462,14 @@
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c1R1">반경(진입)</label>
-                          <input type="number" class="form-control" name="c1R1" id="c1R1" placeholder='단위 : m' required>
+                          <input type="text" class="form-control" name="c1R1" id="c1R1" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c1R2">반경(부근)</label>
-                          <input type="number" class="form-control" name="c1R2" id="c1R2" placeholder='단위 : m' required>
+                          <input type="text" class="form-control" name="c1R2" id="c1R2" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -501,14 +501,14 @@
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c2R1">반경(진입)</label>
-                          <input type="number" class="form-control" name="c2R1" id="c2R1" placeholder='단위 : m' required>
+                          <input type="text" class="form-control" name="c2R1" id="c2R1" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
                       <div class="col-md-6"> 
                         <div class="form-group">
                           <label for="c2R2">반경(부근)</label>
-                          <input type="number" class="form-control" name="c2R2" id="c2R2" placeholder='단위 : m' required>
+                          <input type="text" class="form-control" name="c2R2" id="c2R2" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
@@ -651,28 +651,28 @@
         var zoneLong = Number($("#zoneLong").val());
         var zoneLat = Number($("#zoneLat").val());
         
-        zoneLong = zoneLong.toFixed(9);
-        zoneLat = zoneLat.toFixed(9);
-
+        zoneLong = zoneLong.toFixed(8);
+        zoneLat = zoneLat.toFixed(8);
+      
         //circle1 정보
         var c1Long = Number($('#c1Long').val());
         var c1Lat = Number($('#c1Lat').val());
-        var c1R1 = Number($('c1R1').val());
-        var c1R2 = Number($('c1R2').val());
+        var c1R1 = Number($('#c1R1').val());
+        var c1R2 = Number($('#c1R2').val());
 
-        c1Long = c1Long.toFixed(9);
-        c1Lat = c1Lat.toFixed(9);
+        c1Long = c1Long.toFixed(8);
+        c1Lat = c1Lat.toFixed(8);
         c1R1 = c1R1.toFixed(1); 
         c1R2 = c1R2.toFixed(1); 
 
         //circle2 정보
         var c2Long = Number($('#c2Long').val());
         var c2Lat = Number($('#c2Lat').val());
-        var c2R1 = Number($('c2R1').val());
-        var c2R2 = Number($('c2R2').val());
+        var c2R1 = Number($('#c2R1').val());
+        var c2R2 = Number($('#c2R2').val());
 
-        c2Long = c2Long.toFixed(9);
-        c2Lat = c2Lat.toFixed(9);
+        c2Long = c2Long.toFixed(8);
+        c2Lat = c2Lat.toFixed(8);
         c2R1 = c2R1.toFixed(1); 
         c2R2 = c2R2.toFixed(1); 
        $.ajax({
@@ -682,11 +682,11 @@
                   'zoneLong' : zoneLong, 
                   'zoneLat' : zoneLat, 
                   'c1Long' : c1Long,
-                  'c1Lat' : c1Lag,
+                  'c1Lat' : c1Lat,
                   'c1R1' : c1R1,
-                  'c2R2' : c2R2,
+                  'c1R2' : c1R2,
                   'c2Long' : c2Long,
-                  'c2Lat' : c2Lag,
+                  'c2Lat' : c2Lat,
                   'c2R1' : c2R1,
                   'c2R2' : c2R2
                 },
