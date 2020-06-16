@@ -399,7 +399,7 @@
         <section class="content" style="margin:0 auto; position: relative">
           <div class="row" >
             <!-- left column -->
-            <div class="col-md-4" >
+            <div class="col-md-5" >
               <!-- general form elements -->
               <div class="box box-primary" >
                 <div class="box-header">
@@ -412,94 +412,85 @@
                       <label for="zoneName">보안구역명</label>
                       <input type="text" class="form-control" name="zoneName" id="zoneName" placeholder="" required>
                     </div>
-                    <hr>
 
                     <div class= row>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="zoneLong">보안구역 중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='' required>
-                          <div id="check_txt"></div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label for="zoneLat">보안구역 중심좌표 - 위도</label>
-                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='' required>
+                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='latitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
-                    </div>
-                    <hr>
 
-                    <div class= row>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label for="zoneLong">보안구역 중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='' required>
+                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='longitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="zoneLat">보안구역 중심좌표 - 위도</label>
-                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='' required>
-                          <div id="check_txt"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6"> 
-                        <div class="form-group">
-                          <label for="zoneR1">Radius1(진입)</label>
-                          <input type="number" class="form-control" name="zoneR1" id="zoneR1" placeholder='단위 : m' required>
-                          <div id="check_txt"></div>
-                        </div>
 
-                      </div>
-                      <div class="col-md-6">
+                      <div class="col-md-3">
                         <div class="form-group">
-                          <label for="zoneR2">Radius2(부근)</label>
+                          <label for="zoneR2">반경(부근)</label>
                           <input type="number" class="form-control" name="zoneR2" id="zoneR2" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
-
                       </div>
                     </div>
+    
                     <hr>
-                    
+                    <h3>Circle1</h3>
                     <div class= row>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="form-group">
-                          <label for="zoneLong">보안구역 중심좌표 - 경도</label>
-                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='' required>
+                          <label for="zoneLat">중심좌표 - 위도 </label>
+                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='latitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="form-group">
-                          <label for="zoneLat">보안구역 중심좌표 - 위도</label>
-                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='' required>
+                          <label for="zoneLong">중심좌표 - 경도</label>
+                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='longitude' required>
                           <div id="check_txt"></div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6"> 
+
+                      <div class="col-md-3"> 
                         <div class="form-group">
-                          <label for="zoneR1">Radius1(진입)</label>
+                          <label for="zoneR1">반경(진입)</label>
                           <input type="number" class="form-control" name="zoneR1" id="zoneR1" placeholder='단위 : m' required>
                           <div id="check_txt"></div>
                         </div>
-
                       </div>
-                      <div class="col-md-6">
+                    </div>
+                
+                    <hr>
+
+                    <h3>Circle2</h3>
+                    <div class= row>
+                      <div class="col-md-4">
                         <div class="form-group">
-                          <label for="zoneR2">Radius2(부근)</label>
-                          <input type="number" class="form-control" name="zoneR2" id="zoneR2" placeholder='단위 : m' required>
+                          <label for="zoneLat">중심좌표 - 위도</label>
+                          <input type="text" class="form-control" name="zoneLat" id="zoneLat" placeholder='latitude' required>
                           <div id="check_txt"></div>
                         </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="zoneLong">중심좌표 - 경도</label>
+                          <input type="text" class="form-control" name="zoneLong" id="zoneLong" placeholder='longitude' required>
+                          <div id="check_txt"></div>
+                        </div>
+                      </div>
 
+                      <div class="col-md-3"> 
+                        <div class="form-group">
+                          <label for="zoneR1">반경(진입)</label>
+                          <input type="number" class="form-control" name="zoneR1" id="zoneR1" placeholder='단위 : m' required>
+                          <div id="check_txt"></div>
+                        </div>
                       </div>
                     </div>
                     <hr>
@@ -513,20 +504,47 @@
             </div><!-- /.content -->
             
             <!-- right column -->
-            <div class="col-md-8" >
+            <div class="col-md-7" >
               <!-- general form elements -->
-              <div class="box box-primary" >
+              <div class="box box-primary" style="height: 1050px;">
                 <div class="box-header">
-                  <!-- <h3 class="box-title">Quick Example</h3> -->
+                  <h4>원하는 위치를 클릭하여 좌표 값을 얻으세요.</h4>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-         
-                  <div class="box-body">
+                  <div class="box-body" >
                      <!--구글 지도-->
                      <div id="map-container">
-                      <div id="floating-panel">
-                        <input onclick="deleteMarkers();" type=button value="Delete Markers">
+                       <div id="floating-panel">
+                         <div class="row" style="padding-bottom:10px; margin-bottom:10px;" >
+                           <div class="col-md-12">
+                             <input onclick="deleteMarkers();" type=button value="마커 지우기">
+
+                           </div>
+                         </div>
+                        <div class="row" style="padding-bottom: 10px;">
+                          <div class="col-md-12">
+                            <span>지점1: </span>
+                            <input type="number"  id="p1-lat"   placeholder='위도(latitude)' >
+                            <input type="number"  id="p1-lng"  placeholder='경도(longitude)' >
+
+                          </div>
+                        </div>
+                        <div class="row" style="padding-bottom: 15px;">
+                          <div class="col-md-12">
+                            <span>지점2: </span>
+                            <input type="number"  id="p2-lat"  placeholder='위도(latitude)' >
+                            <input type="number"  id="p2-lng"  placeholder='경도(latitude)' >
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <input onclick="getDistance();" type=button value="거리측정">
+                            <input id="distance" placeholder="결과" /> (단위 : m)
+                          </div>
+                        </div>
                       </div>
+                      <hr>
                       <!--지도-->
                       <div id="map"></div>
                     </div>
@@ -709,6 +727,7 @@
       map.setCenter(location);
     }
 
+    /* 마커 지우기 */
       // Sets the map on all markers in the array.
       function setMapOnAll(map) {
         for (var i = 0; i < markers.length; i++) {
@@ -724,6 +743,42 @@
         clearMarkers();
         markers = [];
       }
+
+
+      /* 거리 측정*/
+      function getDistance(){
+      var p1Lat = $('#p1-lat').val();
+      var p1Lng = $('#p1-lng').val();
+
+      var p2Lat = $('#p2-lat').val()
+      var p2Lng =$('#p2-lng').val();
+
+      var p1 = { lat : p1Lat, lng : p1Lng};
+      var p2 = { lat : p2Lat, lng : p2Lng};
+      console.log(p1);
+      console.log(p2);
+      var distance = Number(calcDistance(p1, p2));
+      console.log('distance='+ distance);
+      distance = distance.toFixed(2);
+      console.log('distance='+ distance);
+      $('#distance').val(distance);
+    }
+
+    function rad(x) {
+          return x * Math.PI / 180;
+    };
+    function calcDistance(p1, p2) {
+          var R = 6378137; // Earth’s mean radius in meter
+          var dLat = rad(p2.lat - p1.lat);
+          var dLong = rad(p2.lng - p1.lng);
+          var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) *
+            Math.sin(dLong / 2) * Math.sin(dLong / 2);
+          var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          var d = R * c;
+          return d; // returns the distance in meter
+    };
+    
      </script>
          <script async defer
          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw&callback=initMap">
