@@ -53,6 +53,9 @@
       td, th{
         vertical-align:middle !important;
       }
+      table{
+        width:100%;
+      }
     </style>
   </head>
   <body class="skin-blue">
@@ -402,16 +405,24 @@
                     <div class="search__container" >
                       <input class="search__input" type="text" placeholder="보안구역명 또는 보안구역 ID를 입력하세요." onkeyup="search(this);">
                     </div>
-                  <!-- 보안구역 리스트-->
+                    <div class="row">
+                      <div class="col-md-12">
+                         <!-- 보안구역 리스트-->
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>보안구역ID</th>
+                        <th>ID</th>
                         <th>보안구역명</th>
-                        <th>중심좌표(경도)</th>
-                        <th>중심좌표(위도)</th>
-                        <th>Rad1</th>
-                        <th>Rad2</th>
+                        <th>보안구역(경도)</th>
+                        <th>보안구역(위도)</th>
+                        <th>Circle1(위도)</th>
+                        <th>Circle1(경도)</th>
+                        <th>반경(진입)</th>
+                        <th>반경(부근)</th>
+                        <th>Circle1(위도)</th>
+                        <th>Circle1(경도)</th>
+                        <th>반경(진입)</th>
+                        <th>반경(부근)</th>
                         <th>등록일</th>
                         <th></th> 
                       </tr>
@@ -422,23 +433,42 @@
                       <tr>
                         <td><%= data.zone_id %></td>
                         <td>
-                          <input type="text" style="width:150px;" name="zoneName" class="zoneName" value= <%= data.zone_name %> >
+                           <%= data.zone_name %> 
                         </td>
                         <td>
-                          <input type="text" style="width:150px;" name="zoneLong" class="zoneLong" value= <%= data.zone_long %> >
+                          <%= data.zone_lat %> 
                         </td>
                         <td>
-                          <input type="text"  style="width:150px;" name="zoneLat" class="zoneLat" value= <%= data.zone_lat %> >
+                           <%= data.zone_long %> 
                         </td>
                         <td>
-                          <input type="text" style="width:80px; text-align: right;" name="zoneR1" class="zoneR1" value= <%= data.zone_r_1 %> > (단위 : m)
+                          <%= data.c1_lat %> 
                         </td>
                         <td>
-                          <input type="text" style="width:80px; text-align: right;"name="zoneR2" class="zoneR2" value= <%= data.zone_r_2 %> > (단위 : m)
+                           <%= data.c1_long %> 
+                        </td>
+                        <td>
+                          <%= data.c1_r1 %>
+                        </td>
+                        <td>
+                         <%= data.c1_r2 %> 
+                        </td>
+                        <td>
+                           <%= data.c2_lat %> 
+                        </td>
+                        <td>
+                          <%= data.c2_long %> 
+                        </td>
+                        <td>
+                          <%= data.c2_r1 %> 
+                        </td>
+                        <td>
+                          <%= data.c2_r2 %> 
                         </td>
                         <td><%= data.enroll_date%></td>
-                        <td style="text-align: center;">
-                            <button class="btn  btn-warning" style="margin-right: 5px;" onclick='zone_update(<%= data.zone_id %>, this);'>수정</button>
+                        <td style="text-align: center; width:30px;">
+                            <button class="btn  btn-warning" style="margin-bottom: 5px;" onclick='goUpdate(<%= data.zone_id %>);'>수정</button>
+                            <br>
                             <button class="btn btn-danger" onclick='zone_delete(<%= data.zone_id %>, this);'>삭제</button> 
                         </td>
                       </tr>
@@ -456,19 +486,12 @@
                         </tr>
                       <% }%>
                     </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>보안구역ID</th>
-                        <th>보안구역명</th>
-                        <th>중심좌표(경도)</th>
-                        <th>중심좌표(위도)</th>
-                        <th>Rad1</th>
-                        <th>Rad2</th>
-                        <th>등록일</th>
-                        <th ></th> 
-                      </tr>
-                    </tfoot>
+            
                   </table>
+                      </div>
+
+                    </div>
+                 
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
             </div><!-- /.col -->
@@ -543,45 +566,50 @@
         return false;
       }
   }
-  //보안구역 정보 변경
-  function zone_update(zoneId, t){
-    var zoneId = Number(zoneId);
-    var zoneName = $(t).parent().parent().find('.zoneName').val();
-    var zoneLong = $(t).parent().parent().find('.zoneLong').val();
-    var zoneLat = $(t).parent().parent().find('.zoneLat').val();
-    var zoneR1 = $(t).parent().parent().find('.zoneR1').val();
-    var zoneR2 = $(t).parent().parent().find('.zoneR2').val();
+  function goUpdate(zoneId){
+    var url = '/scrtZone/update/'+zoneId;
+    location.href = url;
 
-    if(confirm("정보를 변경하시겠습니까?")==true){
-
-        $.ajax({
-            url: '/scrtZone/update',
-            data: { 
-                    'zoneId' : zoneId,
-                    'zoneName' : zoneName, 
-                    'zoneLong' : zoneLong, 
-                    'zoneLat' : zoneLat, 
-                    'zoneR1' : zoneR1, 
-                    'zoneR2' : zoneR2 
-                  },
-            type: 'PUT',
-            dataType: 'json',
-            success : function (res) {
-              console.log('res=',res);
-              if ( res.header.msg == 'success' ) {
-                  alert("수정되었습니다.");
-                  location.reload();
-                  }
-              },
-              error: function (xhr) {
-                 alert("실패하였습니다.");
-              }
-        });
-
-      }else{
-        return false;
-      }
   }
+  //보안구역 정보 변경
+  // function zone_update(zoneId, t){
+  //   var zoneId = Number(zoneId);
+  //   var zoneName = $(t).parent().parent().find('.zoneName').val();
+  //   var zoneLong = $(t).parent().parent().find('.zoneLong').val();
+  //   var zoneLat = $(t).parent().parent().find('.zoneLat').val();
+  //   var zoneR1 = $(t).parent().parent().find('.zoneR1').val();
+  //   var zoneR2 = $(t).parent().parent().find('.zoneR2').val();
+
+  //   if(confirm("정보를 변경하시겠습니까?")==true){
+
+  //       $.ajax({
+  //           url: '/scrtZone/update',
+  //           data: { 
+  //                   'zoneId' : zoneId,
+  //                   'zoneName' : zoneName, 
+  //                   'zoneLong' : zoneLong, 
+  //                   'zoneLat' : zoneLat, 
+  //                   'zoneR1' : zoneR1, 
+  //                   'zoneR2' : zoneR2 
+  //                 },
+  //           type: 'PUT',
+  //           dataType: 'json',
+  //           success : function (res) {
+  //             console.log('res=',res);
+  //             if ( res.header.msg == 'success' ) {
+  //                 alert("수정되었습니다.");
+  //                 location.reload();
+  //                 }
+  //             },
+  //             error: function (xhr) {
+  //                alert("실패하였습니다.");
+  //             }
+  //       });
+
+  //     }else{
+  //       return false;
+  //     }
+  // }
 </script>
   <script>
     function search(t){

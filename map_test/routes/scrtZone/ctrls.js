@@ -59,6 +59,35 @@ exports.add= async (req,res) =>{
       }
 }
 
+
+/**
+ * 해당 아이디 보안구역 정보 출력 
+ */
+exports.getOne= async(req,res) =>{
+
+  
+  if(isEmpty(req.params.zoneId)){
+    res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (zoneId가 없습니다.)'));
+    return;
+  }
+
+  let result = await zoneModel.getOne(req.params.zoneId);
+
+  var [data] = result.data;
+
+  if(result.header.code == ERR_CODE.SUCCESS) {
+  
+    res.status(200).render('scrtZone/update', { title: '출입자 보안 관제 ', result : data});
+
+  }else {
+    let httpErrCode = await convertHttpCode(result.header.code);
+    res.status(httpErrCode).json(result);
+    return;
+  }
+
+
+}
+
 /**
  * 보안구역 정보 수정
  */
@@ -110,9 +139,9 @@ exports.delete = async (req,res) =>{
  * 보안구역 검색
  */
 exports.search= async(req,res) =>{
-  console.log("keyowrd=", req.params.keyword);
+
   if(isEmpty(req.params.keyword)){
-    res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body가 없습니다.)'));
+    res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (keyword가 없습니다.)'));
     return;
   }
 

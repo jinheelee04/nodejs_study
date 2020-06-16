@@ -8,6 +8,7 @@ router.post('/add', ctrl.add);
 router.get('/list', ctrl.list);
 router.post('/list/:keyword', ctrl.search);
 router.put('/update', ctrl.update);
+router.get('/update/:zoneId', ctrl.getOne);
 router.delete('/delete', ctrl.delete);
 
 

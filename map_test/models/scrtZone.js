@@ -125,11 +125,39 @@ const search = async(keyword) => {
     }
 }
 
+const getOne = async(zoneId) => {
+    try {
+        const connection = await pool.getConnection(async conn => conn);
+        try {
+            let query ="select * FROM scrt_zone_tb where zone_id = ?";
+            const [row]= await connection.query(query, zoneId);
+            connection.release();
+      
+            if(isEmpty(row)) {
+                return jsonGen.failValue(ERR_CODE.NO_DATA, 'no_data' );
+            } else {
+                var jsonData = {};
+                var header = {code: ERR_CODE.SUCCESS, msg: 'success'};
+                jsonData.header = header;
+                jsonData.data = row;
+                return jsonData;
+            }
+        } catch(err) {
+            console.log('Query Error : ' + err);
+            connection.release();
+            return jsonGen.failValue(ERR_CODE.DB_ERR, err);
+        }
+    } catch(err) {
+        console.log('DB Error : ' + err);
+        return jsonGen.failValue(ERR_CODE.DB_ERR, err);
+    }
+}
 
 module.exports = {
     add : add,
     getAll : getAll,
     update : update,
     del : del,
-    search : search
+    search : search,
+    getOne: getOne
 }
