@@ -629,18 +629,19 @@
     
 
         var imageBounds = {
-          north: 37.489287,
-          south: 37.488904,
-          east: 127.0315580,
-          west: 127.0312256
+          north: 37.489330,
+          south: 37.488932,
+          east: 127.0315990,
+          west: 127.0312394
 
         };
+
 
         google.maps.event.addListener(map, 'zoom_changed', function() {
         if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
         });
         historicalOverlay = new google.maps.GroundOverlay(
-            '/static/images/9901001001_5F.png',
+          '/static/images/map_new2.png',
             imageBounds);
 
         //이미지 오버레이
