@@ -17,7 +17,7 @@ exports.vstrStatus= async (req,res) =>{
             case "VSCD003" :
                 data.status_name="정상출입";
                 break;
-            case "VSD004" :
+            case "VSCD004" :
                 data.status_name="보안구역부근";
                   break;
             case "VSCD005" :

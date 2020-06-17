@@ -84,15 +84,14 @@ exports.collect = async (req, res) =>{
 
     //location_tb 조회 성공시 update
     if(locResult.header.code == ERR_CODE.SUCCESS){
-        if(zoneResult.header.code == ERR_CODE.SUCCESS) {   
-            if(req.body.floorInf!='5F'){
-                statusCode = "VSCD003";
-            }else{
+        if(zoneResult.header.code == ERR_CODE.SUCCESS) {
+            
+            if(req.body.floorInf == '5F'){
                 //상태정보 
                 statusCode = await getStatusCode.getStatus(zoneResult.data, userLong, userLat);         
             }    
         
-        }else if(zoneResult.header.code == ERR_CODE.NO_DATA){
+        }else if(zoneResult.header.code == ERR_CODE.NO_DATA && req.body.floorInf =='5F'){
            statusCode = "VSCD003";
         
         } else {
@@ -101,6 +100,10 @@ exports.collect = async (req, res) =>{
             return;
         }
 
+        //1층인 경우
+        if(req.body.floorInf =='1F'){
+            statusCode = "VSCD002";
+        }
 
         let updateResult = await locationModel.update(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode);
         if(updateResult.header.code == ERR_CODE.SUCCESS) {

@@ -591,14 +591,34 @@
       });
     </script>
      <script>
-      
+
+
     
       // This example adds a UI control allowing users to remove the
       // ground overlay from the map.
-
       var historicalOverlay;
       var map;
+      var userLocations={};
+      var socket = io();
+      var markers = [];
 
+
+      setInterval(function(){
+        socket.emit('join',{joinName: 'loc'} );   
+        socket.emit('select');
+        
+ 
+        socket.on('receive', function (data) {
+          console.log("성공");
+
+          userLocations = data.result;
+          //기존 마커 삭제
+          deleteMarkers(); 
+
+          //유저 마커 표시
+          addMarker(map, userLocations);
+        });
+      }, 2000);
        function initMap() {
         var minZoomLevel =21;
         map = new google.maps.Map(document.getElementById('map'), {
@@ -609,21 +629,19 @@
         });
 
         //socket.io
-        var userLocations={};
-        var socket = io();
         
   
-        socket.emit('join',{joinName: 'loc'} ); 
-        socket.emit('select');
+        // socket.emit('join',{joinName: 'loc'} ); 
+        // socket.emit('select');
         
-        socket.on('receive', function (data) {
-          console.log("성공");
+        // socket.on('receive', function (data) {
+        //   console.log("성공");
 
-          userLocations = data.result;
+        //   userLocations = data.result;
           
-          //유저 마커 표시
-          addMarker(map, userLocations);
-        });
+        //   //유저 마커 표시
+        //   addMarker(map, userLocations);
+        // });
 
 
     
@@ -646,8 +664,6 @@
 
         //이미지 오버레이
          addOverlay();
-
-
         
       }
 
@@ -686,7 +702,7 @@
                   map: map
               });
 
-
+              markers.push(marker);
 
               if (marker) {
                   marker.addListener('click', function() {
@@ -702,25 +718,22 @@
         }
         /*마커 끝*/
 
-        function reLoc(){
-
-        //socket.io
-        var userLocations={};
-        var socket = io();
-        
-  
-        socket.emit('join',{joinName: 'loc'} ); 
-        socket.emit('select');
-        
-        socket.on('receive', function (data) {
-          console.log("성공");
-
-          userLocations = data.result;
-          
-          //유저 마커 표시
-          addMarker(map, userLocations);
-          });
+         /* 마커 지우기 */
+      // Sets the map on all markers in the array.
+      function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
         }
+      }
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+     // Deletes all markers in the array by removing references to them.
+     function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
     </script>
 
     <script async defer
