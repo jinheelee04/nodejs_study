@@ -6,7 +6,7 @@ const jsonGen = require( '../../common/jsonGenerator');
 const userModel = require('../../models/user');
 const zoneModel = require('../../models/scrtZone');
 const { ERR_CODE } = require('../../common/errorCode');
-var statusCode = require('./statusCode');
+const getStatusCode = require('./getStatusCode');
 
 
 exports.google= (req,res) =>{
@@ -77,17 +77,19 @@ exports.collect = async (req, res) =>{
     //scrt_zone_tb 테이블 조회
     let zoneResult = await zoneModel.getAll();
 
+    var [zoneDatas] = zoneResult.data; 
+    console.log("zoneData=", zoneDatas);
     
-    
+    let statusCode = req.body.statusCode;
+
     //location_tb 조회 성공시 update
     if(locResult.header.code == ERR_CODE.SUCCESS){
-        let statusCode;
         if(zoneResult.header.code == ERR_CODE.SUCCESS) {   
             if(req.body.floorInf!='5F'){
                 statusCode = "VSCD003";
             }else{
                 //상태정보 
-                statusCode = await statusCode.calcStatus(zoneResult.data, userLong, userLat);         
+                statusCode = await getStatusCode.getStatus(zoneResult.data, userLong, userLat);         
             }    
         
         }else if(zoneResult.header.code == ERR_CODE.NO_DATA){
@@ -117,13 +119,12 @@ exports.collect = async (req, res) =>{
     //location_tb 조회 실패시 insert
     else if(locResult.header.code == ERR_CODE.NO_DATA){
 
-        let statusCode;
         if(zoneResult.header.code == ERR_CODE.SUCCESS) {   
             if(req.body.floorInf!='5F'){
                 statusCode = "VSCD003";
             }else{
                 //상태정보 
-                statusCode = await statusCode.calcStatus(zoneResult.data, userLong, userLat);         
+               statusCode = await getStatusCode.getStatus(zoneDatas, userLong, userLat);         
             }    
         
         }else if(zoneResult.header.code == ERR_CODE.NO_DATA){
