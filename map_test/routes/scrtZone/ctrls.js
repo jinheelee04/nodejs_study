@@ -14,7 +14,6 @@ exports.view= (req,res) =>{
  */
 exports.list= async(req,res) =>{
 
-  //search keyword가 없을 경우
 
   let result = await zoneModel.getAll();
 

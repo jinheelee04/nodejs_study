@@ -427,42 +427,37 @@
                         <th>소속</th>
                         <th>위치</th>
                         <th>출입자상태</th>
+                        <th>위치갱신시간</th>
                         <th>지도</th> 
                       </tr>
                     </thead>
                     <tbody>
+                      <% if( results !=null ) {%>
+                        <% for(let data of results) { %>
                       <tr>
-                        <td>01031533424</td>
-                        <td>이진희</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
+                        <td><%= data.user_phone %></td>
+                        <td><%= data.user_name%></td>
+                        <td><%= data.user_dept%></td>
+                        <td><%= data.floor_inf%></td>
+                        <td>
+                          <%= data.status_name %></td>
+                        <td>
+                          <%= data.update_date %>
+                        </td>
                         <td>보기</td>
                       </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>송경민</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>김용수</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
-                      <tr>
-                        <td>01012341234</td>
-                        <td>김지훈</td>
-                        <td>솔루션개발2팀</td>
-                        <td>일반구역</td>
-                        <td>정상출입</td>
-                        <td>보기</td>
-                      </tr>
+                      <% } %>
+                     <% } else{ %>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      <% }%>
                     </tbody>
                     <tfoot>
                       <tr>
