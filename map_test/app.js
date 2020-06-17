@@ -7,6 +7,13 @@ var errorCode = require('./common/errorCode');
 var cfg = require('./config/cfg');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+
+/* DB 관련 */
+const mysql = require('mysql2/promise');
+const pool = mysql.createPool(cfg.db);
+var isEmpty = require('is-empty');
+
 //----------------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------------
@@ -16,39 +23,6 @@ global.convertHttpCode = errorCode.convertHttpCode;
 global.cfg = cfg;
 
 var app = express();
- 
-// var http = require('http');
-// var server = http.Server(app);
- 
-// var socket = require('socket.io');
-// var io = socket(server);
- 
-// var port = 5000;
- 
-
- 
-// io.on('connection', function(socket) {
-//     console.log('User Join');
-// });
-
-//socket io
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('n_mod', express.static(path.join(__dirname, 'node_modules')));
-
-// app.js의 본문내에 삽입하시면 된다.
-var io = require('socket.io').listen(3100);
-
-io.on('connection', function (socket) {
-    console.log('connect');
-    var instanceId = socket.id;
-    socket.on('msg', function (data) {
-        console.log(data);
-        socket.emit('recMsg', {comment: instanceId + ":" + data.comment+'\n'});
-    })
-});
-
-
-
 
 
 
@@ -63,6 +37,7 @@ app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/static',express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -71,18 +46,6 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
 
 //----------------------------------------------------------------------------------------
 // error handler
@@ -97,8 +60,12 @@ app.use(function (err, req, res, next) {
   res.send({ msg: err.message })
 });
 
-// server.listen(port, function() {
-//   console.log('Server On !');
-// });
+
+
+
+
+
+
+
 
 module.exports = app;

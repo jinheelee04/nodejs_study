@@ -41,6 +41,9 @@ const add = async(userPhone, userLong, userLat, floorInf, statusCode ) => {
 
             const [rows] = await connection.query(query,params);
             connection.release();
+            var socket = io();
+            socket.emit('join',{joinName: 'loc'} ); 
+            socket.emit('select');
             return jsonGen.successValue(rows);
         } catch(err) {
             console.log('Query Error : ' + err);
@@ -63,6 +66,8 @@ const update = async(userPhone, userLong, userLat, floorInf, statusCode ) => {
 
             const [rows] = await connection.query(query,params);
             connection.release();
+
+          
             return jsonGen.successValue(rows);
         } catch(err) {
             console.log('Query Error : ' + err);

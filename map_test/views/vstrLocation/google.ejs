@@ -25,6 +25,7 @@
     <!--toggle button css-->
     <link href="/static/dist/css/toggleBtn2.css" rel="stylesheet" type="text/css" />   
 
+    <script src="../socket.io-client/dist/socket.io.js"></script>
     <style>
       .skin-blue .main-header .navbar{
         background-color: #557ac2 !important;
@@ -425,6 +426,7 @@
                   <!-- <h3 class="box-title">Data Table With Full Features</h3> -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
+                  <input type="button" value="msg submit" onclick="myOnClick()">
                   <!--검색창-->
                   <form>
                     <div class="search__container">
@@ -480,7 +482,10 @@
                                   <label for="toggle-on" class="btn">1F</label>
                                   <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" onclick="addOverlay();" checked>
                                   <label for="toggle-off" class="btn">5F</label>
+
+                                  <input type="button" value="위치 정보 갱신" onclick="initMap()">
                                 </div>
+                                
                                 <!--지도-->
                                 <div id="map"></div>
 
@@ -586,20 +591,42 @@
       });
     </script>
      <script>
+      
+    
       // This example adds a UI control allowing users to remove the
       // ground overlay from the map.
 
       var historicalOverlay;
       var map;
 
-      function initMap() {
-          var minZoomLevel =21;
+       function initMap() {
+        var minZoomLevel =21;
         map = new google.maps.Map(document.getElementById('map'), {
           //처음 줌 값. 숫자가 작을수록 낮은 배율
           zoom: minZoomLevel,
           center: {lat: 37.489104, lng: 127.031391}
-          //  center: {lat: 40.740, lng: -74.18}
+
         });
+
+        //socket.io
+        var userLocations={};
+        var socket = io();
+        
+  
+        socket.emit('join',{joinName: 'loc'} ); 
+        socket.emit('select');
+        
+        socket.on('receive', function (data) {
+          console.log("성공");
+
+          userLocations = data.result;
+          
+          //유저 마커 표시
+          addMarker(map, userLocations);
+        });
+
+
+    
 
         var imageBounds = {
           north: 37.489287,
@@ -616,10 +643,10 @@
             '/static/images/9901001001_5F.png',
             imageBounds);
 
-        //유저 표시
-        addMarker(map);
+        //이미지 오버레이
+         addOverlay();
 
-        addOverlay();
+
         
       }
 
@@ -630,47 +657,75 @@
       function removeOverlay() {
         historicalOverlay.setMap(null);
       }
-      function addMarker(map){ 
-    /*마커 시작*/
-      //마커 이미지
-      var customicon = 'http://drive.google.com/uc?export=view&id=1tZgPtboj4mwBYT6cZlcY36kYaQDR2bRM'
+      /*마커 시작*/
+      function addMarker(map, userLocations){ 
+        console.log('마커시작');
+        console.log(userLocations);
+        
+          //마커 이미지
+          var customicon = 'http://drive.google.com/uc?export=view&id=1tZgPtboj4mwBYT6cZlcY36kYaQDR2bRM'
 
-      //인포윈도우
-      var infowindow = new google.maps.InfoWindow();
+          //인포윈도우
+          var infowindow = new google.maps.InfoWindow();
 
-      //마커 생성
-      var marker, i;
-      for (i = 0; i < 1; i++) {
-          marker = new google.maps.Marker({
-              //마커의 위치
-              position: new google.maps.LatLng(37.489044,  127.031379),
-              
-              //마커 아이콘
-              icon: customicon,
-              
-              //마커를 표시할 지도
-              map: map
-          });
-
-
-
-          if (marker) {
-              marker.addListener('click', function() {
+          //마커 생성
+          var marker, i;
+          
+          for (i = 0; i < userLocations.length ; i++) {
+            var userLng = userLocations[i].user_long;
+            var userLat = userLocations[i].user_lat;
+              marker = new google.maps.Marker({
+                  //마커의 위치
+                  position: new google.maps.LatLng(userLat,  userLng),
                   
-                  //중심 위치를 클릭된 마커의 위치로 변경
-                  map.setCenter(this.getPosition());
-
-                  //마커 클릭 시의 줌 변화
-                  map.setZoom(22);
+                  //마커 아이콘
+                  icon: customicon,
+                  
+                  //마커를 표시할 지도
+                  map: map
               });
+
+
+
+              if (marker) {
+                  marker.addListener('click', function() {
+                      
+                      //중심 위치를 클릭된 마커의 위치로 변경
+                      map.setCenter(this.getPosition());
+
+                      //마커 클릭 시의 줌 변화
+                      map.setZoom(22);
+                  });
+              }
           }
-      }
-      /*마커 끝*/
-  }
+        }
+        /*마커 끝*/
+
+        function reLoc(){
+
+        //socket.io
+        var userLocations={};
+        var socket = io();
+        
+  
+        socket.emit('join',{joinName: 'loc'} ); 
+        socket.emit('select');
+        
+        socket.on('receive', function (data) {
+          console.log("성공");
+
+          userLocations = data.result;
+          
+          //유저 마커 표시
+          addMarker(map, userLocations);
+          });
+        }
     </script>
+
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw&callback=initMap">
     </script>
-
+    
+   
   </body>
 </html>

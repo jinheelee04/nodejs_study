@@ -6,9 +6,11 @@ const jsonGen = require( '../../common/jsonGenerator');
 const userModel = require('../../models/user');
 const zoneModel = require('../../models/scrtZone');
 const { ERR_CODE } = require('../../common/errorCode');
+var statusCode = require('./statusCode');
 
 
 exports.google= (req,res) =>{
+
     res.render('vstrLocation/google', { title: '출입자 보안 관제 ' });
 }
 exports.naver= (req,res) =>{
@@ -64,17 +66,46 @@ exports.collect = async (req, res) =>{
         return;
     }
 
-    
+    var userLong = Number(req.body.userLong).toFixed(8);
+    var userLat = Number(req.body.userLat).toFixed(8);
+
 
     //location_tb 테이블 조회
     let locResult = await locationModel.get(req.body.userPhone);
+    
+
+    //scrt_zone_tb 테이블 조회
+    let zoneResult = await zoneModel.getAll();
+
+    
+    
     //location_tb 조회 성공시 update
     if(locResult.header.code == ERR_CODE.SUCCESS){
-        let updateResult = await locationModel.update(req.body.userPhone, req.body.userLong, req.body.userLat, req.body.floorInf, req.body.statusCode);
+        let statusCode;
+        if(zoneResult.header.code == ERR_CODE.SUCCESS) {   
+            if(req.body.floorInf!='5F'){
+                statusCode = "VSCD003";
+            }else{
+                //상태정보 
+                statusCode = await statusCode.calcStatus(zoneResult.data, userLong, userLat);         
+            }    
+        
+        }else if(zoneResult.header.code == ERR_CODE.NO_DATA){
+           statusCode = "VSCD003";
+        
+        } else {
+            let httpErrCode = await convertHttpCode(result.header.code);
+            res.status(httpErrCode).json(result);
+            return;
+        }
+
+
+        let updateResult = await locationModel.update(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode);
         if(updateResult.header.code == ERR_CODE.SUCCESS) {
+        
     
             res.status(201).json(jsonGen.successValue('갱신 성공'));
-    
+            
           
           } else {
             let httpErrCode = await convertHttpCode(updateResult.header.code);
@@ -85,8 +116,27 @@ exports.collect = async (req, res) =>{
     }
     //location_tb 조회 실패시 insert
     else if(locResult.header.code == ERR_CODE.NO_DATA){
-       
-        let insertResult = await locationModel.add(req.body.userPhone, req.body.userLong, req.body.userLat, req.body.floorInf, req.body.statusCode);
+
+        let statusCode;
+        if(zoneResult.header.code == ERR_CODE.SUCCESS) {   
+            if(req.body.floorInf!='5F'){
+                statusCode = "VSCD003";
+            }else{
+                //상태정보 
+                statusCode = await statusCode.calcStatus(zoneResult.data, userLong, userLat);         
+            }    
+        
+        }else if(zoneResult.header.code == ERR_CODE.NO_DATA){
+           statusCode = "VSCD003";
+        
+        } else {
+            let httpErrCode = await convertHttpCode(result.header.code);
+            res.status(httpErrCode).json(result);
+            return;
+        }
+        
+        
+        let insertResult = await locationModel.add(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode);
         if(insertResult.header.code == ERR_CODE.SUCCESS) {
     
             res.status(201).json(jsonGen.successValue('갱신 성공'));

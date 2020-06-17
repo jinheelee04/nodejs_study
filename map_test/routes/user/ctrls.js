@@ -42,7 +42,7 @@ exports.check = async (req, res) => {
   }
 
   let result = await userModel.get(req.query.userPhone);
-  console.log("result=",result);
+
   if(result.header.code == ERR_CODE.SUCCESS) {
 
     res.status(200).json(result);
