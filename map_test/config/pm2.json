@@ -1,6 +1,6 @@
 {
-    "script": "app.js",
-    "name": "ctrl",
+    "script": "www",
+    "name": "app",
     "watch": true,
     "ignore_watch" : ["[\\/\\\\]\\./", "node_modules"],
     "watch_options": {

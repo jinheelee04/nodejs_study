@@ -20,8 +20,7 @@
     
     <!-- searchBox css-->
     <link href="/static/dist/css/searchBox.css" rel="stylesheet" type="text/css" />  
-    <!--toggle button css-->
-    <link href="/static/dist/css/toggleBtn.css" rel="stylesheet" type="text/css" /> 
+
     <!--toggle button css-->
     <link href="/static/dist/css/toggleBtn2.css" rel="stylesheet" type="text/css" />   
 
@@ -381,15 +380,15 @@
               </a>
             </li>
             <li class="active treeview">
-              <a href="#">
+              <a href="/vstrLocation/google">
                 <i class="fa fa-map-marker"></i> <span>출입자 위치</span>
-                <i class="fa fa-angle-left pull-right"></i>
+                <!-- <i class="fa fa-angle-left pull-right"></i>
                 <ul class="treeview-menu">
                   <li class="active"><a href="/vstrLocation/google"><i class="fa fa-circle-o"></i>구글 지도</a></li>
                   <li class=""><a href="/vstrLocation/naver"><i class="fa fa-circle-o"></i>네이버 지도</a></li>
                   <li class=""><a href="/vstrLocation/kt"><i class="fa fa-circle-o"></i>KT 지도</a></li>
                   <li class=""><a href="/vstrLocation/kakao"><i class="fa fa-circle-o"></i>카카오 지도</a></li>
-                </ul> 
+                </ul>  -->
               </a>
             </li>
             <li class="treeview">
@@ -426,7 +425,6 @@
                   <!-- <h3 class="box-title">Data Table With Full Features</h3> -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <input type="button" value="msg submit" onclick="myOnClick()">
                   <!--검색창-->
                   <form>
                     <div class="search__container">
@@ -483,8 +481,8 @@
                                   <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" onclick="addOverlay();" checked>
                                   <label for="toggle-off" class="btn">5F</label>
 
-                                  <input type="button" value="위치 정보 갱신" onclick="initMap()">
                                 </div>
+                                <input type="button" value="위치 정보 갱신" onclick="initMap()">
                                 
                                 <!--지도-->
                                 <div id="map"></div>
@@ -592,33 +590,47 @@
     </script>
      <script>
 
+       var historicalOverlay;
+       var map;
+      
+       var markers = [];
+  
+       
+       var socket = io();
+       //socket.emit('join',{joinName: 'loc'} );   
 
-    
-      // This example adds a UI control allowing users to remove the
-      // ground overlay from the map.
-      var historicalOverlay;
-      var map;
-      var userLocations={};
-      var socket = io();
-      var markers = [];
+       var userLocations={};
 
 
-      setInterval(function(){
-        socket.emit('join',{joinName: 'loc'} );   
-        socket.emit('select');
+        // This example adds a UI control allowing users to remove the
+        // ground overlay from the map.
         
- 
-        socket.on('receive', function (data) {
-          console.log("성공");
-
+        var floor = '';
+        setInterval( function(){
+          
+          if($('input[name=toggle]:checked').val()=='true'){
+            console.log('여기');
+            floor ='5F';
+            socket.emit('select', {floorInf : '5F'});
+    
+          }else if($('input[name=toggle]:checked').val() == 'false'){
+              floor ='1F';
+              socket.emit('select', {floorInf : '1F'});
+          } 
+          
+        }, 3000);
+        
+        socket.on('receive', function (data) {   
+             
           userLocations = data.result;
           //기존 마커 삭제
           deleteMarkers(); 
-
           //유저 마커 표시
-          addMarker(map, userLocations);
+          addMarker(map, userLocations, floor);
         });
-      }, 2000);
+
+    
+
        function initMap() {
         var minZoomLevel =21;
         map = new google.maps.Map(document.getElementById('map'), {
@@ -629,19 +641,19 @@
         });
 
         //socket.io
-        
-  
-        // socket.emit('join',{joinName: 'loc'} ); 
-        // socket.emit('select');
-        
-        // socket.on('receive', function (data) {
-        //   console.log("성공");
 
-        //   userLocations = data.result;
+        var userLocations={};
+   
+
+        socket.emit('select', {floorInf : '5F'});
+  
+        
+        socket.on('receive', function (data) {
+          userLocations = data.result;
           
-        //   //유저 마커 표시
-        //   addMarker(map, userLocations);
-        // });
+          //유저 마커 표시
+          addMarker(map, userLocations, '5F');
+        });
 
 
     
@@ -666,30 +678,55 @@
          addOverlay();
         
       }
-
+      //5층 버튼 클릭시
       function addOverlay() {
+        deleteMarkers(); 
+        $('input#toggle-on').prop("checked", false);
+        $('input#toggle-off').prop("checked", true);
         historicalOverlay.setMap(map);
       }
-
+      //1층 버튼 클릭시
       function removeOverlay() {
+        deleteMarkers(); 
+        $('input#toggle-on').prop("checked", true);
+        $('input#toggle-off').prop("checked", false);
+        //기존 마커 삭제
         historicalOverlay.setMap(null);
       }
-      /*마커 시작*/
-      function addMarker(map, userLocations){ 
-        console.log('마커시작');
-        console.log(userLocations);
-        
-          //마커 이미지
-          var customicon = 'http://drive.google.com/uc?export=view&id=1tZgPtboj4mwBYT6cZlcY36kYaQDR2bRM'
 
+
+
+      /*마커 시작*/
+      function addMarker(map, userLocations, floor){ 
+
+          //1층 출입 마커
+          var icon1 = '/static/images/L1.png';
+          //5층 정상출입 마커
+          var icon2 = '/static/images/L2.png';
+          //5층 보안구역부근 마커
+          var icon3 = '/static/images/L3.png';
+          //5층 보안구역진입 마커
+          var icon4 = '/static/images/L4.png';
+        
           //인포윈도우
           var infowindow = new google.maps.InfoWindow();
 
           //마커 생성
           var marker, i;
-          
-          for (i = 0; i < userLocations.length ; i++) {
-            var userLng = userLocations[i].user_long;
+          if(floor =='5F'){
+            for (i = 0; i < userLocations.length ; i++) {
+               //마커 이미지
+               var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
+
+              var statusName= '';
+              switch(userLocations[i].status_code){
+                case 'VSCD003' : customicon.url = icon2; statusName ='정상 출입'; break;
+                case 'VSCD004' : customicon.url = icon3; statusName ='보안구역부근'; break;
+                case 'VSCD005' : customicon.url = icon4; statusName ='보안구역진입'; break;
+                
+              }
+
+              var userLng = userLocations[i].user_long;
             var userLat = userLocations[i].user_lat;
               marker = new google.maps.Marker({
                   //마커의 위치
@@ -699,7 +736,9 @@
                   icon: customicon,
                   
                   //마커를 표시할 지도
-                  map: map
+                  map: map,
+
+                  title : userLocations[i].user_phone
               });
 
               markers.push(marker);
@@ -714,7 +753,49 @@
                       map.setZoom(22);
                   });
               }
+            }
+          }else if(floor=='1F'){
+     
+            for (i = 0; i < userLocations.length ; i++) {
+              //마커 이미지
+              var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
+
+
+              switch(userLocations[i].status_code){
+                case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입';  break;   
+              }
+
+              var userLng = userLocations[i].user_long;
+              var userLat = userLocations[i].user_lat;
+                marker = new google.maps.Marker({
+                    //마커의 위치
+                    position: new google.maps.LatLng(userLat,  userLng),
+                    
+                    //마커 아이콘
+                    icon: customicon,
+                    
+                    //마커를 표시할 지도
+                    map: map,
+  
+                    title : userLocations[i].user_phone
+                });
+  
+                markers.push(marker);
+  
+                if (marker) {
+                    marker.addListener('click', function() {
+                        
+                        //중심 위치를 클릭된 마커의 위치로 변경
+                        map.setCenter(this.getPosition());
+  
+                        //마커 클릭 시의 줌 변화
+                        map.setZoom(22);
+                    });
+                }
+            }
+
           }
+
         }
         /*마커 끝*/
 

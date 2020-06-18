@@ -25,6 +25,45 @@ global.cfg = cfg;
 var app = express();
 
 
+//socketio 설정
+app.io = require('socket.io')();
+
+var roomName;
+
+app.io.on('connection', function (socket) {
+  console.log('connect');
+
+  socket.on('join',function (data) {
+      console.log(data);
+      socket.join(data.roomName);
+      roomName = data.roomName;
+  });
+
+  socket.on('select',  async function (data) {
+
+       try {
+          const connection = await pool.getConnection(async conn => conn);
+          // connection.query( 'select * from location_tb');
+          try {
+              let query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ?";
+              const [rows] = await connection.query(query, data.floorInf);
+              connection.release();
+              console.log("조회 성공 :소켓");
+              // app.io.sockets.in(roomName).emit('receive', { result: rows});
+              app.io.sockets.emit('receive', { result: rows});
+    
+          } catch(err) {
+            connection.release();
+              console.log('Query Error : ' + err);
+          }
+      } catch(err) {
+
+          console.log('DB Error : ' + err);
+
+      }  
+  })
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

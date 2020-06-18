@@ -7,12 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('ctrl-exam:server');
 var http = require('http');
-var cfg = require('../config/cfg');
-
-/* DB 관련 */
-const mysql = require('mysql2/promise');
-const pool = mysql.createPool(cfg.db);
-var isEmpty = require('is-empty');
 
 
 /**
@@ -25,52 +19,11 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
+
 //socketio 설정
-var io = require('socket.io')(server);
-var roomName;
-io.on('connection', function (socket) {
-    console.log('connect');
-
-    socket.on('join',function (data) {
-        console.log(data);
-        socket.join(data.roomName);
-        roomName = data.roomName;
-    });
-
-    socket.on('select',  async function () {
-
-         //데이터 삽입
-         try {
-            const connection = await pool.getConnection(async conn => conn);
-            // connection.query( 'select * from location_tb');
-            try {
-                let query ="select * from location_tb";
-                const [rows] = await connection.query(query);
-                console.log("조회 성공 :소켓");
-                io.sockets.in(roomName).emit('receive', { result: rows});
-        
-            } catch(err) {
-                console.log('Query Error : ' + err);
-            }
-        } catch(err) {
-            console.log('DB Error : ' + err);
-
-        }
-
-       
-    })
-
-    socket.on('update',  async function () {
-
-      console.log("업데이트 성공:소켓");
-      io.sockets.in(roomName).emit('updateRec');
-
-    
-    })
-});
+app.io.attach(server);
 
 
 
