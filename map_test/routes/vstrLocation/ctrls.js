@@ -10,21 +10,21 @@ const getStatusCode = require('./getStatusCode');
 
 
 exports.google= (req,res) =>{
+    let result = await zoneModel.getAll();
 
-    res.render('vstrLocation/google', { title: '출입자 보안 관제 ' });
-}
-exports.naver= (req,res) =>{
-    res.render('vstrLocation/naver', { title: '출입자 보안 관제 ' });
-}
-exports.kt= (req,res) =>{
-    res.render('vstrLocation/kt', { title: '출입자 보안 관제 ' });
-}
-exports.kakao= (req,res) =>{
-    res.render('vstrLocation/kakao', { title: '출입자 보안 관제 ' });
-}
+    if(result.header.code == ERR_CODE.SUCCESS) {
+    
+        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data});
 
-exports.test= (req,res) =>{
-    res.render('vstrLocation/test', { title: '출입자 보안 관제 ' });
+    } else if(result.header.code ==ERR_CODE.NO_DATA){
+        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : null});
+
+    }else {
+        let httpErrCode = await convertHttpCode(result.header.code);
+        res.status(httpErrCode).json(result);
+        return;
+    }
+
 }
 
 /**
