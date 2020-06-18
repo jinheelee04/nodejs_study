@@ -48,7 +48,7 @@ app.io.on('connection', function (socket) {
               let query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ?";
               const [rows] = await connection.query(query, data.floorInf);
               connection.release();
-              console.log("조회 성공 :소켓");
+            
               // app.io.sockets.in(roomName).emit('receive', { result: rows});
               app.io.sockets.emit('receive', { result: rows});
     

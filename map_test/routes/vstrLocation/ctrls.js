@@ -9,11 +9,11 @@ const { ERR_CODE } = require('../../common/errorCode');
 const getStatusCode = require('./getStatusCode');
 
 
-exports.google= (req,res) =>{
+exports.google= async (req,res) =>{
     let result = await zoneModel.getAll();
 
+
     if(result.header.code == ERR_CODE.SUCCESS) {
-    
         res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data});
 
     } else if(result.header.code ==ERR_CODE.NO_DATA){

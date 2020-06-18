@@ -588,12 +588,38 @@
         });
       });
     </script>
-     <script>
-
-       var historicalOverlay;
+    <script>
+      
+    var zoneArray = []; 
+    $(function(){
+      //보안구역 정보
+      <% if( results !=null ) {%>
+        <% for(let data of results) { %>
+            var zone ={
+              "zoneName" : '<%=data.zone_name%>',
+              "c1Long" : '<%=data.c1_long%>',
+              "c1Lat" : '<%=data.c1_lat%>',
+              "c1R1" : '<%=data.c1_r1%>',
+              "c1R2" : '<%=data.c1_r2%>',
+              "c2Long" : '<%=data.c2_long%>',
+              "c2Lat" : '<%=data.c2_lat%>',
+              "c2R1" : '<%=data.c2_r1%>',
+              "c2R2" : '<%=data.c2_r2%>'
+              };
+            zoneArray.push(zone);
+        <%} %>
+                      
+      <%}%>
+                   
+    });
+    
+ 
+      
+      var historicalOverlay;
        var map;
       
        var markers = [];
+       var zoneCircles = [];
   
        
        var socket = io();
@@ -609,7 +635,6 @@
         setInterval( function(){
           
           if($('input[name=toggle]:checked').val()=='true'){
-            console.log('여기');
             floor ='5F';
             socket.emit('select', {floorInf : '5F'});
     
@@ -618,7 +643,7 @@
               socket.emit('select', {floorInf : '1F'});
           } 
           
-        }, 3000);
+        }, 2000);
         
         socket.on('receive', function (data) {   
              
@@ -640,8 +665,9 @@
 
         });
 
+        addZone(map);
+        
         //socket.io
-
         var userLocations={};
    
 
@@ -679,21 +705,81 @@
         
       }
       //5층 버튼 클릭시
-      function addOverlay() {
-        deleteMarkers(); 
+      async function addOverlay() {
         $('input#toggle-on').prop("checked", false);
         $('input#toggle-off').prop("checked", true);
-        historicalOverlay.setMap(map);
+        await deleteMarkers(); 
+        await addZone(map);
+        await historicalOverlay.setMap(map);
       }
       //1층 버튼 클릭시
-      function removeOverlay() {
-        deleteMarkers(); 
+      async function removeOverlay() {
         $('input#toggle-on').prop("checked", true);
         $('input#toggle-off').prop("checked", false);
         //기존 마커 삭제
-        historicalOverlay.setMap(null);
+        await deleteMarkers(); 
+        await historicalOverlay.setMap(null);
+        await deleteCircles();
+      }
+      /*zone circle 시작*/
+      function addZone(map){
+          //zone 표시
+          for (var i =0; i<zoneArray.length; i++) {
+          console.log(zoneArray[i]);
+          /*보안구역진입 원1 */ 
+          var zoneCircle1 = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
+            radius: Number(zoneArray[i].c1R1)
+          });
+            /*보안구역진입 원2 */
+          var zoneCircle2 = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
+            radius: Number(zoneArray[i].c2R1)
+          });
+          /*보안구역부근 원1 */
+          var zoneCircle3 = new google.maps.Circle({
+            strokeColor: 'rgb(255, 179, 36)',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: 'rgb(255, 179, 36)',
+            fillOpacity: 0.35,
+            map: map,
+            center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
+            radius: Number(zoneArray[i].c1R2)
+          });
+          /*보안구역부근 원2 */
+          var zoneCircle4 = new google.maps.Circle({
+            strokeColor: 'rgb(255, 179, 36)',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: 'rgb(255, 179, 36)',
+            fillOpacity: 0.35,
+            map: map,
+            center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
+            radius: Number(zoneArray[i].c2R2)
+          });
+
+          zoneCircles.push(zoneCircle1);
+          zoneCircles.push(zoneCircle2); 
+          zoneCircles.push(zoneCircle3); 
+          zoneCircles.push(zoneCircle4);  
+        }
+
       }
 
+      /*zone circle 끝*/
 
 
       /*마커 시작*/
@@ -815,12 +901,30 @@
         clearMarkers();
         markers = [];
       }
+
+
+        /* zone 지우기 */
+      // Sets the map on all markers in the array.
+      function z_setMapOnAll(map) {
+        for (var i = 0; i <  zoneCircles.length; i++) {
+          zoneCircles[i].setMap(map);
+        }
+      }
+      // Removes the markers from the map, but keeps them in the array.
+      function clearCircles() {
+        z_setMapOnAll(null);
+      }
+     // Deletes all markers in the array by removing references to them.
+     function deleteCircles() {
+        clearCircles();
+        zoneCircles = [];
+      }
     </script>
 
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw&callback=initMap">
     </script>
-    
+  
    
   </body>
 </html>
