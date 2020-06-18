@@ -81,6 +81,16 @@
       tr, td{
         border: 1px solid #d2d6de !important;
       }
+      table#user-info td{
+       text-align: left;
+      }
+      table#user-info td.user-t{
+       width:30%;
+       text-align: center !important;
+      }
+      #user-color{
+        color : #fff;
+      }
     </style>
   </head>
   <body class="skin-blue">
@@ -494,9 +504,9 @@
                     </div>
                   </div>
                 <div class="col-md-4">
+                  <!--출입자 현황-->
                   <div class="box">
                     <div class="box-body">
-                       <!--출입자 현황-->
                        <!--1층-->
                             <table class="table table-bordered" style="text-align:center; margin-bottom:20px;">
                               <tbody>
@@ -505,7 +515,7 @@
                               </tr>
                               <tr>
                                 <td style="width:70%">전체출입자</td>
-                                <td>4명</td>
+                                <td><%=floorInfo_1F.cnt_all_1%>명</td>
                               </tr>
                             </tbody>
                           </table>
@@ -517,32 +527,64 @@
                           </tr>
                           <tr>
                             <td  style="width:70%" >정상출입자</td>
-                            <td>1명</td>
+                            <td><%=floorInfo_5F.cnt_code3 %>명</td>
                           </tr>
                           <tr>
                             <td  style="width:70%" >보안구역부근 출입자</td>
-                            <td>1명</td>
+                            <td><%=floorInfo_5F.cnt_code4 %>명</td>
                           </tr>
                           <tr>
                             <td  style="width:70%" >보안구역진입 출입자</td>
-                            <td>2명</td>
+                            <td><%=floorInfo_5F.cnt_code5 %>명</td>
                           </tr>
                           <tr>
                             <td  style="width:70%" >전체출입자</td>
-                            <td>4명</td>
+                            <td><%=floorInfo_5F.cnt_all_5%>명</td>
                           </tr>
                         </tbody>
                       </table>
-                      <!--출입자 현황 끝-->
                     </div>
                   </div>
+                  <!--출입자 현황 끝-->
+
+                  <div class="box" id="user-box" style="display:none;">
+                    <div class="box-body">
+                       <!--출입자 정보-->
+                         <!--5층-->
+                         <table class="table table-bordered" id="user-info"  style="text-align:center; margin-bottom:20px; ">
+                          <tbody>
+                          <tr>
+                            <th colspan="2" id="user-color"  class="tb-h" style="text-align: center;">출입자 번호 : <span id="user-phone"></span></th>
+                          </tr>
+                          <tr>
+                            <td class="user-t" > 소속</td>
+                            <td><span id="user-dept"></span></td>
+                          </tr>
+                          <tr>
+                            <td class="user-t"  > 이름</td>
+                            <td><span id="user-name"></span></td>
+                          </tr>
+                          <tr>
+                            <td class="user-t"> 위치</td>
+                            <td><span id="floor"></span></td>
+                          </tr>
+                          <tr>
+                            <td class="user-t" > 출입자상태</td>
+                            <td><span id="user-status"></span></td>
+                          </tr>
+                          <tr>
+                            <td class="user-t" > 위치갱신시간</td>
+                            <td><span id="update-date"></span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!--출입자 정보 끝-->
+
+
                 </div>
-                <!-- 테스트용-->
-                <!-- <div>
-                  <textarea rows="20" cols="30" id="chat"></textarea><br>
-                  <input type="text" id="user"><input type="button" value="msg submit" onclick="myOnClick()"> 
-                </div> -->
-                 <!--테스트용 -->
+
               </div>
               
 
@@ -623,7 +665,7 @@
   
        
        var socket = io();
-       //socket.emit('join',{joinName: 'loc'} );   
+      //  socket.emit('join' );   
 
        var userLocations={};
 
@@ -643,7 +685,7 @@
               socket.emit('select', {floorInf : '1F'});
           } 
           
-        }, 2000);
+        }, 3000);
         
         socket.on('receive', function (data) {   
              
@@ -725,36 +767,14 @@
       function addZone(map){
           //zone 표시
           for (var i =0; i<zoneArray.length; i++) {
-          console.log(zoneArray[i]);
-          /*보안구역진입 원1 */ 
-          var zoneCircle1 = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
-            radius: Number(zoneArray[i].c1R1)
-          });
-            /*보안구역진입 원2 */
-          var zoneCircle2 = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
-            radius: Number(zoneArray[i].c2R1)
-          });
-          /*보안구역부근 원1 */
-          var zoneCircle3 = new google.maps.Circle({
+       
+            /*보안구역부근 원1 */
+            var zoneCircle3 = new google.maps.Circle({
             strokeColor: 'rgb(255, 179, 36)',
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: 'rgb(255, 179, 36)',
-            fillOpacity: 0.35,
+            fillOpacity: 0.3,
             map: map,
             center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
             radius: Number(zoneArray[i].c1R2)
@@ -765,11 +785,35 @@
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: 'rgb(255, 179, 36)',
-            fillOpacity: 0.35,
+            fillOpacity: 0.3,
             map: map,
             center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
             radius: Number(zoneArray[i].c2R2)
           });
+          
+          /*보안구역진입 원1 */ 
+          var zoneCircle1 = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.4,
+            map: map,
+            center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
+            radius: Number(zoneArray[i].c1R1)
+          });
+            /*보안구역진입 원2 */
+          var zoneCircle2 = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.4,
+            map: map,
+            center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
+            radius: Number(zoneArray[i].c2R1)
+          });
+        
 
           zoneCircles.push(zoneCircle1);
           zoneCircles.push(zoneCircle2); 
@@ -793,9 +837,34 @@
           var icon3 = '/static/images/L3.png';
           //5층 보안구역진입 마커
           var icon4 = '/static/images/L4.png';
-        
-          //인포윈도우
-          var infowindow = new google.maps.InfoWindow();
+
+          /*인포윈도우*/
+          var contentString = '<div id="content">'+
+              '<div id="siteNotice">'+
+              '</div>'+
+              '<h1 id="firstHeading" class="firstHeading"></h1>'+
+              '<div id="bodyContent">'+
+              '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+              'sandstone rock formation in the southern part of the '+
+              'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+              'south west of the nearest large town, Alice Springs; 450&#160;km '+
+              '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+              'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+              'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+              'Aboriginal people of the area. It has many springs, waterholes, '+
+              'rock caves and ancient paintings. Uluru is listed as a World '+
+              'Heritage Site.</p>'+
+              '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+              'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+              '(last visited June 22, 2009).</p>'+
+              '</div>'+
+              '</div>';
+
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+
+
 
           //마커 생성
           var marker, i;
@@ -803,17 +872,23 @@
             for (i = 0; i < userLocations.length ; i++) {
                //마커 이미지
                var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
-
+              var userColor ='';
               var statusName= '';
               switch(userLocations[i].status_code){
-                case 'VSCD003' : customicon.url = icon2; statusName ='정상 출입'; break;
-                case 'VSCD004' : customicon.url = icon3; statusName ='보안구역부근'; break;
-                case 'VSCD005' : customicon.url = icon4; statusName ='보안구역진입'; break;
+                case 'VSCD003' : customicon.url = icon2; statusName ='정상 출입'; userColor='rgb(71, 71, 232)'; break;
+                case 'VSCD004' : customicon.url = icon3; statusName ='보안구역부근'; userColor='rgb(255, 179, 36)'; break;
+                case 'VSCD005' : customicon.url = icon4; statusName ='보안구역진입'; userColor='rgb(251, 81, 81)'; break;
                 
               }
 
               var userLng = userLocations[i].user_long;
-            var userLat = userLocations[i].user_lat;
+             var userLat = userLocations[i].user_lat;
+             var userPhone = userLocations[i].user_phone;
+             var userDept = userLocations[i].user_dept;
+             var userName = userLocations[i].user_name;
+             var floorInf = userLocations[i].floor_inf;
+             var updateDate = userLocations[i].update_date;
+         
               marker = new google.maps.Marker({
                   //마커의 위치
                   position: new google.maps.LatLng(userLat,  userLng),
@@ -828,7 +903,8 @@
               });
 
               markers.push(marker);
-
+                //인포 윈도우 생성
+                // infowindow.open(map,  {position: new google.maps.LatLng(userLat,  userLng)});
               if (marker) {
                   marker.addListener('click', function() {
                       
@@ -837,6 +913,19 @@
 
                       //마커 클릭 시의 줌 변화
                       map.setZoom(22);
+
+                      
+                      $('#user-box').css("display", "block");   
+                      $('#user-color').css("background-color", userColor);   
+                      $('span#user-phone').text( userPhone);
+                      $('span#user-dept').text( userDept);
+                      $('span#user-name').text( userName);
+                      $('span#floor').text(floorInf);
+                      $('span#user-status').text(statusName);
+                      $('span#update-date').text(updateDate);
+
+                      
+                
                   });
               }
             }
@@ -845,14 +934,23 @@
             for (i = 0; i < userLocations.length ; i++) {
               //마커 이미지
               var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
-
-
+              var userColor ='';
+              var statusName= '';
               switch(userLocations[i].status_code){
-                case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입';  break;   
+                case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입'; userColor='rgb(95, 126, 150)'; break;   
               }
 
+              console.log(statusName);
               var userLng = userLocations[i].user_long;
               var userLat = userLocations[i].user_lat;
+              var userLng = userLocations[i].user_long;
+              var userLat = userLocations[i].user_lat;
+              var userPhone = userLocations[i].user_phone;
+              var userDept = userLocations[i].user_dept;
+              var userName = userLocations[i].user_name;
+              var floorInf = userLocations[i].floor_inf;
+              var updateDate = userLocations[i].update_date;
+
                 marker = new google.maps.Marker({
                     //마커의 위치
                     position: new google.maps.LatLng(userLat,  userLng),
@@ -864,6 +962,8 @@
                     map: map,
   
                     title : userLocations[i].user_phone
+
+                    
                 });
   
                 markers.push(marker);
@@ -876,6 +976,16 @@
   
                         //마커 클릭 시의 줌 변화
                         map.setZoom(22);
+
+                      $('#user-box').css("display", "block");   
+                      $('#user-color').css("background-color", userColor);   
+                      $('#user-color').css("color", 'black');   
+                      $('span#user-phone').text( userPhone);
+                      $('span#user-dept').text( userDept);
+                      $('span#user-name').text( userName);
+                      $('span#floor').text(floorInf);
+                      $('span#user-status').text(statusName);
+                      $('span#update-date').text(updateDate);
                     });
                 }
             }

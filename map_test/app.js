@@ -32,11 +32,11 @@ var roomName;
 
 app.io.on('connection', function (socket) {
   console.log('connect');
+  var instanceId = socket.id;
 
-  socket.on('join',function (data) {
-      console.log(data);
-      socket.join(data.roomName);
-      roomName = data.roomName;
+  socket.on('join',function () {
+      socket.join(instanceId );
+      roomName =instanceId ;
   });
 
   socket.on('select',  async function (data) {

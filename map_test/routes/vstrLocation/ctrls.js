@@ -7,23 +7,67 @@ const userModel = require('../../models/user');
 const zoneModel = require('../../models/scrtZone');
 const { ERR_CODE } = require('../../common/errorCode');
 const getStatusCode = require('./getStatusCode');
+const { InsufficientStorage } = require('http-errors');
 
 
 exports.google= async (req,res) =>{
+    
+    let locResult = await locationModel.getAll();
     let result = await zoneModel.getAll();
+    
+    let floorInfo_1F = {};
+    let floorInfo_5F = {};
 
+    //보안구역 정보 없을 경우
+    if(result.header.code == ERR_CODE.NO_DATA){
+       result.data = null;
 
-    if(result.header.code == ERR_CODE.SUCCESS) {
-        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data});
+    }
 
-    } else if(result.header.code ==ERR_CODE.NO_DATA){
-        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : null});
+    if(locResult.header.code == ERR_CODE.SUCCESS) {
+        
+        var cnt_all_1 = 0;
+        var cnt_all_5 = 0;
+    
+        var cnt_code3 = 0;
+        var cnt_code4 = 0;
+        var cnt_code5 = 0;
 
-    }else {
+        for( var locData of locResult.data){
+            if(locData.floor_inf =='1F'){
+                cnt_all_1++;
+
+            }else if (locData.floor_inf =='5F'){
+                cnt_all_5++;
+
+               if(locData.status_code =='VSCD003'){
+                    cnt_code3++;
+                }else if(locData.status_code =='VSCD004'){
+                    cnt_code4++;    
+                }else if(locData.status_code =='VSCD005'){
+                    cnt_code5++;
+                }
+            }
+        }      
+        
+        floorInfo_1F.cnt_all_1 = cnt_all_1;
+
+        floorInfo_5F.cnt_all_5 = cnt_all_5;
+        floorInfo_5F.cnt_code3 = cnt_code3;
+        floorInfo_5F.cnt_code4 = cnt_code4;
+        floorInfo_5F.cnt_code5 = cnt_code5;
+  
+        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data, 'floorInfo_1F': floorInfo_1F, 'floorInfo_5F' : floorInfo_5F});
+    }else if(locResult.header.code == ERR_CODE.NO_DATA ){
+      
+        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data, 'floorInfo_1F': null, 'floorInfo_5F' : null});
+   
+    } else {
         let httpErrCode = await convertHttpCode(result.header.code);
         res.status(httpErrCode).json(result);
         return;
     }
+
 
 }
 
@@ -78,7 +122,7 @@ exports.collect = async (req, res) =>{
     let zoneResult = await zoneModel.getAll();
 
     var [zoneDatas] = zoneResult.data; 
-    console.log("zoneData=", zoneDatas);
+
     
     let statusCode = req.body.statusCode;
 
