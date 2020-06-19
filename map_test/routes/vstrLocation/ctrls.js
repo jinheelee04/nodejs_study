@@ -150,10 +150,21 @@ exports.collect = async (req, res) =>{
         }
 
         let updateResult = await locationModel.update(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode);
-        if(updateResult.header.code == ERR_CODE.SUCCESS) {
         
-    
-            res.status(201).json(jsonGen.successValue('갱신 성공'));
+        
+        if(updateResult.header.code == ERR_CODE.SUCCESS) {
+            var statusMsg ='';
+            switch(statusCode){
+                case 'VSCD002': statusMsg = '1층 출입'; break;
+                case 'VSCD003': statusMsg = '정상출입'; break;
+                case 'VSCD004': statusMsg = '출입통제구역 부근입니다. 주의 바랍니다.'; break;
+                case 'VSCD005': statusMsg = '출입통제구역입니다. 통제구역에서 빨리 벗어나길 바랍니다.'; break;
+            }
+            
+            updateResult.status = {code : statusCode, msg: statusMsg };
+            updateResult.data  = "갱신 성공";
+      
+            res.status(201).json(updateResult);
             
           
           } else {
@@ -186,8 +197,19 @@ exports.collect = async (req, res) =>{
         
         let insertResult = await locationModel.add(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode);
         if(insertResult.header.code == ERR_CODE.SUCCESS) {
-    
-            res.status(201).json(jsonGen.successValue('갱신 성공'));
+            
+            var statusMsg ='';
+            switch(statusCode){
+                case 'VSCD002': statusMsg = '1층 출입'; break;
+                case 'VSCD003': statusMsg = '정상출입'; break;
+                case 'VSCD004': statusMsg = '출입통제구역 부근입니다. 주의 바랍니다.'; break;
+                case 'VSCD005': statusMsg = '출입통제구역입니다. 통제구역에서 빨리 벗어나길 바랍니다.'; break;
+            }
+            
+            updateResult.status = {code : statusCode, msg: statusMsg };
+            updateResult.data  = "갱신 성공";
+
+            res.status(201).json(updateResult);
     
           
           } else {

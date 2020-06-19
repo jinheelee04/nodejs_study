@@ -7,7 +7,7 @@ exports.vstrStatus= async (req,res) =>{
 
 
   let result = await zoneModel.getAll();
-    console.log('data='+result.data);
+    
   if(result.header.code == ERR_CODE.SUCCESS) {
     for( var data of result.data ){
         switch (data.status_code){

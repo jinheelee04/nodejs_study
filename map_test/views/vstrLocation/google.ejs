@@ -492,8 +492,9 @@
                                   <label for="toggle-off" class="btn">5F</label>
 
                                 </div>
-                                <input type="button" value="위치 정보 갱신" onclick="initMap()">
-                                
+                                갱신 시간
+                                <input type="number"  style="text-align:right; width:70px;" min ="1" id="update-scd" value="3" placeholder="3">(단위 : 초)
+                                <button id="up-scd-btn">등록</button>
                                 <!--지도-->
                                 <div id="map"></div>
 
@@ -674,18 +675,28 @@
         // ground overlay from the map.
         
         var floor = '';
-        setInterval( function(){
-          
+
+        $(function(){
+          var scd = $('#update-scd').val() * 1000;
+          $('#up-scd-btn').click(function(){
+            scd = $('#update-scd').val() * 1000;
+            console.log("1="+scd);
+          });
+       
+          setInterval( function(){
+       
           if($('input[name=toggle]:checked').val()=='true'){
-            floor ='5F';
-            socket.emit('select', {floorInf : '5F'});
-    
-          }else if($('input[name=toggle]:checked').val() == 'false'){
-              floor ='1F';
-              socket.emit('select', {floorInf : '1F'});
-          } 
-          
-        }, 3000);
+              floor ='5F';
+              socket.emit('select', {floorInf : '5F'});
+      
+            }else if($('input[name=toggle]:checked').val() == 'false'){
+                floor ='1F';
+                socket.emit('select', {floorInf : '1F'});
+            } 
+            
+          }, scd);
+
+        });
         
         socket.on('receive', function (data) {   
              
@@ -838,34 +849,7 @@
           //5층 보안구역진입 마커
           var icon4 = '/static/images/L4.png';
 
-          /*인포윈도우*/
-          var contentString = '<div id="content">'+
-              '<div id="siteNotice">'+
-              '</div>'+
-              '<h1 id="firstHeading" class="firstHeading"></h1>'+
-              '<div id="bodyContent">'+
-              '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-              'sandstone rock formation in the southern part of the '+
-              'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-              'south west of the nearest large town, Alice Springs; 450&#160;km '+
-              '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-              'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-              'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-              'Aboriginal people of the area. It has many springs, waterholes, '+
-              'rock caves and ancient paintings. Uluru is listed as a World '+
-              'Heritage Site.</p>'+
-              '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-              'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-              '(last visited June 22, 2009).</p>'+
-              '</div>'+
-              '</div>';
-
-          var infowindow = new google.maps.InfoWindow({
-            content: contentString
-          });
-
-
-
+       
           //마커 생성
           var marker, i;
           if(floor =='5F'){
