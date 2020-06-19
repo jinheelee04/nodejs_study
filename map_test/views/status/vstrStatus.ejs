@@ -430,6 +430,20 @@
                       </div>
                     </div>
                   </form>
+                  <!--출입자 상태-->
+                  <div calss="dataTables_wrapper form-inline" role="grid">
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div id="status-data">
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입</span>
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입</span>
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근</span>
+                          <span class="loc-container"><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입</span>
+                        </div>
+                      </div>  
+                    </div>
+                  </div>
+
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr>
@@ -450,11 +464,8 @@
                         <td class="user-name"><%= data.user_name%></td>
                         <td class="user-dept"><%= data.user_dept%></td>
                         <td class="floor-inf"><%= data.floor_inf%></td>
-                        <td class="status_name">
-                          <%= data.status_name %></td>
-                        <td class="update-date">
-                          <%= data.update_date %>
-                        </td>
+                        <td class="status-name"><%= data.status_name %></td>
+                        <td class="update-date"><%= data.update_date %></td>
                         <td>
                           <!-- data-target="#map-view" -->
                           <button type="button" id="map-view-btn" class="btn btn-link  map" >
@@ -592,7 +603,7 @@ $(document).ready(function() {
       floorInf =  $(this).parent().parent().find('.floor-inf').text();
       statusName =  $(this).parent().parent().find('.status-name').text();
       updateDate =  $(this).parent().parent().find('.update-date').text();
- 
+    
     $("div#googleMapModal").modal();
 
   });
@@ -600,6 +611,17 @@ $(document).ready(function() {
   //모달창 이벤트 등록 -> myMap() 함수 호출, 동적 생성된 엘리먼트 삭제 연계
   
   $("div#googleMapModal").on("shown.bs.modal", function() {
+    var userColor= '';
+        switch(statusName){
+          case '1층 출입' :  userColor='rgb(95, 126, 150)'; break;   
+          case '정상출입' :   userColor='rgb(71, 71, 232)'; break;
+          case '보안구역부근' :  userColor='rgb(255, 179, 36)'; break;
+          case '보안구역진입' :  userColor='rgb(251, 81, 81)'; break;
+              
+        }
+    
+    $('.modal-header').css('background-color', userColor);
+    $('.modal-header').css('color', '#fff');
     $('#m-user-phone').text(userPhone);
     myMap(); 
   });
@@ -637,8 +659,7 @@ $(document).ready(function() {
 
     });
 
-    /*zone circle 표시*/
-    addZone(map);
+
     
 
     /*이미지 오버레이*/
@@ -658,8 +679,12 @@ $(document).ready(function() {
     historicalOverlay = new google.maps.GroundOverlay(
           '/static/images/map_new2.png',
       imageBounds);
-
-    addOverlay();
+    if(floorInf =='5F'){
+      /*zone circle 표시*/
+      addZone(map);
+      /*실내지도 추가*/
+      addOverlay();
+    }
     
 
     /*마커생성*/
@@ -668,11 +693,11 @@ $(document).ready(function() {
         
     socket.on('receiveOne', function (data) {
       userLocation = data.result;
-      console.log("use"+userLocation.user_phone);
       //유저 마커 표시
       addMarker(map, userLocation, floorInf);
     });
 
+  
   
   
   
@@ -691,7 +716,7 @@ function addOverlay() {
     $(function(){
       //보안구역 정보
       <% if( results !=null ) {%>
-        <% for(let data of results) { %>
+        <% for(let data of zoneResults) { %>
             var zone ={
               "zoneName" : '<%=data.zone_name%>',
               "c1Long" : '<%=data.c1_long%>',
@@ -713,11 +738,10 @@ function addOverlay() {
 
     /*zone circle 시작*/
     function addZone(map){
-      console.log('addzone');
-      console.log('zoneArray='+zoneArray);
+    
           //zone 표시
           for (var i =0; i<zoneArray.length; i++) {
-            console.log("name="+zoneArray[0].zoneName);
+      
             /*보안구역부근 원1 */
             var zoneCircle3 = new google.maps.Circle({
             strokeColor: 'rgb(255, 179, 36)',
@@ -790,12 +814,13 @@ function addOverlay() {
 
         //마커 생성
         var marker, i;
-        if(floor =='5F'){
+     
             //마커 이미지
             var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
             var userColor ='';
             var statusName= '';
             switch(userLocation.status_code){
+              case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입'; userColor='rgb(95, 126, 150)'; break;   
               case 'VSCD003' : customicon.url = icon2; statusName ='정상 출입'; userColor='rgb(71, 71, 232)'; break;
               case 'VSCD004' : customicon.url = icon3; statusName ='보안구역부근'; userColor='rgb(255, 179, 36)'; break;
               case 'VSCD005' : customicon.url = icon4; statusName ='보안구역진입'; userColor='rgb(251, 81, 81)'; break;
@@ -835,84 +860,30 @@ function addOverlay() {
                     //마커 클릭 시의 줌 변화
                     map.setZoom(22);
 
+                    infowindow.open(map, marker);
                     
                     $('#user-box').css("display", "block");   
-                    $('#user-color').css("background-color", userColor);   
-                    $('span#user-phone').text( userPhone);
-                    $('span#user-dept').text( userDept);
-                    $('span#user-name').text( userName);
-                    $('span#floor').text(floorInf);
-                    $('span#user-status').text(statusName);
-                    $('span#update-date').text(updateDate);
-
-                    
+                    $('#user-color').css("background-color", userColor);             
               
                 });
             }
-        }else if(floor=='1F'){
+            var txt =  '<div class="txt">' +
+                '<span style="font-weight: 410; padding-top: 5px; display: block;">소속 : '+userDept+' </span>'+
+                '<span style="font-weight: 410; padding-top: 5px; display: block;">이름 : '+userName+'</span>'+
+                '<span style="font-weight: 410; padding-top: 5px; display: block;">위치 : '+floorInf+'</span>'+
+                '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자상태 : '+statusName+'</span>'+
+                '<span style="font-weight: 410; padding-top: 5px; display: block;">위치갱신시간 : '+updateDate+'</span>'+
+                '</div>';
 
-        
-            //마커 이미지
-            var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
-            var userColor ='';
-            var statusName= '';
-            switch(userLocation.status_code){
-              case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입'; userColor='rgb(95, 126, 150)'; break;   
-            }
+            var infowindow = new google.maps.InfoWindow(
+            {
 
-            console.log(statusName);
-            var userLng = userLocation.user_long;
-            var userLat = userLocation.user_lat;
-            var userLng = userLocation.user_long;
-            var userLat = userLocation.user_lat;
-            var userPhone = userLocation.user_phone;
-            var userDept = userLocation.user_dept;
-            var userName = userLocation.user_name;
-            var floorInf = userLocation.floor_inf;
-            var updateDate = userLocation.update_date;
+            content : txt
 
-              marker = new google.maps.Marker({
-                  //마커의 위치
-                  position: new google.maps.LatLng(userLat,  userLng),
-                  
-                  //마커 아이콘
-                  icon: customicon,
-                  
-                  //마커를 표시할 지도
-                  map: map,
+            });
 
-                  title : userLocation.user_phone
-
-                  
-              });
-
-              markers.push(marker);
-
-              if (marker) {
-                  marker.addListener('click', function() {
-                      
-                      //중심 위치를 클릭된 마커의 위치로 변경
-                      map.setCenter(this.getPosition());
-
-                      //마커 클릭 시의 줌 변화
-                      map.setZoom(22);
-
-                    $('#user-box').css("display", "block");   
-                    $('#user-color').css("background-color", userColor);   
-                    $('#user-color').css("color", 'black');   
-                    $('span#user-phone').text( userPhone);
-                    $('span#user-dept').text( userDept);
-                    $('span#user-name').text( userName);
-                    $('span#floor').text(floorInf);
-                    $('span#user-status').text(statusName);
-                    $('span#update-date').text(updateDate);
-                  });
-              }
-
-
-        }
-
-}
+            infowindow.open(map, marker);
+      }
 /*마커 끝*/
   </script>
 
