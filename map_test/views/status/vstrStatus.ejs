@@ -40,9 +40,6 @@
         top: -5px;
         position: relative;
       }
-      .loc-container{
-        padding-right: 9px;
-      }
       .form-check{
         padding-top: 9px;
       }
@@ -61,6 +58,141 @@
         height: 790px;
         margin: 0 auto;
       } 
+
+      .chk-la{
+        padding-right: 15px;
+      }
+      @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  input[type='checkbox'],
+  input[type='radio'] {
+    --active: #fff;
+    --active-inner: #275EFE;
+    --focus: 0px rgba(39, 94, 254, .3);
+    --border: #494f70;
+    --border-hover: #275EFE;
+    --background: #fff;
+    --disabled: #F6F8FF;
+    --disabled-inner: #E1E6F9;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 21px;
+    outline: none;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid #494f70;
+    background: var(--b, var(--background));
+    -webkit-transition: background .3s, border-color .3s, box-shadow .2s;
+    transition: background .3s, border-color .3s, box-shadow .2s;
+    margin-top: 8px;
+  }
+  input[type='checkbox']:after,
+  input[type='radio']:after {
+    content: '';
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    -webkit-transition: opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+    transition: opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+  }
+  input[type='checkbox']:checked,
+  input[type='radio']:checked {
+    --b: var(--active);
+    --bc: var(--active);
+    --d-o: .3s;
+    --d-t: .6s;
+    --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+  }
+  input[type='checkbox']:disabled,
+  input[type='radio']:disabled {
+    --b: var(--disabled);
+    cursor: not-allowed;
+    opacity: .9;
+  }
+  input[type='checkbox']:disabled:checked,
+  input[type='radio']:disabled:checked {
+    --b: var(--disabled-inner);
+    --bc: var(--border);
+  }
+  input[type='checkbox']:disabled + label,
+  input[type='radio']:disabled + label {
+    cursor: not-allowed;
+  }
+  input[type='checkbox']:hover:not(:checked):not(:disabled),
+  input[type='radio']:hover:not(:checked):not(:disabled) {
+    --bc: var(--border-hover);
+  }
+  input[type='checkbox']:focus,
+  input[type='radio']:focus {
+    box-shadow: 0 0 0 var(--focus);
+  }
+  input[type='checkbox']:not(.switch),
+  input[type='radio']:not(.switch) {
+    width: 21px;
+  }
+  input[type='checkbox']:not(.switch):after,
+  input[type='radio']:not(.switch):after {
+    opacity: var(--o, 0);
+  }
+  input[type='checkbox']:not(.switch):checked,
+  input[type='radio']:not(.switch):checked {
+    --o: 1;
+  }
+  input[type='checkbox'] + label,
+  input[type='radio'] + label {
+    font-size: 14px;
+    line-height: 21px;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+    padding-top: 10px;
+  }
+
+  input[type='checkbox']:not(.switch) {
+    border-radius: 7px;
+  }
+  input[type='checkbox']:not(.switch):after {
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--active-inner);
+    border-top: 0;
+    border-left: 0;
+    left: 7px;
+    top: 4px;
+    -webkit-transform: rotate(var(--r, 20deg));
+            transform: rotate(var(--r, 20deg));
+  }
+  input[type='checkbox']:not(.switch):checked {
+    --r: 43deg;
+  }
+  input[type='checkbox'].switch {
+    width: 38px;
+    border-radius: 11px;
+  }
+  input[type='checkbox'].switch:after {
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    background: var(--ab, var(--border));
+    -webkit-transform: translateX(var(--x, 0));
+            transform: translateX(var(--x, 0));
+  }
+  input[type='checkbox'].switch:checked {
+    --ab: var(--active-inner);
+    --x: 17px;
+  }
+  input[type='checkbox'].switch:disabled:not(:checked):after {
+    opacity: .6;
+  }
+
+}
     </style>
   </head>
   <body class="skin-blue">
@@ -371,12 +503,11 @@
         <section class="content-header">
           <h1>
             출입자 현황
-            <small>advanced tables</small>
+    
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Tables</a></li>
-            <li class="active">Data tables</li>
+            <li class="active">출입자 현황</li>
           </ol>
         </section>
 
@@ -390,40 +521,41 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <!--검색창-->
-                  <form>
-                    <div class="search__container">
-                      <input class="search__input" type="text" placeholder="출입자 번호 또는 성명을 입력하세요.">
-                       <!-- checkbox -->
-                      <div class="form-group">
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          전체
-                        </label>
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          정상출입
-                        </label>
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          보안구역부근
-                        </label>
-                        <label>
-                          <input type="checkbox" class="flat-red" checked/>
-                          보안구역진입
-                        </label>
+                  <form id="search-frm" method="POST">
+                      <!--검색창-->
+                      <div class="search__container">
+                        <input class="search__input" type="text" placeholder="출입자 번호 또는 이름을 입력하세요." onkeyup="search(this);">
+                        
                       </div>
-                    </div>
                   </form>
                   <!--출입자 상태-->
                   <div calss="dataTables_wrapper form-inline" role="grid">
                     <div class="row">
                       <div class="col-xs-12">
-                        <div id="status-data">
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입</span>
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입</span>
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근</span>
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입</span>
-                        </div>
+                         <!--출입자 상태-->
+                         <div id="status-data">
+                          <!-- checkbox -->
+                         <div class="form-group checkbox-container " style="margin-top:25px !important; margin-bottom:0px !important;">
+                               <input type="checkbox" class="" id="c1"  checked/>
+                               <label class="chk-la" for='c1' >
+                                 <span class="loc-container"></span><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입
+                               </label>
+                               <input type="checkbox" id='c2' checked/>
+                               <label class="chk-la" for='c2'>
+                                 <span class="loc-container"></span><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입
+                               </label>
+                               <input type="checkbox" id='c3' checked/>
+                               <label class="chk-la" for='c3'>
+                                 <span class="loc-container"></span><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근
+                               </label>
+                               <input type="checkbox" id='c4' checked/>
+                               <label class="chk-la" for='c4'>
+                                 <span class="loc-container"></span><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입
+                               </label>
+                               <button class="btn btn-secondary" style="border: 0 !important; padding-top: 10px; padding-bottom: 10px; font-weight: 600;">조건 적용</button>
+
+                         </div>
+                       </div>
                       </div>  
                     </div>
                   </div>
@@ -489,9 +621,9 @@
       </div><!-- /.content-wrapper -->
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 2.0
+     
         </div>
-        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2020 <a href="http://hubilon.com">Hubilon</a>.</strong> All rights reserved.
       </footer>
         
     </div><!-- ./wrapper -->
@@ -569,6 +701,41 @@
     <!-- AdminLTE for demo purposes -->
     <script src="/static/dist/js/demo.js" type="text/javascript"></script>
   
+  </script>
+  
+  <!-- page script -->
+  <script type="text/javascript">
+   $(function () {
+     $("#example1").dataTable();
+     $('#example2').dataTable({
+       "bPaginate": true,
+       "bLengthChange": false,
+       "bFilter": false,
+       "bSort": true,
+       "bInfo": true,
+       "bAutoWidth": false
+     });
+   });
+ </script>
+
+    
+
+<script>
+      function search(t){
+        if(window.event.keyCode == 13){
+          var keyword = $(t).val();
+  
+          if(keyword==''){
+            alert("검색어를 입력하세요!");
+            return false;
+          }else{
+            
+            var url="/vstrStatus/search/"+keyword;
+            $("#search-frm").attr('action', url).submit();
+          }
+        }
+      }
+    </script>
 <script>
 
 
@@ -618,11 +785,7 @@ $(document).ready(function() {
   
 
 });
-  
-  </script>
-  
-  
-  
+
   
   <script>
 

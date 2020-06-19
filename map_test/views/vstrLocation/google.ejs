@@ -226,16 +226,6 @@
 
 
 
-
-
-@media (max-width: 800px) {
-  body {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-            flex-direction: column;
-  }
-}
-
     </style>
   </head>
   <body class="skin-blue">
@@ -545,7 +535,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            출입자 현황
+            출입자 위치
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -564,7 +554,6 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <!--검색창-->
- 
                     <div class="search__container">
                       <input class="search__input" type="text" placeholder="출입자 번호를 입력하세요." onkeyup="search(this);">
                       
@@ -578,7 +567,7 @@
                            <!-- checkbox -->
                           <div class="form-group checkbox-container " style="margin-top:25px !important; margin-bottom:0px !important;">
                                 <input type="checkbox" class="" id="c1"  checked/>
-                                <label class="chk-la" for='c1'>
+                                <label class="chk-la" for='c1' >
                                   <span class="loc-container"></span><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입
                                 </label>
                                 <input type="checkbox" id='c2' checked/>
@@ -640,11 +629,11 @@
                             <table class="table table-bordered" style="text-align:center; margin-bottom:20px;">
                               <tbody>
                               <tr>
-                                <th colspan="2" class="tb-h" style="text-align: center;">1층</th>
+                                <th colspan="2" class="tb-h" style="text-align: center; font-size:18px;">1층</th>
                               </tr>
                               <tr>
-                                <td style="width:70%">전체출입자</td>
-                                <td><%=floorInfo_1F.cnt_all_1%>명</td>
+                                <td style="width:70%;  font-weight: 600;">전체출입자</td>
+                                <td style="font-weight: 600;"><%=floorInfo_1F.cnt_all_1%>명</td>
                               </tr>
                             </tbody>
                           </table>
@@ -652,23 +641,23 @@
                          <table class="table table-bordered" style="text-align:center; margin-bottom:20px;">
                           <tbody>
                           <tr>
-                            <th colspan="2"  class="tb-h" style="text-align: center;">5층</th>
+                            <th colspan="2"  class="tb-h" style="text-align: center; font-size:18px;">5층</th>
                           </tr>
                           <tr>
-                            <td  style="width:70%" >정상출입자</td>
-                            <td><%=floorInfo_5F.cnt_code3 %>명</td>
+                            <td  style="width:70%; color:rgb(71, 71, 232); font-weight: 600;" >정상출입자</td>
+                            <td style="color: rgb(71, 71, 232); font-weight: 600;"><%=floorInfo_5F.cnt_code3 %>명</td>
                           </tr>
                           <tr>
-                            <td  style="width:70%" >보안구역부근 출입자</td>
-                            <td><%=floorInfo_5F.cnt_code4 %>명</td>
+                            <td  style="width:70%; color:rgb(255, 179, 36); font-weight: 600;" >보안구역부근 출입자</td>
+                            <td  style="color: rgb(255, 179, 36); font-weight: 600;"><%=floorInfo_5F.cnt_code4 %>명</td>
                           </tr>
                           <tr>
-                            <td  style="width:70%" >보안구역진입 출입자</td>
-                            <td><%=floorInfo_5F.cnt_code5 %>명</td>
+                            <td  style="width:70%; color:rgb(251, 81, 81); font-weight: 600;" >보안구역진입 출입자</td>
+                            <td  style="color: rgb(251, 81, 81); font-weight: 600;"><%=floorInfo_5F.cnt_code5 %>명</td>
                           </tr>
                           <tr>
-                            <td  style="width:70%" >전체출입자</td>
-                            <td><%=floorInfo_5F.cnt_all_5%>명</td>
+                            <td  style="width:70%; font-weight: 600;" >전체출입자</td>
+                            <td  style="font-weight: 600;"><%=floorInfo_5F.cnt_all_5%>명</td>
                           </tr>
                         </tbody>
                       </table>

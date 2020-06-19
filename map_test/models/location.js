@@ -104,9 +104,37 @@ const getAll = async() => {
         return jsonGen.failValue(ERR_CODE.DB_ERR, err);
     }
 }
+
+const search = async(keyword) => {
+    try {
+        const connection = await pool.getConnection(async conn => conn);
+        try {
+            let query = "select U.user_phone, user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where U.user_phone like '%' ? '%' or U.user_name = '%' ? '%' ";
+            const [rows] = await connection.query(query, [keyword, keyword]);
+            connection.release();
+
+            console.log("rows="+rows);
+            if(isEmpty(rows)) {
+            
+                return jsonGen.failValue(ERR_CODE.NO_DATA, 'no_data' );
+            } else {
+                return jsonGen.successValue(rows);
+            }
+        } catch(err) {
+            console.log('Query Error : ' + err);
+            connection.release();
+            return jsonGen.failValue(ERR_CODE.DB_ERR, err);
+        }
+    } catch(err) {
+        console.log('DB Error : ' + err);
+        return jsonGen.failValue(ERR_CODE.DB_ERR, err);
+    }
+}
+
 module.exports = {
     get : get,
     add : add,
     update : update,
-    getAll : getAll
+    getAll : getAll,
+    search : search
 }
