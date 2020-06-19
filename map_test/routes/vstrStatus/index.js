@@ -2,7 +2,6 @@
 const router = require('express').Router();
 const ctrl = require('./ctrls');
 
-
 router.get('/', ctrl.vstrStatus);
 
 

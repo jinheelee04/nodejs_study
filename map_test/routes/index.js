@@ -5,11 +5,13 @@ const vstrStatus = require('./vstrStatus');
 const vstrLocation = require('./vstrLocation');
 const user = require('./user');
 const scrtZone = require('./scrtZone');
+const ctrl = require('./vstrLocation/ctrls');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+
+router.get('/', ctrl.google)
+
+
 
 
 router.use('/vstrStatus', vstrStatus);

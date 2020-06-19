@@ -44,9 +44,7 @@
         top: -5px;
         position: relative;
       }
-      .loc-container{
-        padding-right: 9px;
-      }
+
       .form-check{
         padding-top: 9px;
       }
@@ -73,7 +71,7 @@
         /* line-height: 30px; */
       }
       .chk-la{
-        padding-left: 5px;
+        padding-right: 15px;
       }
       .tb-h{
         background: #d2d6de;
@@ -91,6 +89,153 @@
       #user-color{
         color : #fff;
       }
+
+     
+
+ @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  input[type='checkbox'],
+  input[type='radio'] {
+    --active: #fff;
+    --active-inner: #275EFE;
+    --focus: 0px rgba(39, 94, 254, .3);
+    --border: #494f70;
+    --border-hover: #275EFE;
+    --background: #fff;
+    --disabled: #F6F8FF;
+    --disabled-inner: #E1E6F9;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 21px;
+    outline: none;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid #494f70;
+    background: var(--b, var(--background));
+    -webkit-transition: background .3s, border-color .3s, box-shadow .2s;
+    transition: background .3s, border-color .3s, box-shadow .2s;
+    margin-top: 8px;
+  }
+  input[type='checkbox']:after,
+  input[type='radio']:after {
+    content: '';
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    -webkit-transition: opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+    transition: opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s), -webkit-transform var(--d-t, 0.3s) var(--d-t-e, ease);
+  }
+  input[type='checkbox']:checked,
+  input[type='radio']:checked {
+    --b: var(--active);
+    --bc: var(--active);
+    --d-o: .3s;
+    --d-t: .6s;
+    --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+  }
+  input[type='checkbox']:disabled,
+  input[type='radio']:disabled {
+    --b: var(--disabled);
+    cursor: not-allowed;
+    opacity: .9;
+  }
+  input[type='checkbox']:disabled:checked,
+  input[type='radio']:disabled:checked {
+    --b: var(--disabled-inner);
+    --bc: var(--border);
+  }
+  input[type='checkbox']:disabled + label,
+  input[type='radio']:disabled + label {
+    cursor: not-allowed;
+  }
+  input[type='checkbox']:hover:not(:checked):not(:disabled),
+  input[type='radio']:hover:not(:checked):not(:disabled) {
+    --bc: var(--border-hover);
+  }
+  input[type='checkbox']:focus,
+  input[type='radio']:focus {
+    box-shadow: 0 0 0 var(--focus);
+  }
+  input[type='checkbox']:not(.switch),
+  input[type='radio']:not(.switch) {
+    width: 21px;
+  }
+  input[type='checkbox']:not(.switch):after,
+  input[type='radio']:not(.switch):after {
+    opacity: var(--o, 0);
+  }
+  input[type='checkbox']:not(.switch):checked,
+  input[type='radio']:not(.switch):checked {
+    --o: 1;
+  }
+  input[type='checkbox'] + label,
+  input[type='radio'] + label {
+    font-size: 14px;
+    line-height: 21px;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+    padding-top: 10px;
+  }
+
+  input[type='checkbox']:not(.switch) {
+    border-radius: 7px;
+  }
+  input[type='checkbox']:not(.switch):after {
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--active-inner);
+    border-top: 0;
+    border-left: 0;
+    left: 7px;
+    top: 4px;
+    -webkit-transform: rotate(var(--r, 20deg));
+            transform: rotate(var(--r, 20deg));
+  }
+  input[type='checkbox']:not(.switch):checked {
+    --r: 43deg;
+  }
+  input[type='checkbox'].switch {
+    width: 38px;
+    border-radius: 11px;
+  }
+  input[type='checkbox'].switch:after {
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    background: var(--ab, var(--border));
+    -webkit-transform: translateX(var(--x, 0));
+            transform: translateX(var(--x, 0));
+  }
+  input[type='checkbox'].switch:checked {
+    --ab: var(--active-inner);
+    --x: 17px;
+  }
+  input[type='checkbox'].switch:disabled:not(:checked):after {
+    opacity: .6;
+  }
+
+}
+
+
+
+
+
+@media (max-width: 800px) {
+  body {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+  }
+}
+
     </style>
   </head>
   <body class="skin-blue">
@@ -365,40 +510,9 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview">
-              <a href="/">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
-                <!-- <i class="fa fa-angle-left pull-right"></i> -->
-              </a>
-              <!-- <ul class="treeview-menu">
-                <li class="active"><a href="/"><i class="fa fa-circle-o"></i> Dashboard</a></li>
-              </ul> -->
-            </li>
-            <li class="treeview">
-              <a href="/scrtZone/add">
-                <i class="fa  fa-warning"></i> <span>보안구역 등록</span>  
-              </a>
-            </li>
-            <li class="treeview">
-              <a href="/scrtZone/list">
-                <i class="fa fa-gear"></i> <span>보안구역 관리</span>  
-              </a>
-            </li>
-            <li class="treeview">
-              <a href="/user/enroll">
-                <i class="fa fa-user"></i> <span>사용자 등록</span>  
-              </a>
-            </li>
             <li class="active treeview">
               <a href="/vstrLocation/google">
                 <i class="fa fa-map-marker"></i> <span>출입자 위치</span>
-                <!-- <i class="fa fa-angle-left pull-right"></i>
-                <ul class="treeview-menu">
-                  <li class="active"><a href="/vstrLocation/google"><i class="fa fa-circle-o"></i>구글 지도</a></li>
-                  <li class=""><a href="/vstrLocation/naver"><i class="fa fa-circle-o"></i>네이버 지도</a></li>
-                  <li class=""><a href="/vstrLocation/kt"><i class="fa fa-circle-o"></i>KT 지도</a></li>
-                  <li class=""><a href="/vstrLocation/kakao"><i class="fa fa-circle-o"></i>카카오 지도</a></li>
-                </ul>  -->
               </a>
             </li>
             <li class="treeview">
@@ -406,6 +520,21 @@
                 <i class="fa fa-table"></i> <span>출입자 현황</span>
               </a>
             </li>
+            <li class="treeview">
+                <a href="/scrtZone/add">
+                  <i class="fa  fa-warning"></i> <span>보안구역 등록</span>  
+                </a>
+              </li>
+              <li class="treeview">
+                <a href="/scrtZone/list">
+                  <i class="fa fa-gear"></i> <span>보안구역 관리</span>  
+                </a>
+              </li>
+              <li class="treeview">
+                <a href="/user/enroll">
+                  <i class="fa fa-user"></i> <span>사용자 등록</span>  
+                </a>
+              </li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -417,7 +546,6 @@
         <section class="content-header">
           <h1>
             출입자 현황
-            <small>구글 지도</small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -436,39 +564,38 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <!--검색창-->
-                  <form>
+ 
                     <div class="search__container">
-                      <input class="search__input" type="text" placeholder="출입자 번호 또는 성명을 입력하세요.">
-                       <!-- checkbox -->
-                       <div class="form-group">
-                        <label class="chk-la">
-                          <input type="checkbox" class="flat-red" checked/>
-                          전체
-                        </label>
-                        <label class="chk-la">
-                          <input type="checkbox" class="flat-red" checked/>
-                          정상출입
-                        </label>
-                        <label class="chk-la">
-                          <input type="checkbox" class="flat-red" checked/>
-                          보안구역부근
-                        </label>
-                        <label class="chk-la">
-                          <input type="checkbox" class="flat-red" checked/>
-                          보안구역진입
-                        </label>
-                      </div>
+                      <input class="search__input" type="text" placeholder="출입자 번호를 입력하세요." onkeyup="search(this);">
+                      
                     </div>
-                  </form>
+           
                   <div calss="dataTables_wrapper form-inline" role="grid">
                     <div class="row">
                       <div class="col-xs-12">
                         <!--출입자 상태-->
                         <div id="status-data">
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입</span>
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입</span>
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근</span>
-                          <span class="loc-container"><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입</span>
+                           <!-- checkbox -->
+                          <div class="form-group checkbox-container " style="margin-top:25px !important; margin-bottom:0px !important;">
+                                <input type="checkbox" class="" id="c1"  checked/>
+                                <label class="chk-la" for='c1'>
+                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입
+                                </label>
+                                <input type="checkbox" id='c2' checked/>
+                                <label class="chk-la" for='c2'>
+                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입
+                                </label>
+                                <input type="checkbox" id='c3' checked/>
+                                <label class="chk-la" for='c3'>
+                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근
+                                </label>
+                                <input type="checkbox" id='c4' checked/>
+                                <label class="chk-la" for='c4'>
+                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입
+                                </label>
+                                <button class="btn btn-secondary" style="border: 0 !important; padding-bottom: 10px;">조건 적용</button>
+
+                          </div>
                         </div>
                       </div>
                       
@@ -739,6 +866,7 @@
         $('input#toggle-off').prop("checked", true);
         await deleteMarkers(); 
         await addZone(map);
+        socket.emit('select', {floorInf : '5F'});
         await historicalOverlay.setMap(map);
       }
       //1층 버튼 클릭시
@@ -748,6 +876,7 @@
         //기존 마커 삭제
         await deleteMarkers(); 
         await historicalOverlay.setMap(null);
+        socket.emit('select', {floorInf : '1F'});
         await deleteCircles();
       }
       /*zone circle 시작*/
@@ -863,7 +992,9 @@
 
                   title : userLocations[i].user_phone,
 
-                  userInfo : userInfo
+                  userInfo : userInfo,
+
+                  id : userLocations[i].user_phon
               });
 
               markers.push(marker);
@@ -891,6 +1022,19 @@
                       $('#user-box').css("display", "block");   
                       $('#user-color').css("background-color", this.userInfo.userColor);   
                       
+                      var txt =  '<div class="txt">' +
+                      '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 번호 : '+markers[i].userInfo.userPhone+' </span>'+
+                      '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 상태 : '+markers[i].userInfo.statusName+'</span>'+
+                      '</div>';
+
+                      var infowindow = new google.maps.InfoWindow(
+                      {
+
+                        content : txt
+
+                      });
+
+                    infowindow.open(map, markers[i]);
                 
                   });
               }
@@ -940,6 +1084,60 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw&callback=initMap">
     </script>
   
+  <script>
+    //검색 기능
+    function search(t){
+
+      if(window.event.keyCode == 13){
+        var keyword = $(t).val();
+        if(keyword==''){
+          alert("검색어를 입력하세요!");
+          return false;
+        }else{
    
+          for (var i = 0; i < markers.length; i++) {
+                if(markers[i].title == keyword){
+                   //중심 위치를 클릭된 마커의 위치로 변경
+                   map.setCenter(markers[i].getPosition());
+                    //마커 클릭 시의 줌 변화
+                  map.setZoom(22);
+                      $('#user-info').remove();
+                      var userInfo = '<table class="table table-bordered" id="user-info"  style="text-align:center; margin-bottom:20px; "><tbody>'+
+                                        '<tr><th colspan="2" id="user-color"  class="tb-h" style="text-align: center;">출입자 번호 : <span id="user-phone">'+markers[i].userInfo.userPhone+'</span></th></tr>'+
+                                        '<tr><td class="user-t" > 소속</td><td><span id="user-dept">'+markers[i].userInfo.userDept+'</span></td></tr>'+
+                                        '<tr><td class="user-t"  > 이름</td><td><span id="user-name">'+markers[i].userInfo.userName+'</span></td></tr>'+
+                                        '<tr><td class="user-t"> 위치</td><td><span id="floor">'+markers[i].userInfo.floorInf+'</span></td></tr>'+
+                                        '<tr><td class="user-t" > 출입자상태</td><td><span id="user-status">'+markers[i].userInfo.statusName+'</span></td></tr>'+
+                                        '<tr><td class="user-t" > 위치갱신시간</td><td><span id="update-date">'+markers[i].userInfo.updateDate+'</span></td></tr>'+
+                                        '</tbody></table>';
+
+                      $('#user-info-body').append(userInfo);
+                      
+                      $('#user-box').css("display", "block");   
+                      $('#user-color').css("background-color", markers[i].userInfo.userColor);  
+                      
+                      var txt =  '<div class="txt">' +
+                      '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 번호 : '+markers[i].userInfo.userPhone+' </span>'+
+                      '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 상태 : '+markers[i].userInfo.statusName+'</span>'+
+                      '</div>';
+
+                      var infowindow = new google.maps.InfoWindow(
+                      {
+
+                        content : txt
+
+                      });
+
+                    infowindow.open(map, markers[i]);
+                  
+                  return false;
+                }
+          }
+         alert('해당 정보가 없습니다.');
+         return false;
+        }
+      }
+    }
+  </script>
   </body>
 </html>

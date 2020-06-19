@@ -6,9 +6,9 @@ const locationModel = require('../../models/location');
 
 exports.vstrStatus= async (req,res) =>{
 
+
   let result = await locationModel.getAll();
   let zoneResult = await zoneModel.getAll();
-
   if( zoneResult .header.code ==ERR_CODE.NO_DATA){
       zoneResult.data = null;
   }
@@ -33,7 +33,7 @@ exports.vstrStatus= async (req,res) =>{
           }      
     }
 
-
+    
     res.status(200).render('status/vstrStatus', { title: '출입자 보안 관제 ', results : result.data, zoneResults : zoneResult.data});
 
   } else if(result.header.code ==ERR_CODE.NO_DATA){
