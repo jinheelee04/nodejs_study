@@ -23,9 +23,11 @@ async function getStatus(scrtZoneInfo, userLong, userLat) {
         //보안구역 진입일 경우 
         if(dist1 < z.c1_r1 || dist2 < z.c2_r1 ) {
             status = "VSCD005";
+            break;
         } //보안구역 부근일 경우
         else if( (dist1< z.c1_r2 || dist2 < z.c2_r2) && (dist1 >= z.c1_r1 && dist2>=z.c2_r1) ){
             status="VSCD004";
+            break;
         }else{
             status="VSCD003"
         }

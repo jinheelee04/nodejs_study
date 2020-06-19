@@ -61,7 +61,32 @@ app.io.on('connection', function (socket) {
           console.log('DB Error : ' + err);
 
       }  
-  })
+  });
+
+  socket.on('selectOne',  async function (data) {
+        try {
+          const connection = await pool.getConnection(async conn => conn);
+          // connection.query( 'select * from location_tb');
+          try {
+              let query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where U.user_phone = ?";
+              const [rows] = await connection.query(query, data.userPhone);
+              connection.release();
+              let [result] = rows;
+              console.log(result)
+              // app.io.sockets.in(roomName).emit('receive', { result: rows});
+              app.io.sockets.emit('receiveOne', { result: result});
+    
+          } catch(err) {
+            connection.release();
+              console.log('Query Error : ' + err);
+          }
+      } catch(err) {
+
+          console.log('DB Error : ' + err);
+
+      }  
+    });
+
 });
 
 

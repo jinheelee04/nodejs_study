@@ -623,6 +623,10 @@ $(document).ready(function() {
   var historicalOverlay;
   var map;
   var zoneCircles = [];
+  var markers = [];
+
+  var socket = io();
+
   function myMap() {
   
     var minZoomLevel =21;
@@ -657,6 +661,17 @@ $(document).ready(function() {
 
     addOverlay();
     
+
+    /*마커생성*/
+    socket.emit('selectOne', {userPhone : userPhone});
+  
+        
+    socket.on('receiveOne', function (data) {
+      userLocation = data.result;
+      console.log("use"+userLocation.user_phone);
+      //유저 마커 표시
+      addMarker(map, userLocation, floorInf);
+    });
 
   
   
@@ -698,9 +713,11 @@ function addOverlay() {
 
     /*zone circle 시작*/
     function addZone(map){
+      console.log('addzone');
+      console.log('zoneArray='+zoneArray);
           //zone 표시
           for (var i =0; i<zoneArray.length; i++) {
-       
+            console.log("name="+zoneArray[0].zoneName);
             /*보안구역부근 원1 */
             var zoneCircle3 = new google.maps.Circle({
             strokeColor: 'rgb(255, 179, 36)',
@@ -755,8 +772,148 @@ function addOverlay() {
         }
 
       }
-
       /*zone circle 끝*/
+
+
+       /*마커 시작*/
+       function addMarker(map, userLocation, floor){ 
+
+        //1층 출입 마커
+        var icon1 = '/static/images/L1.png';
+        //5층 정상출입 마커
+        var icon2 = '/static/images/L2.png';
+        //5층 보안구역부근 마커
+        var icon3 = '/static/images/L3.png';
+        //5층 보안구역진입 마커
+        var icon4 = '/static/images/L4.png';
+
+
+        //마커 생성
+        var marker, i;
+        if(floor =='5F'){
+            //마커 이미지
+            var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
+            var userColor ='';
+            var statusName= '';
+            switch(userLocation.status_code){
+              case 'VSCD003' : customicon.url = icon2; statusName ='정상 출입'; userColor='rgb(71, 71, 232)'; break;
+              case 'VSCD004' : customicon.url = icon3; statusName ='보안구역부근'; userColor='rgb(255, 179, 36)'; break;
+              case 'VSCD005' : customicon.url = icon4; statusName ='보안구역진입'; userColor='rgb(251, 81, 81)'; break;
+              
+            }
+
+            var userLng = userLocation.user_long;
+          var userLat = userLocation.user_lat;
+          var userPhone = userLocation.user_phone;
+          var userDept = userLocation.user_dept;
+          var userName = userLocation.user_name;
+          var floorInf = userLocation.floor_inf;
+          var updateDate = userLocation.update_date;
+
+            marker = new google.maps.Marker({
+                //마커의 위치
+                position: new google.maps.LatLng(userLat,  userLng),
+                
+                //마커 아이콘
+                icon: customicon,
+                
+                //마커를 표시할 지도
+                map: map,
+
+                title : userLocation.user_phone
+            });
+
+            markers.push(marker);
+              //인포 윈도우 생성
+              // infowindow.open(map,  {position: new google.maps.LatLng(userLat,  userLng)});
+            if (marker) {
+                marker.addListener('click', function() {
+                    
+                    //중심 위치를 클릭된 마커의 위치로 변경
+                    map.setCenter(this.getPosition());
+
+                    //마커 클릭 시의 줌 변화
+                    map.setZoom(22);
+
+                    
+                    $('#user-box').css("display", "block");   
+                    $('#user-color').css("background-color", userColor);   
+                    $('span#user-phone').text( userPhone);
+                    $('span#user-dept').text( userDept);
+                    $('span#user-name').text( userName);
+                    $('span#floor').text(floorInf);
+                    $('span#user-status').text(statusName);
+                    $('span#update-date').text(updateDate);
+
+                    
+              
+                });
+            }
+        }else if(floor=='1F'){
+
+        
+            //마커 이미지
+            var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
+            var userColor ='';
+            var statusName= '';
+            switch(userLocation.status_code){
+              case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입'; userColor='rgb(95, 126, 150)'; break;   
+            }
+
+            console.log(statusName);
+            var userLng = userLocation.user_long;
+            var userLat = userLocation.user_lat;
+            var userLng = userLocation.user_long;
+            var userLat = userLocation.user_lat;
+            var userPhone = userLocation.user_phone;
+            var userDept = userLocation.user_dept;
+            var userName = userLocation.user_name;
+            var floorInf = userLocation.floor_inf;
+            var updateDate = userLocation.update_date;
+
+              marker = new google.maps.Marker({
+                  //마커의 위치
+                  position: new google.maps.LatLng(userLat,  userLng),
+                  
+                  //마커 아이콘
+                  icon: customicon,
+                  
+                  //마커를 표시할 지도
+                  map: map,
+
+                  title : userLocation.user_phone
+
+                  
+              });
+
+              markers.push(marker);
+
+              if (marker) {
+                  marker.addListener('click', function() {
+                      
+                      //중심 위치를 클릭된 마커의 위치로 변경
+                      map.setCenter(this.getPosition());
+
+                      //마커 클릭 시의 줌 변화
+                      map.setZoom(22);
+
+                    $('#user-box').css("display", "block");   
+                    $('#user-color').css("background-color", userColor);   
+                    $('#user-color').css("color", 'black');   
+                    $('span#user-phone').text( userPhone);
+                    $('span#user-dept').text( userDept);
+                    $('span#user-name').text( userName);
+                    $('span#floor').text(floorInf);
+                    $('span#user-status').text(statusName);
+                    $('span#update-date').text(updateDate);
+                  });
+              }
+
+
+        }
+
+}
+/*마커 끝*/
   </script>
 
 

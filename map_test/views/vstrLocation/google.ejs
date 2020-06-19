@@ -549,36 +549,11 @@
                   <!--출입자 현황 끝-->
 
                   <div class="box" id="user-box" style="display:none;">
-                    <div class="box-body">
+                    <div class="box-body" id="user-info-body">
                        <!--출입자 정보-->
-                         <!--5층-->
-                         <table class="table table-bordered" id="user-info"  style="text-align:center; margin-bottom:20px; ">
-                          <tbody>
-                          <tr>
-                            <th colspan="2" id="user-color"  class="tb-h" style="text-align: center;">출입자 번호 : <span id="user-phone"></span></th>
-                          </tr>
-                          <tr>
-                            <td class="user-t" > 소속</td>
-                            <td><span id="user-dept"></span></td>
-                          </tr>
-                          <tr>
-                            <td class="user-t"  > 이름</td>
-                            <td><span id="user-name"></span></td>
-                          </tr>
-                          <tr>
-                            <td class="user-t"> 위치</td>
-                            <td><span id="floor"></span></td>
-                          </tr>
-                          <tr>
-                            <td class="user-t" > 출입자상태</td>
-                            <td><span id="user-status"></span></td>
-                          </tr>
-                          <tr>
-                            <td class="user-t" > 위치갱신시간</td>
-                            <td><span id="update-date"></span></td>
-                          </tr>
-                        </tbody>
-                      </table>
+                     
+                       
+      
                     </div>
                   </div>
                   <!--출입자 정보 끝-->
@@ -782,10 +757,10 @@
             /*보안구역부근 원1 */
             var zoneCircle3 = new google.maps.Circle({
             strokeColor: 'rgb(255, 179, 36)',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
+            strokeOpacity: 0.3,
+            strokeWeight: 0,
             fillColor: 'rgb(255, 179, 36)',
-            fillOpacity: 0.3,
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
             radius: Number(zoneArray[i].c1R2)
@@ -793,10 +768,10 @@
           /*보안구역부근 원2 */
           var zoneCircle4 = new google.maps.Circle({
             strokeColor: 'rgb(255, 179, 36)',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
+            strokeOpacity: 0.3,
+            strokeWeight: 0,
             fillColor: 'rgb(255, 179, 36)',
-            fillOpacity: 0.3,
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
             radius: Number(zoneArray[i].c2R2)
@@ -804,22 +779,22 @@
           
           /*보안구역진입 원1 */ 
           var zoneCircle1 = new google.maps.Circle({
-            strokeColor: '#FF0000',
+            strokeColor: '#ff0000e0',
             strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.4,
+            strokeWeight: 0,
+            fillColor: '#ff0000e0',
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
             radius: Number(zoneArray[i].c1R1)
           });
             /*보안구역진입 원2 */
           var zoneCircle2 = new google.maps.Circle({
-            strokeColor: '#FF0000',
+            strokeColor: '#ff0000e0',
             strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.4,
+            strokeWeight: 0,
+            fillColor: '#ff0000e0',
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
             radius: Number(zoneArray[i].c2R1)
@@ -852,13 +827,14 @@
        
           //마커 생성
           var marker, i;
-          if(floor =='5F'){
+
             for (i = 0; i < userLocations.length ; i++) {
                //마커 이미지
                var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
               var userColor ='';
               var statusName= '';
               switch(userLocations[i].status_code){
+                case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입'; userColor='rgb(95, 126, 150)'; break;   
                 case 'VSCD003' : customicon.url = icon2; statusName ='정상 출입'; userColor='rgb(71, 71, 232)'; break;
                 case 'VSCD004' : customicon.url = icon3; statusName ='보안구역부근'; userColor='rgb(255, 179, 36)'; break;
                 case 'VSCD005' : customicon.url = icon4; statusName ='보안구역진입'; userColor='rgb(251, 81, 81)'; break;
@@ -872,7 +848,8 @@
              var userName = userLocations[i].user_name;
              var floorInf = userLocations[i].floor_inf;
              var updateDate = userLocations[i].update_date;
-         
+             var userInfo = { userPhone : userPhone, userLng: userLng, userLat : userLat, userDept:userDept, userName:userName, floorInf:floorInf, updateDate:updateDate, userColor: userColor, statusName : statusName};
+  
               marker = new google.maps.Marker({
                   //마커의 위치
                   position: new google.maps.LatLng(userLat,  userLng),
@@ -883,98 +860,41 @@
                   //마커를 표시할 지도
                   map: map,
 
-                  title : userLocations[i].user_phone
+                  title : userLocations[i].user_phone,
+
+                  userInfo : userInfo
               });
 
               markers.push(marker);
                 //인포 윈도우 생성
                 // infowindow.open(map,  {position: new google.maps.LatLng(userLat,  userLng)});
               if (marker) {
-                  marker.addListener('click', function() {
-                      
+       
+                  marker.addListener('click', function() {               
                       //중심 위치를 클릭된 마커의 위치로 변경
                       map.setCenter(this.getPosition());
-
                       //마커 클릭 시의 줌 변화
                       map.setZoom(22);
+                      $('#user-info').remove();
+                      var userInfo = '<table class="table table-bordered" id="user-info"  style="text-align:center; margin-bottom:20px; "><tbody>'+
+                                        '<tr><th colspan="2" id="user-color"  class="tb-h" style="text-align: center;">출입자 번호 : <span id="user-phone">'+this.userInfo.userPhone+'</span></th></tr>'+
+                                        '<tr><td class="user-t" > 소속</td><td><span id="user-dept">'+this.userInfo.userDept+'</span></td></tr>'+
+                                        '<tr><td class="user-t"  > 이름</td><td><span id="user-name">'+this.userInfo.userName+'</span></td></tr>'+
+                                        '<tr><td class="user-t"> 위치</td><td><span id="floor">'+this.userInfo.floorInf+'</span></td></tr>'+
+                                        '<tr><td class="user-t" > 출입자상태</td><td><span id="user-status">'+this.userInfo.statusName+'</span></td></tr>'+
+                                        '<tr><td class="user-t" > 위치갱신시간</td><td><span id="update-date">'+this.userInfo.updateDate+'</span></td></tr>'+
+                                        '</tbody></table>';
 
+                      $('#user-info-body').append(userInfo);
                       
                       $('#user-box').css("display", "block");   
-                      $('#user-color').css("background-color", userColor);   
-                      $('span#user-phone').text( userPhone);
-                      $('span#user-dept').text( userDept);
-                      $('span#user-name').text( userName);
-                      $('span#floor').text(floorInf);
-                      $('span#user-status').text(statusName);
-                      $('span#update-date').text(updateDate);
-
+                      $('#user-color').css("background-color", this.userInfo.userColor);   
                       
                 
                   });
               }
             }
-          }else if(floor=='1F'){
-     
-            for (i = 0; i < userLocations.length ; i++) {
-              //마커 이미지
-              var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
-              var userColor ='';
-              var statusName= '';
-              switch(userLocations[i].status_code){
-                case 'VSCD002' : customicon.url = icon1; statusName ='1층 출입'; userColor='rgb(95, 126, 150)'; break;   
-              }
-
-              console.log(statusName);
-              var userLng = userLocations[i].user_long;
-              var userLat = userLocations[i].user_lat;
-              var userLng = userLocations[i].user_long;
-              var userLat = userLocations[i].user_lat;
-              var userPhone = userLocations[i].user_phone;
-              var userDept = userLocations[i].user_dept;
-              var userName = userLocations[i].user_name;
-              var floorInf = userLocations[i].floor_inf;
-              var updateDate = userLocations[i].update_date;
-
-                marker = new google.maps.Marker({
-                    //마커의 위치
-                    position: new google.maps.LatLng(userLat,  userLng),
-                    
-                    //마커 아이콘
-                    icon: customicon,
-                    
-                    //마커를 표시할 지도
-                    map: map,
-  
-                    title : userLocations[i].user_phone
-
-                    
-                });
-  
-                markers.push(marker);
-  
-                if (marker) {
-                    marker.addListener('click', function() {
-                        
-                        //중심 위치를 클릭된 마커의 위치로 변경
-                        map.setCenter(this.getPosition());
-  
-                        //마커 클릭 시의 줌 변화
-                        map.setZoom(22);
-
-                      $('#user-box').css("display", "block");   
-                      $('#user-color').css("background-color", userColor);   
-                      $('#user-color').css("color", 'black');   
-                      $('span#user-phone').text( userPhone);
-                      $('span#user-dept').text( userDept);
-                      $('span#user-name').text( userName);
-                      $('span#floor').text(floorInf);
-                      $('span#user-status').text(statusName);
-                      $('span#update-date').text(updateDate);
-                    });
-                }
-            }
-
-          }
+          
 
         }
         /*마커 끝*/
