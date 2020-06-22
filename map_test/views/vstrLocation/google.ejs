@@ -539,8 +539,7 @@
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Tables</a></li>
-            <li class="active">Data tables</li>
+            <li><a href="#">출입자 위치</a></li>
           </ol>
         </section>
 
@@ -566,24 +565,26 @@
                         <div id="status-data">
                            <!-- checkbox -->
                           <div class="form-group checkbox-container " style="margin-top:25px !important; margin-bottom:0px !important;">
-                                <input type="checkbox" class="" id="c1"  checked/>
-                                <label class="chk-la" for='c1' >
-                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입
-                                </label>
-                                <input type="checkbox" id='c2' checked/>
-                                <label class="chk-la" for='c2'>
-                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입
-                                </label>
-                                <input type="checkbox" id='c3' checked/>
-                                <label class="chk-la" for='c3'>
-                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근
-                                </label>
-                                <input type="checkbox" id='c4' checked/>
-                                <label class="chk-la" for='c4'>
-                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입
-                                </label>
-                                <button class="btn btn-secondary" style="border: 0 !important; padding-bottom: 10px;">조건 적용</button>
-
+                            <input type="checkbox" class="" id="checkedAll"  checked/>
+                            <label class="chk-la" for='checkedAll' >
+                              <span class="loc-container"></span>전체
+                            </label>
+                             <input type="checkbox" class="chk-sub" id="c1" value="VSCD002" checked/>
+                             <label class="chk-la" for='c1' >
+                               <span class="loc-container"></span><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입
+                             </label>
+                             <input type="checkbox"  class="chk-sub" id='c2' value="VSCD003" checked/>
+                             <label class="chk-la" for='c2'>
+                               <span class="loc-container"></span><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입
+                             </label>
+                             <input type="checkbox" class="chk-sub" id='c3' value="VSCD004" checked/>
+                             <label class="chk-la" for='c3'>
+                               <span class="loc-container"></span><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근
+                             </label>
+                             <input type="checkbox" class="chk-sub" id='c4' value="VSCD005" checked/>
+                             <label class="chk-la" for='c4'>
+                               <span class="loc-container"></span><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입
+                             </label>
                           </div>
                         </div>
                       </div>
@@ -689,7 +690,7 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.0
         </div>
-        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2020 <a href="http://hubilon.com">Hubilon</a>.</strong> All rights reserved.
       </footer>
         
     </div><!-- ./wrapper -->
@@ -723,6 +724,28 @@
         });
       });
     </script>
+     <script>
+      $(function(){
+          //전체선택 및 전체 해제
+          $('input#checkedAll').click(function(){
+            if($('#checkedAll').is(':checked')){
+    
+              $("input[type='checkbox']").prop('checked',true);
+            }else{
+              $("input[type='checkbox']").prop('checked', false);
+            }
+          });
+    
+          //한개의 체크박스 선택 해제시 전체 체크박스도 해제
+          $("input.chk-sub").click(function(){
+            if($('input.chk-sub:checked').length ==4){
+              $('#checkedAll').prop('checked', true);
+            }else{
+              $('#checkedAll').prop('checked', false);
+            }
+          });
+        });
+      </script>
     <script>
       
     var zoneArray = []; 
@@ -768,25 +791,76 @@
         
         var floor = '';
 
+        var len = 4;
+
+        var code =['all'];
         $(function(){
+
+           //검색 필터 적용
+           $("input[type='checkbox']").on("click", function(){
+            //한개만 체크되어있을 경우
+            if($('input.chk-sub:checked').length ==1){
+              code = [];
+              $("input:checkbox:checked").each(function (index) {  
+                  code.push($(this).val());                 
+              });  
+              len = 1;
+              console.log(code);
+            }else if($('input.chk-sub:checked').length ==2){
+              code = [];
+              $("input:checkbox:checked").each(function (index) {  
+                code.push($(this).val());                            
+              }); 
+              len = 2;       
+              console.log(code);
+            }else if($('input.chk-sub:checked').length ==3){
+              code = [];
+              $("input:checkbox:checked").each(function (index) {  
+                code.push($(this).val());      
+                }); 
+              len = 3;
+              console.log(code);                       
+            }else if($('input.chk-sub:checked').length ==4){
+              code = [];
+              code.push('all');
+              len = 4;
+              console.log(code);
+            }else {
+              code = [];
+              code.push('');
+              len = 0;
+              console.log(code);
+            }
+
+              if($('input[name=toggle]:checked').val()=='true'){
+              floor ='5F';
+              socket.emit('select', {floorInf : '5F', statusCode : code, length: len});
+      
+              }else if($('input[name=toggle]:checked').val() == 'false'){
+                floor ='1F';
+                socket.emit('select', {floorInf : '1F', statusCode : code, length: len});
+            } 
+          });
+
           var scd = $('#update-scd').val() * 1000;
           $('#up-scd-btn').click(function(){
             scd = $('#update-scd').val() * 1000;
             console.log("1="+scd);
           });
-       
+
+          //위치 정보 조회 
           setInterval( function(){
-       
-          if($('input[name=toggle]:checked').val()=='true'){
+            console.log("setInt_code="+ code);
+             if($('input[name=toggle]:checked').val()=='true'){
               floor ='5F';
-              socket.emit('select', {floorInf : '5F'});
+              socket.emit('select', {floorInf : '5F', statusCode : code, length: len});
       
             }else if($('input[name=toggle]:checked').val() == 'false'){
                 floor ='1F';
-                socket.emit('select', {floorInf : '1F'});
+                socket.emit('select', {floorInf : '1F', statusCode : code, length: len});
             } 
             
-          }, scd);
+          }, 5000);
 
         });
         
@@ -815,10 +889,9 @@
         //socket.io
         var userLocations={};
    
-
-        socket.emit('select', {floorInf : '5F'});
-  
-        
+        console.log('code22'+code);
+        socket.emit('select', {floorInf : '5F', statusCode : 'all', length: 4});
+       
         socket.on('receive', function (data) {
           userLocations = data.result;
           
@@ -855,7 +928,7 @@
         $('input#toggle-off').prop("checked", true);
         await deleteMarkers(); 
         await addZone(map);
-        socket.emit('select', {floorInf : '5F'});
+        socket.emit('select', {floorInf : '5F', statusCode : code, length: len});
         await historicalOverlay.setMap(map);
       }
       //1층 버튼 클릭시
@@ -865,13 +938,13 @@
         //기존 마커 삭제
         await deleteMarkers(); 
         await historicalOverlay.setMap(null);
-        socket.emit('select', {floorInf : '1F'});
+        socket.emit('select', {floorInf : '1F', statusCode : code, length: len});
         await deleteCircles();
       }
       /*zone circle 시작*/
       function addZone(map){
           //zone 표시
-          for (var i =0; i<zoneArray.length; i++) {
+          for (var i =0; i< zoneArray.length; i++) {
        
             /*보안구역부근 원1 */
             var zoneCircle3 = new google.maps.Circle({
@@ -946,7 +1019,7 @@
        
           //마커 생성
           var marker, i;
-
+          if(userLocations != null){
             for (i = 0; i < userLocations.length ; i++) {
                //마커 이미지
                var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
@@ -959,6 +1032,7 @@
                 case 'VSCD005' : customicon.url = icon4; statusName ='보안구역진입'; userColor='rgb(251, 81, 81)'; break;
                 
               }
+
 
               var userLng = userLocations[i].user_long;
              var userLat = userLocations[i].user_lat;
@@ -1028,6 +1102,8 @@
                   });
               }
             }
+
+          }
           
 
         }
@@ -1128,5 +1204,7 @@
       }
     }
   </script>
+
+ 
   </body>
 </html>

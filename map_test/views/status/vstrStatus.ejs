@@ -34,6 +34,8 @@
       }
       #status-data{
         float: right;
+        top: 30px;
+        position: inherit;
       }
       .loc-img{
         width: 25px;
@@ -193,7 +195,20 @@
   }
 
 }
+.VSCD002_color{
+  background-color: rgb(95, 126, 150, 0.48) !important;
+}
+.VSCD003_color{
+  background-color: rgb(135, 185, 255) !important;
+}
+.VSCD004_color{
+  background-color: rgb(255, 198, 90, 0.97) !important;
+}
+.VSCD005_color{
+  background-color: rgb(251, 81, 81, 0.75) !important;
+}
     </style>
+
   </head>
   <body class="skin-blue">
     <div class="wrapper">
@@ -517,17 +532,18 @@
             <div class="col-xs-12">
               <div class="box">
                 <div class="box-header">
+                  <a href="/vstrStatus" class="btn btn-primary" style="background-color: #557ac2 !important;border-color: #557ac2 !important; margin-top:10px;">전체 목록</a>
                   <!-- <h3 class="box-title">Data Table With Full Features</h3> -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <!--검색창-->
-                  <form id="search-frm" method="POST">
+                  <form id="vstr-search-frm" method="POST">
                       <!--검색창-->
+                    </form>
                       <div class="search__container">
                         <input class="search__input" type="text" placeholder="출입자 번호 또는 이름을 입력하세요." onkeyup="search(this);">
                         
                       </div>
-                  </form>
                   <!--출입자 상태-->
                   <div calss="dataTables_wrapper form-inline" role="grid">
                     <div class="row">
@@ -535,25 +551,27 @@
                          <!--출입자 상태-->
                          <div id="status-data">
                           <!-- checkbox -->
-                         <div class="form-group checkbox-container " style="margin-top:25px !important; margin-bottom:0px !important;">
-                               <input type="checkbox" class="" id="c1"  checked/>
+                         <div class="form-group checkbox-container " style="margin-top:10px !important; margin-bottom:0px !important;">
+                              <input type="checkbox" class="" id="checkedAll"  checked/>
+                              <label class="chk-la" for='checkedAll' >
+                                <span class="loc-container"></span>전체
+                              </label>
+                               <input type="checkbox" class="chk-sub" id="c1"  checked/>
                                <label class="chk-la" for='c1' >
                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L1.png" alt="" >1층 출입
                                </label>
-                               <input type="checkbox" id='c2' checked/>
+                               <input type="checkbox"  class="chk-sub" id='c2' checked/>
                                <label class="chk-la" for='c2'>
                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L2.png" alt="" >정상출입
                                </label>
-                               <input type="checkbox" id='c3' checked/>
+                               <input type="checkbox" class="chk-sub" id='c3' checked/>
                                <label class="chk-la" for='c3'>
                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L3.png" alt="">보안구역부근
                                </label>
-                               <input type="checkbox" id='c4' checked/>
+                               <input type="checkbox" class="chk-sub" id='c4' checked/>
                                <label class="chk-la" for='c4'>
                                  <span class="loc-container"></span><img class="loc-img" src="/static/images/L4.png" alt="">보안구역진입
                                </label>
-                               <button class="btn btn-secondary" style="border: 0 !important; padding-top: 10px; padding-bottom: 10px; font-weight: 600;">조건 적용</button>
-
                          </div>
                        </div>
                       </div>  
@@ -561,6 +579,7 @@
                   </div>
 
                   <table id="example1" class="table table-bordered table-striped">
+                
                     <thead>
                       <tr>
                         <th>출입자번호</th>
@@ -575,7 +594,7 @@
                     <tbody>
                       <% if( results !=null ) {%>
                         <% for(let data of results) { %>
-                      <tr>
+                      <tr class="<%=data.status_code%>_color">
                         <td class="user-phone"><%= data.user_phone %></td>
                         <td class="user-name"><%= data.user_name%></td>
                         <td class="user-dept"><%= data.user_dept%></td>
@@ -609,9 +628,11 @@
                         <th>소속</th>
                         <th>위치</th>
                         <th>출입자상태</th>
+                        <th>위치갱신시간</th>
                         <th>지도</th> 
                       </tr>
                     </tfoot>
+ 
                   </table>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
@@ -729,9 +750,10 @@
             alert("검색어를 입력하세요!");
             return false;
           }else{
-            
-            var url="/vstrStatus/search/"+keyword;
-            $("#search-frm").attr('action', url).submit();
+            console.log("keyword="+keyword);
+            var url="/vstrStatus/"+keyword;
+            $("#vstr-search-frm").attr('action', url).submit();
+
           }
         }
       }
@@ -746,7 +768,8 @@ var floorInf ='';
 var statusName ='';
 var updateDate ='';
 $(document).ready(function() {
-  
+  statusName =  $(this).parent().parent().find('.status-name').text();
+
   $("button.map").on("click", function() {
       userPhone =  $(this).parent().parent().find('.user-phone').text();
       userName =  $(this).parent().parent().find('.user-name').text();
@@ -754,7 +777,7 @@ $(document).ready(function() {
       floorInf =  $(this).parent().parent().find('.floor-inf').text();
       statusName =  $(this).parent().parent().find('.status-name').text();
       updateDate =  $(this).parent().parent().find('.update-date').text();
-    
+
     $("div#googleMapModal").modal();
 
   });
@@ -763,6 +786,7 @@ $(document).ready(function() {
   
   $("div#googleMapModal").on("shown.bs.modal", function() {
     var userColor= '';
+
         switch(statusName){
           case '1층 출입' :  userColor='rgb(95, 126, 150)'; break;   
           case '정상출입' :   userColor='rgb(71, 71, 232)'; break;
@@ -770,9 +794,9 @@ $(document).ready(function() {
           case '보안구역진입' :  userColor='rgb(251, 81, 81)'; break;
               
         }
-    
+
     $('.modal-header').css('background-color', userColor);
-    $('.modal-header').css('color', '#fff');
+    $('.modal-title').css('color', '#fff');
     $('#m-user-phone').text(userPhone);
     myMap(); 
   });
@@ -787,7 +811,7 @@ $(document).ready(function() {
 });
 
   
-  <script>
+
 
   var historicalOverlay;
   var map;
@@ -885,17 +909,16 @@ function addOverlay() {
 
     /*zone circle 시작*/
     function addZone(map){
-    
           //zone 표시
           for (var i =0; i<zoneArray.length; i++) {
-      
+       
             /*보안구역부근 원1 */
             var zoneCircle3 = new google.maps.Circle({
             strokeColor: 'rgb(255, 179, 36)',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
+            strokeOpacity: 0.3,
+            strokeWeight: 0,
             fillColor: 'rgb(255, 179, 36)',
-            fillOpacity: 0.3,
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
             radius: Number(zoneArray[i].c1R2)
@@ -903,10 +926,10 @@ function addOverlay() {
           /*보안구역부근 원2 */
           var zoneCircle4 = new google.maps.Circle({
             strokeColor: 'rgb(255, 179, 36)',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
+            strokeOpacity: 0.3,
+            strokeWeight: 0,
             fillColor: 'rgb(255, 179, 36)',
-            fillOpacity: 0.3,
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
             radius: Number(zoneArray[i].c2R2)
@@ -914,22 +937,22 @@ function addOverlay() {
           
           /*보안구역진입 원1 */ 
           var zoneCircle1 = new google.maps.Circle({
-            strokeColor: '#FF0000',
+            strokeColor: '#ff0000e0',
             strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.4,
+            strokeWeight: 0,
+            fillColor: '#ff0000e0',
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c1Lat), lng: Number(zoneArray[i].c1Long) },
             radius: Number(zoneArray[i].c1R1)
           });
             /*보안구역진입 원2 */
           var zoneCircle2 = new google.maps.Circle({
-            strokeColor: '#FF0000',
+            strokeColor: '#ff0000e0',
             strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.4,
+            strokeWeight: 0,
+            fillColor: '#ff0000e0',
+            fillOpacity: 0.25,
             map: map,
             center: {lat : Number(zoneArray[i].c2Lat), lng: Number(zoneArray[i].c2Long) },
             radius: Number(zoneArray[i].c2R1)
@@ -943,6 +966,7 @@ function addOverlay() {
         }
 
       }
+
       /*zone circle 끝*/
 
 
@@ -1039,6 +1063,58 @@ function addOverlay() {
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt_mimxh7G5RIqBNeoq_vkoNM3F0Wsbmw">
   </script>
+  <script>
+    $(function(){
+      //전체선택 및 전체 해제
+      $('input#checkedAll').click(function(){
+        if($('#checkedAll').is(':checked')){
 
+          $("input[type='checkbox']").prop('checked',true);
+        }else{
+          $("input[type='checkbox']").prop('checked', false);
+        }
+      });
+
+      //한개의 체크박스 선택 해제시 전체 체크박스도 해제
+      $("input.chk-sub").click(function(){
+        if($('input.chk-sub:checked').length ==4){
+          $('#checkedAll').prop('checked', true);
+        }else{
+          $('#checkedAll').prop('checked', false);
+        }
+      });
+      //검색 필터 적용
+      $("input[type='checkbox']").on("click", function(){
+        if($('input#c1').is(':checked')){
+            $('tr.VSCD002_color').show(); 
+        
+        }else{
+          $('tr.VSCD002_color').hide(); 
+        }
+
+        if($('input#c2').is(':checked')){
+            $('tr.VSCD003_color').show(); 
+        
+        }else{
+          $('tr.VSCD003_color').hide(); 
+        }
+
+        if($('input#c3').is(':checked')){
+            $('tr.VSCD004_color').show(); 
+        
+        }else{
+          $('tr.VSCD004_color').hide(); 
+        }
+
+        if($('input#c4').is(':checked')){
+            $('tr.VSCD005_color').show(); 
+        
+        }else{
+          $('tr.VSCD005_color').hide(); 
+        }
+
+      });
+    });
+  </script>
   </body>
 </html>
