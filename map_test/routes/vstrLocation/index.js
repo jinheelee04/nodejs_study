@@ -5,6 +5,7 @@ const ctrl = require('./ctrls');
 
 router.get('/google', ctrl.google);
 router.put('/collect', ctrl.collect);
+router.post('/setTime', ctrl.setTime);
 
 
 router.all('*', (req, res) => {

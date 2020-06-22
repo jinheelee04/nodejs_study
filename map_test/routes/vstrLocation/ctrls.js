@@ -9,9 +9,20 @@ const { ERR_CODE } = require('../../common/errorCode');
 const getStatusCode = require('./getStatusCode');
 const { InsufficientStorage } = require('http-errors');
 
-
+var sess = "";
 exports.google= async (req,res) =>{
+    sess = req.session;
     
+    if(sess.admin ==null){
+       sess.admin = {
+           "time" : 3
+       }
+    }else{
+        sess.admin.time = req.session.admin.time;
+    }
+    
+    
+
     let locResult = await locationModel.getAll();
     let result = await zoneModel.getAll();
     
@@ -23,6 +34,7 @@ exports.google= async (req,res) =>{
        result.data = null;
 
     }
+
 
     if(locResult.header.code == ERR_CODE.SUCCESS) {
         
@@ -57,10 +69,10 @@ exports.google= async (req,res) =>{
         floorInfo_5F.cnt_code4 = cnt_code4;
         floorInfo_5F.cnt_code5 = cnt_code5;
   
-        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data, 'floorInfo_1F': floorInfo_1F, 'floorInfo_5F' : floorInfo_5F});
+        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data, 'floorInfo_1F': floorInfo_1F, 'floorInfo_5F' : floorInfo_5F, time : sess.admin.time});
     }else if(locResult.header.code == ERR_CODE.NO_DATA ){
       
-        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data, 'floorInfo_1F': null, 'floorInfo_5F' : null});
+        res.status(200).render('vstrLocation/google', { title: '출입자 보안 관제 ', results : result.data, 'floorInfo_1F': null, 'floorInfo_5F' : null, time : sess.admin.time});
    
     } else {
         let httpErrCode = await convertHttpCode(result.header.code);
@@ -97,6 +109,10 @@ exports.collect = async (req, res) =>{
             res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body의 floorInf가 없습니다)'));
             return;
         }
+        if( isEmpty(req.body.pdDttm)) {
+            res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (body의 pdDttm가 없습니다)'));
+            return;
+        }
 
     }
 
@@ -109,11 +125,9 @@ exports.collect = async (req, res) =>{
         res.status(httpErrCode).json(userResult);
         return;
     }
-
+    //20190125060035
     var userLong = Number(req.body.userLong).toFixed(8);
     var userLat = Number(req.body.userLat).toFixed(8);
-
-
     //location_tb 테이블 조회
     let locResult = await locationModel.get(req.body.userPhone);
     
@@ -149,7 +163,7 @@ exports.collect = async (req, res) =>{
             statusCode = "VSCD002";
         }
 
-        let updateResult = await locationModel.update(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode);
+        let updateResult = await locationModel.update(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode, req.body.pdDttm);
         
         
         if(updateResult.header.code == ERR_CODE.SUCCESS) {
@@ -182,7 +196,7 @@ exports.collect = async (req, res) =>{
                 statusCode = "VSCD003";
             }else{
                 //상태정보 
-               statusCode = await getStatusCode.getStatus(zoneDatas, userLong, userLat);         
+                statusCode = await getStatusCode.getStatus(zoneResult.data, userLong, userLat);            
             }    
         
         }else if(zoneResult.header.code == ERR_CODE.NO_DATA){
@@ -194,8 +208,8 @@ exports.collect = async (req, res) =>{
             return;
         }
         
-        
-        let insertResult = await locationModel.add(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode);
+
+        let insertResult = await locationModel.add(req.body.userPhone, userLong, userLat, req.body.floorInf, statusCode, req.body.pdDttm);
         if(insertResult.header.code == ERR_CODE.SUCCESS) {
             
             var statusMsg ='';
@@ -206,10 +220,10 @@ exports.collect = async (req, res) =>{
                 case 'VSCD005': statusMsg = '출입통제구역입니다. 통제구역에서 빨리 벗어나길 바랍니다.'; break;
             }
             
-            updateResult.status = {code : statusCode, msg: statusMsg };
-            updateResult.data  = "갱신 성공";
+            insertResult.status = {code : statusCode, msg: statusMsg };
+            insertResult.data  = "갱신 성공";
 
-            res.status(201).json(updateResult);
+            res.status(201).json(insertResult);
     
           
           } else {
@@ -224,4 +238,21 @@ exports.collect = async (req, res) =>{
     }
 
 
+}
+
+
+exports.setTime= async (req,res) =>{
+
+    if(isEmpty(req.body.updateScd)){
+        res.status(400).json(jsonGen.failValue(ERR_CODE.INVALID_PARAM, '잘못 된 요청 (keyword가 없습니다.)'));
+        return;
+      }
+     sess = req.session;
+      sess.admin = {
+        "time" : Number(req.body.updateScd)
+      }
+
+      console.log("여기");
+      res.status(200).json({ title: '출입자 보안 관제 ', msg : 'success', time : sess.admin.time});
+   
 }

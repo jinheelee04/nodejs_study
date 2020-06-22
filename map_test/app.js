@@ -7,12 +7,16 @@ var errorCode = require('./common/errorCode');
 var cfg = require('./config/cfg');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
 
 
 /* DB 관련 */
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool(cfg.db);
 var isEmpty = require('is-empty');
+
+
 
 //----------------------------------------------------------------------------------------
 // Globals
@@ -51,30 +55,30 @@ app.io.on('connection', function (socket) {
             if(data.length == 4){
               query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ?";
               const [rows] = await connection.query(query, data.floorInf);
-
               connection.release();
-              app.io.sockets.emit('receive', { result: rows});
+        
+              socket.emit('receive', { result: rows});
             }else if(data.length == 3){
                query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and (L.status_code = ? or L.status_code = ? or L.status_code = ?)";
                const [rows] = await connection.query(query, [data.floorInf, codeArray[0],codeArray[1], codeArray[2] ] );
 
                connection.release();
-               app.io.sockets.emit('receive', { result: rows});
+               socket.emit('receive', { result: rows});
              }else if(data.length == 2){
               query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and (L.status_code = ? or L.status_code = ?)";
               const [rows] = await connection.query(query, [data.floorInf,codeArray[0], codeArray[1] ]);
 
               connection.release();
-              app.io.sockets.emit('receive', { result: rows});
+              socket.emit('receive', { result: rows});
             }else if(data.length == 1){
               query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and L.status_code = ?";
               const [rows] = await connection.query(query, [data.floorInf, codeArray[0]]);
 
               connection.release();
-              app.io.sockets.emit('receive', { result: rows});
+              socket.emit('receive', { result: rows});
             }else{
               connection.release();
-              app.io.sockets.emit('receive', { result: null});
+              socket.emit('receive', { result: null});
             }
   
               // app.io.sockets.in(roomName).emit('receive', { result: rows});
@@ -100,9 +104,8 @@ app.io.on('connection', function (socket) {
               const [rows] = await connection.query(query, data.userPhone);
               connection.release();
               let [result] = rows;
-              console.log(result)
               // app.io.sockets.in(roomName).emit('receive', { result: rows});
-              app.io.sockets.emit('receiveOne', { result: result});
+              socket.emit('receiveOne', { result: result});
     
           } catch(err) {
             connection.release();
@@ -131,6 +134,21 @@ app.use(cookieParser());
 app.use('/static',express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
+
+//쿠키와 세션을 미들웨어로 등록한다
+app.use(cookieParser());
+ 
+//세션 횐경 세팅
+//세션은 서버쪽에 저장하는 것을 말하는데, 파일로 저장 할 수도 있고 레디스라고 하는 메모리DB등 다양한 저장소에 저장
+app.use(session({
+  secret: 'ctrlhubilon',
+  resave: false,
+  saveUninitialized: true
+
+}));
+
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -138,6 +156,8 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
 
 //----------------------------------------------------------------------------------------
 // error handler

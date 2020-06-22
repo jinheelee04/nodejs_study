@@ -31,19 +31,17 @@ const get = async(userPhone) => {
     }
 }
 
-const add = async(userPhone, userLong, userLat, floorInf, statusCode ) => {
+const add = async(userPhone, userLong, userLat, floorInf, statusCode, updateDate ) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
 
-            let query = 'insert into location_tb (user_phone, user_long, user_lat, floor_inf, status_code , update_date) values ( ?, ?, ?, ?, ?, default)';
-            let params = [userPhone, userLong, userLat, floorInf, statusCode];
+            let query = 'insert into location_tb (user_phone, user_long, user_lat, floor_inf, status_code , update_date) values ( ?, ?, ?, ?, ?, ?)';
+            let params = [userPhone, userLong, userLat, floorInf, statusCode, updateDate];
 
             const [rows] = await connection.query(query,params);
             connection.release();
-            var socket = io();
-            socket.emit('join',{joinName: 'loc'} ); 
-            socket.emit('select');
+   
             return jsonGen.successValue(rows);
         } catch(err) {
             console.log('Query Error : ' + err);
@@ -56,18 +54,16 @@ const add = async(userPhone, userLong, userLat, floorInf, statusCode ) => {
     }
 }
 
-const update = async(userPhone, userLong, userLat, floorInf, statusCode ) => {
+const update = async(userPhone, userLong, userLat, floorInf, statusCode, updateDate ) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
 
-            let query = 'update location_tb set user_long= ? , user_lat = ? , floor_inf= ?, status_code=?  where user_phone = ?';
-            let params = [userLong, userLat, floorInf, statusCode, userPhone];
-
+            let query = 'update location_tb set user_long= ? , user_lat = ? , floor_inf= ?, status_code=?, update_date= ?   where user_phone = ?';
+            let params = [userLong, userLat, floorInf, statusCode, updateDate, userPhone];
+ 
             const [rows] = await connection.query(query,params);
             connection.release();
-
-          
             return jsonGen.successValue(rows);
         } catch(err) {
             console.log('Query Error : ' + err);

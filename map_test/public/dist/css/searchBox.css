@@ -25,9 +25,9 @@ padding-bottom : 15px;
     margin-bottom: 8px;
     background-color: transparent;
     transition: transform 250ms ease-in-out;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 18px;
-    
+    font-weight:600;
     color: #575756;
     background-color: transparent;
     

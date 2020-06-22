@@ -10,6 +10,13 @@
  * Core: Genral Layout Style
  * -------------------------
  */
+
+ @font-face { font-family: 'NanumBarunGothic';
+  src: url('/fonts/NanumBarunGothic.eot');
+  src: url('/fonts/NanumBarunGothic.eot') format('embedded-opentype'),
+  url('/fonts/NanumBarunGothic.woff') format('woff');}
+  
+
 html,
 body {
   min-height: 100%;
@@ -21,7 +28,7 @@ body {
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'NanumBarunGothic', 'serif' !important;
   font-weight: 400;
   overflow-x: hidden;
   overflow-y: auto;
@@ -154,7 +161,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'NanumBarunGothic', 'serif';
 }
 /* General Links */
 a {
@@ -260,7 +267,7 @@ a:focus {
   background-color: transparent;
   background-image: none;
   padding: 15px 15px;
-  font-family: fontAwesome;
+  font-family: 'NanumBarunGothic', 'serif';
 }
 .main-header .sidebar-toggle:before {
   content: "\f0c9";
@@ -293,7 +300,7 @@ a:focus {
   line-height: 50px;
   text-align: center;
   width: 230px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'NanumBarunGothic', 'serif';
   padding: 0 15px;
   font-weight: 300;
 }

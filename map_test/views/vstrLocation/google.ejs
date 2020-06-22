@@ -24,6 +24,8 @@
     <!--toggle button css-->
     <link href="/static/dist/css/toggleBtn2.css" rel="stylesheet" type="text/css" />   
 
+  
+
     <script src="../socket.io-client/dist/socket.io.js"></script>
     <style>
       .skin-blue .main-header .navbar{
@@ -175,12 +177,12 @@
   }
   input[type='checkbox'] + label,
   input[type='radio'] + label {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 21px;
     display: inline-block;
     vertical-align: top;
     cursor: pointer;
-    padding-top: 10px;
+    padding-top: 9px;
   }
 
   input[type='checkbox']:not(.switch) {
@@ -240,236 +242,7 @@
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-              <!-- Messages: style can be found in dropdown.less-->
-              <li class="dropdown messages-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-envelope-o"></i>
-                  <span class="label label-success">4</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 4 messages</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                      <li><!-- start message -->
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="/static/images/care.gif" class="img-circle" alt="User Image"/>
-                          </div>
-                          <h4>
-                            Support Team
-                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li><!-- end message -->
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
-                          </div>
-                          <h4>
-                            AdminLTE Design Team
-                            <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>
-                          </div>
-                          <h4>
-                            Developers
-                            <small><i class="fa fa-clock-o"></i> Today</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
-                          </div>
-                          <h4>
-                            Sales Department
-                            <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>
-                          </div>
-                          <h4>
-                            Reviewers
-                            <small><i class="fa fa-clock-o"></i> 2 days</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">See All Messages</a></li>
-                </ul>
-              </li>
-              <!-- Notifications: style can be found in dropdown.less -->
-              <li class="dropdown notifications-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning">10</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the page and may cause design problems
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-users text-red"></i> 5 new members joined
-                        </a>
-                      </li>
-
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-user text-red"></i> You changed your username
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">View all</a></li>
-                </ul>
-              </li>
-              <!-- Tasks: style can be found in dropdown.less -->
-              <li class="dropdown tasks-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">9</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 9 tasks</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Design some buttons
-                            <small class="pull-right">20%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">20% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Create a nice theme
-                            <small class="pull-right">40%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">40% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Some task I need to do
-                            <small class="pull-right">60%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">60% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Make beautiful transitions
-                            <small class="pull-right">80%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">80% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                    </ul>
-                  </li>
-                  <li class="footer">
-                    <a href="#">View all tasks</a>
-                  </li>
-                </ul>
-              </li>
-              <!-- User Account: style can be found in dropdown.less -->
-              <li class="dropdown user user-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="/static/images/care.gif" class="user-image" alt="User Image"/>
-                  <span class="hidden-xs">admin</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- User image -->
-                  <li class="user-header">
-                    <img src="/static/images/care.gif" class="img-circle" alt="User Image" />
-                    <p>
-                      Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
-                    </p>
-                  </li>
-                  <!-- Menu Body -->
-                  <li class="user-body">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
-                  </li>
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    </div>
-                    <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+    
         </nav>
       </header>
       <!-- Left side column. contains the logo and sidebar -->
@@ -478,26 +251,14 @@
         <section class="sidebar">
           <!-- Sidebar user panel -->
           <div class="user-panel">
-            <div class="pull-left image">
-              <img src="/static/images/care.gif" class="img-circle" alt="User Image" />
+            <div class="pull-left image" style="width: 110px; background-color:white; text-align: center;">
+              <img src="/static/images/hubilon-logo.png" class="" alt="User Image"   style="background-color:white; width: 100px !important"/>
             </div>
             <div class="pull-left info">
               <p>admin</p>
-
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
-          <!-- search form -->
-          <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search..."/>
-              <span class="input-group-btn">
-                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
-          <!-- /.search form -->
-          <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="active treeview">
@@ -523,6 +284,11 @@
               <li class="treeview">
                 <a href="/user/enroll">
                   <i class="fa fa-user"></i> <span>사용자 등록</span>  
+                </a>
+              </li>
+              <li class="treeview">
+                <a href="/user/list">
+                  <i class="fa fa-users"></i> <span>사용자 관리</span>
                 </a>
               </li>
           </ul>
@@ -554,7 +320,7 @@
                 <div class="box-body">
                   <!--검색창-->
                     <div class="search__container">
-                      <input class="search__input" type="text" placeholder="출입자 번호를 입력하세요." onkeyup="search(this);">
+                      <input class="search__input" type="text" placeholder="출입자 번호를 입력하세요. ex)01012345678" onkeyup="search(this);">
                       
                     </div>
            
@@ -611,8 +377,8 @@
 
                                 </div>
                                 갱신 시간
-                                <input type="number"  style="text-align:right; width:70px;" min ="1" id="update-scd" value="3" placeholder="3">(단위 : 초)
-                                <button id="up-scd-btn">등록</button>
+                                <input type="number"  style="text-align:right; width:70px;" min ="1" id="update-scd" value="<%=time%>" placeholder="<%=time%>">(단위 : 초)
+                                <button id="up-scd-btn">설정</button>
                                 <!--지도-->
                                 <div id="map"></div>
 
@@ -771,7 +537,6 @@
                    
     });
     
- 
       
       var historicalOverlay;
        var map;
@@ -805,31 +570,26 @@
                   code.push($(this).val());                 
               });  
               len = 1;
-              console.log(code);
             }else if($('input.chk-sub:checked').length ==2){
               code = [];
               $("input:checkbox:checked").each(function (index) {  
                 code.push($(this).val());                            
               }); 
               len = 2;       
-              console.log(code);
             }else if($('input.chk-sub:checked').length ==3){
               code = [];
               $("input:checkbox:checked").each(function (index) {  
                 code.push($(this).val());      
                 }); 
-              len = 3;
-              console.log(code);                       
+              len = 3;                     
             }else if($('input.chk-sub:checked').length ==4){
               code = [];
               code.push('all');
               len = 4;
-              console.log(code);
             }else {
               code = [];
               code.push('');
               len = 0;
-              console.log(code);
             }
 
               if($('input[name=toggle]:checked').val()=='true'){
@@ -842,15 +602,30 @@
             } 
           });
 
-          var scd = $('#update-scd').val() * 1000;
+          var time = Number('<%=time%>')*1000;
+          //갱신 시간 설정
           $('#up-scd-btn').click(function(){
-            scd = $('#update-scd').val() * 1000;
-            console.log("1="+scd);
+              var updateScd = $('#update-scd').val();
+                $.ajax({
+                url: '/vstrLocation/setTime',
+                data: { 'updateScd' : updateScd},
+                type: 'POST',
+                dataType: 'json',
+                success : function (res) {
+                  
+                  if ( res.msg == 'success' ) {
+                    alert("변경되었습니다.");
+                    location.reload();
+                  }
+                },
+                error: function (xhr) {
+                    alert("실패하였습니다.");
+                }
+            });
           });
 
           //위치 정보 조회 
           setInterval( function(){
-            console.log("setInt_code="+ code);
              if($('input[name=toggle]:checked').val()=='true'){
               floor ='5F';
               socket.emit('select', {floorInf : '5F', statusCode : code, length: len});
@@ -860,7 +635,7 @@
                 socket.emit('select', {floorInf : '1F', statusCode : code, length: len});
             } 
             
-          }, 5000);
+          }, time);
 
         });
         
@@ -889,7 +664,6 @@
         //socket.io
         var userLocations={};
    
-        console.log('code22'+code);
         socket.emit('select', {floorInf : '5F', statusCode : 'all', length: 4});
        
         socket.on('receive', function (data) {
@@ -1017,12 +791,12 @@
           var icon4 = '/static/images/L4.png';
 
        
-          //마커 생성
-          var marker, i;
           if(userLocations != null){
-            for (i = 0; i < userLocations.length ; i++) {
-               //마커 이미지
-               var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
+            for (var i = 0; i < userLocations.length ; i++) {
+    
+              
+              //마커 이미지
+              var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
               var userColor ='';
               var statusName= '';
               switch(userLocations[i].status_code){
@@ -1042,8 +816,10 @@
              var floorInf = userLocations[i].floor_inf;
              var updateDate = userLocations[i].update_date;
              var userInfo = { userPhone : userPhone, userLng: userLng, userLat : userLat, userDept:userDept, userName:userName, floorInf:floorInf, updateDate:updateDate, userColor: userColor, statusName : statusName};
-  
-              marker = new google.maps.Marker({
+          
+            
+             //마커 생성
+            var  marker = new google.maps.Marker({
                   //마커의 위치
                   position: new google.maps.LatLng(userLat,  userLng),
                   
@@ -1057,19 +833,19 @@
 
                   userInfo : userInfo,
 
-                  id : userLocations[i].user_phon
+                  id : userLocations[i].user_phone
               });
 
               markers.push(marker);
-                //인포 윈도우 생성
-                // infowindow.open(map,  {position: new google.maps.LatLng(userLat,  userLng)});
-              if (marker) {
-       
-                  marker.addListener('click', function() {               
+ 
+              var marker2 = markers[i];
+              // infowindow.open(map, marker ); 
+              marker.addListener('click', function() {               
                       //중심 위치를 클릭된 마커의 위치로 변경
                       map.setCenter(this.getPosition());
                       //마커 클릭 시의 줌 변화
                       map.setZoom(22);
+                    
                       $('#user-info').remove();
                       var userInfo = '<table class="table table-bordered" id="user-info"  style="text-align:center; margin-bottom:20px; "><tbody>'+
                                         '<tr><th colspan="2" id="user-color"  class="tb-h" style="text-align: center;">출입자 번호 : <span id="user-phone">'+this.userInfo.userPhone+'</span></th></tr>'+
@@ -1079,28 +855,25 @@
                                         '<tr><td class="user-t" > 출입자상태</td><td><span id="user-status">'+this.userInfo.statusName+'</span></td></tr>'+
                                         '<tr><td class="user-t" > 위치갱신시간</td><td><span id="update-date">'+this.userInfo.updateDate+'</span></td></tr>'+
                                         '</tbody></table>';
-
+                      
                       $('#user-info-body').append(userInfo);
                       
                       $('#user-box').css("display", "block");   
                       $('#user-color').css("background-color", this.userInfo.userColor);   
-                      
-                      var txt =  '<div class="txt">' +
-                      '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 번호 : '+markers[i].userInfo.userPhone+' </span>'+
-                      '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 상태 : '+markers[i].userInfo.statusName+'</span>'+
-                      '</div>';
-
-                      var infowindow = new google.maps.InfoWindow(
-                      {
+                        
+                      //인포 윈도우 생성
+                    var txt =  '<div class="txt">' +
+                              '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 번호 : '+ this.userInfo.userPhone+' </span>'+
+                              '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 상태 : '+this.userInfo.statusName+'</span>'+
+                              '</div>';
+            
+                    var infowindow = new google.maps.InfoWindow({
 
                         content : txt
 
                       });
-
-                    infowindow.open(map, markers[i]);
-                
+                      infowindow.open(map, this ); 
                   });
-              }
             }
 
           }
