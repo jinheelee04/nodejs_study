@@ -59,7 +59,7 @@ exports.check = async (req, res) => {
 };
 
 /**
- * 사용자 관리 페이지 이동 및 부안구역 리스트 출력 
+ * 사용자 관리 페이지 이동 및 사용자 리스트 출력 
  */
 exports.list= async(req,res) =>{
 

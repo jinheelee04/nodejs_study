@@ -96,15 +96,17 @@ exports.update = async (req,res) =>{
       return;
   }
 
-  let updateResult = await zoneModel.update(req.body.zoneId, req.body.zoneName, req.body.zoneLong, req.body.zoneLat
-                                            , req.body.c1Long, req.body.c1Lat, req.body.c1R1, req.body.c1R2
-                                            , req.body.c2Long, req.body.c2Lat, req.body.c2R1, req.body.c2R2);
+  let updateResult = await zoneModel.update(req.body.zoneId, req.body.zoneName
+                                            , req.body.zoneLong, req.body.zoneLat
+                                            , req.body.c1Long, req.body.c1Lat
+                                            , req.body.c1R1, req.body.c1R2
+                                            , req.body.c2Long, req.body.c2Lat
+                                            , req.body.c2R1, req.body.c2R2);
   
   if(updateResult.header.code == ERR_CODE.SUCCESS) {
-
       res.status(201).json(jsonGen.successValue('업데이트 성공'));
-    
-    } else {
+  } 
+  else {
       let httpErrCode = await convertHttpCode(updateResult.header.code);
       res.status(httpErrCode).json(updateResult);
 
@@ -124,10 +126,9 @@ exports.delete = async (req,res) =>{
   let deleteResult = await zoneModel.del(req.body.zoneId);
   
   if(deleteResult.header.code == ERR_CODE.SUCCESS) {
-
-      res.status(201).json(jsonGen.successValue('삭제 성공'));
-    
-    } else {
+      res.status(201).json(jsonGen.successValue('삭제 성공'));  
+  } 
+  else {
       let httpErrCode = await convertHttpCode(deleteResult.header.code);
       res.status(httpErrCode).json(deleteResult);
 

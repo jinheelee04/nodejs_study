@@ -358,7 +358,7 @@
 
     <script>
        $(function(){
-      //아이디 유효성 검사
+      // 검사
       $("#userPhone").blur(function(){
           var userPhone =  $("#userPhone").val();
          console.log('userphone='+userPhone);
@@ -418,22 +418,13 @@
        $.ajax({
           url: '/scrtZone/add',
           data: { 
-                  'zoneName' : zoneName, 
-                  'zoneLong' : zoneLong, 
-                  'zoneLat' : zoneLat, 
-                  'c1Long' : c1Long,
-                  'c1Lat' : c1Lat,
-                  'c1R1' : c1R1,
-                  'c1R2' : c1R2,
-                  'c2Long' : c2Long,
-                  'c2Lat' : c2Lat,
-                  'c2R1' : c2R1,
-                  'c2R2' : c2R2
+                  'zoneName' : zoneName, 'zoneLong' : zoneLong, 'zoneLat' : zoneLat, 
+                  'c1Long' : c1Long,'c1Lat' : c1Lat,'c1R1' : c1R1,'c1R2' : c1R2,
+                  'c2Long' : c2Long, 'c2Lat' : c2Lat,'c2R1' : c2R1,'c2R2' : c2R2
                 },
           type: 'POST',
           dataType: 'json',
           success : function (res) {
-        
             if ( res.header.msg == 'success' ) {
                 alert("등록되었습니다.");
                 location.reload();
@@ -476,9 +467,6 @@
         historicalOverlay = new google.maps.GroundOverlay(
           '/static/images/map_new2.png',
             imageBounds);
-
-        //유저 표시
-        // addMarker(map);
 
         addOverlay();
      
@@ -557,6 +545,8 @@
     function rad(x) {
           return x * Math.PI / 180;
     };
+
+    //거리 계산
     function calcDistance(p1, p2) {
           var R = 6378137; // Earth’s mean radius in meter
           var dLat = rad(p2.lat - p1.lat);

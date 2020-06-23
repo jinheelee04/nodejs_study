@@ -47,12 +47,13 @@ app.io.on('connection', function (socket) {
 
        try {
           const connection = await pool.getConnection(async conn => conn);
-          // connection.query( 'select * from location_tb');
+        
           try {
             let query =''
             var codeArray = data.statusCode;
   
             if(data.length == 4){
+              //사용자 정보 및 위치 정보 조회
               query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ?";
               const [rows] = await connection.query(query, data.floorInf);
               connection.release();
@@ -80,9 +81,7 @@ app.io.on('connection', function (socket) {
               connection.release();
               socket.emit('receive', { result: null});
             }
-  
-              // app.io.sockets.in(roomName).emit('receive', { result: rows});
-      
+
     
           } catch(err) {
             connection.release();

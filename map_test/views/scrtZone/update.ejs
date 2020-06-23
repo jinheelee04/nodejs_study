@@ -385,7 +385,7 @@
     });
     </script>  
     <script>
-      //보안구역 등록
+      //보안구역 수정
       function update(zoneId){
         //보안구역 정보
         var zoneName = $("#zoneName").val();
@@ -420,17 +420,9 @@
        $.ajax({
           url: '/scrtZone/update',
           data: { 
-                  'zoneName' : zoneName, 
-                  'zoneLong' : zoneLong, 
-                  'zoneLat' : zoneLat, 
-                  'c1Long' : c1Long,
-                  'c1Lat' : c1Lat,
-                  'c1R1' : c1R1,
-                  'c1R2' : c1R2,
-                  'c2Long' : c2Long,
-                  'c2Lat' : c2Lat,
-                  'c2R1' : c2R1,
-                  'c2R2' : c2R2,
+                  'zoneName' : zoneName, 'zoneLong' : zoneLong, 'zoneLat' : zoneLat, 
+                  'c1Long' : c1Long,'c1Lat' : c1Lat,'c1R1' : c1R1,'c1R2' : c1R2,
+                  'c2Long' : c2Long,'c2Lat' : c2Lat,'c2R1' : c2R1,'c2R2' : c2R2,
                   'zoneId' : zoneId
                 },
           type: 'PUT',
