@@ -58,7 +58,7 @@ const update = async(userPhone, userLong, userLat, floorInf, statusCode, updateD
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-
+        
             let query = 'update location_tb set user_long= ? , user_lat = ? , floor_inf= ?, status_code=?, update_date= ?   where user_phone = ?';
             let params = [userLong, userLat, floorInf, statusCode, updateDate, userPhone];
  
@@ -80,7 +80,7 @@ const getAll = async() => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            let query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone)";
+            let query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone)";
             const [rows] = await connection.query(query);
             connection.release();
       
@@ -105,7 +105,7 @@ const search = async(keyword) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            let query = "select U.user_phone, user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where U.user_phone like '%' ? '%' or U.user_name like '%' ? '%' ";
+            let query = "select U.user_phone, user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where U.user_phone like '%' ? '%' or U.user_name like '%' ? '%' ";
             const [rows] = await connection.query(query, [keyword, keyword]);
             connection.release();
 

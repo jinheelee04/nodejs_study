@@ -60,7 +60,7 @@ const getAll = async(userPhone) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            const [rows] = await connection.query('select user_name, user_phone, user_dept, DATE_FORMAT(enroll_date, "%Y-%m-%d %H:%m:%s") enroll_date from user_tb order by enroll_date desc ');
+            const [rows] = await connection.query('select user_name, user_phone, user_dept, DATE_FORMAT(enroll_date, "%Y-%m-%d %H:%i:%s") enroll_date from user_tb order by enroll_date desc ');
             connection.release();
             console.log("row="+rows);
             if(isEmpty(rows)) {

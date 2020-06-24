@@ -92,8 +92,6 @@
         color : #fff;
       }
 
-     
-
  @supports (-webkit-appearance: none) or (-moz-appearance: none) {
   input[type='checkbox'],
   input[type='radio'] {
@@ -543,7 +541,7 @@
       
        var markers = [];
        var zoneCircles = [];
-  
+       var clickedMarker;
        
        var socket = io();
       //  socket.emit('join' );   
@@ -656,6 +654,7 @@
           //처음 줌 값. 숫자가 작을수록 낮은 배율
           zoom: minZoomLevel,
           center: {lat: 37.489104, lng: 127.031391}
+
 
         });
 
@@ -796,7 +795,7 @@
     
               
               //마커 이미지
-              var customicon = {  url:'',scaledSize: new google.maps.Size(40, 42) };
+              var customicon = {  url:'', scaledSize: new google.maps.Size(40, 42) };
               var userColor ='';
               var statusName= '';
               switch(userLocations[i].status_code){
@@ -816,29 +815,51 @@
              var floorInf = userLocations[i].floor_inf;
              var updateDate = userLocations[i].update_date;
              var userInfo = { userPhone : userPhone, userLng: userLng, userLat : userLat, userDept:userDept, userName:userName, floorInf:floorInf, updateDate:updateDate, userColor: userColor, statusName : statusName};
-          
-            
-             //마커 생성
-            var  marker = new google.maps.Marker({
-                  //마커의 위치
-                  position: new google.maps.LatLng(userLat,  userLng),
-                  
-                  //마커 아이콘
-                  icon: customicon,
-                  
-                  //마커를 표시할 지도
-                  map: map,
+    
+             if(userPhone == clickedMarker){
+                //마커 생성
+                var  marker = new google.maps.Marker({
+                      //마커의 위치
+                      position: new google.maps.LatLng(userLat,  userLng),
+                      
+                      //마커 아이콘
+                      icon: customicon,
+                      
+                      //마커를 표시할 지도
+                      map: map,
+                      
+                      label: { text : "V", color: '#90fb5e'},
+   
+                      title : userLocations[i].user_phone,
 
-                  title : userLocations[i].user_phone,
+                      userInfo : userInfo,
 
-                  userInfo : userInfo,
+                      id : userLocations[i].user_phone
+                  });
+             } else{
+               //마커 생성
+              var  marker = new google.maps.Marker({
+                    //마커의 위치
+                    position: new google.maps.LatLng(userLat,  userLng),
+                    
+                    //마커 아이콘
+                    icon: customicon,
+                    
+                    //마커를 표시할 지도
+                    map: map,
+                
+                    title : userLocations[i].user_phone,
+  
+                    userInfo : userInfo,
+  
+                    id : userLocations[i].user_phone
+                });
 
-                  id : userLocations[i].user_phone
-              });
+             }
 
               markers.push(marker);
  
-              var marker2 = markers[i];
+     
               // infowindow.open(map, marker ); 
               marker.addListener('click', function() {               
                       //중심 위치를 클릭된 마커의 위치로 변경
@@ -866,7 +887,7 @@
                               '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 번호 : '+ this.userInfo.userPhone+' </span>'+
                               '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 상태 : '+this.userInfo.statusName+'</span>'+
                               '</div>';
-            
+                    clickedMarker = this.userInfo.userPhone;
                     var infowindow = new google.maps.InfoWindow({
 
                         content : txt
@@ -959,6 +980,7 @@
                       '<span style="font-weight: 410; padding-top: 5px; display: block;">출입자 상태 : '+markers[i].userInfo.statusName+'</span>'+
                       '</div>';
 
+                      clickedMarker = markers[i].userInfo.userPhone;
                       var infowindow = new google.maps.InfoWindow(
                       {
 

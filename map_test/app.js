@@ -54,25 +54,25 @@ app.io.on('connection', function (socket) {
   
             if(data.length == 4){
               //사용자 정보 및 위치 정보 조회
-              query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ?";
+              query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ?";
               const [rows] = await connection.query(query, data.floorInf);
               connection.release();
         
               socket.emit('receive', { result: rows});
             }else if(data.length == 3){
-               query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and (L.status_code = ? or L.status_code = ? or L.status_code = ?)";
+               query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and (L.status_code = ? or L.status_code = ? or L.status_code = ?)";
                const [rows] = await connection.query(query, [data.floorInf, codeArray[0],codeArray[1], codeArray[2] ] );
 
                connection.release();
                socket.emit('receive', { result: rows});
              }else if(data.length == 2){
-              query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and (L.status_code = ? or L.status_code = ?)";
+              query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and (L.status_code = ? or L.status_code = ?)";
               const [rows] = await connection.query(query, [data.floorInf,codeArray[0], codeArray[1] ]);
 
               connection.release();
               socket.emit('receive', { result: rows});
             }else if(data.length == 1){
-              query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and L.status_code = ?";
+              query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where L.floor_inf = ? and L.status_code = ?";
               const [rows] = await connection.query(query, [data.floorInf, codeArray[0]]);
 
               connection.release();
@@ -99,7 +99,7 @@ app.io.on('connection', function (socket) {
           const connection = await pool.getConnection(async conn => conn);
           // connection.query( 'select * from location_tb');
           try {
-              let query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%m:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where U.user_phone = ?";
+              let query ="select U.user_phone,user_name, user_dept, location_id, user_long, user_lat, floor_inf, status_code, DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%s') update_date from user_tb U join location_tb L on (U.user_phone = L.user_phone) where U.user_phone = ?";
               const [rows] = await connection.query(query, data.userPhone);
               connection.release();
               let [result] = rows;

@@ -35,7 +35,7 @@ const getAll = async() => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            let query ="select zone_id, zone_name, zone_long, zone_lat, c1_long, c1_lat, c1_r1, c1_r2, c2_long, c2_lat, c2_r1 , c2_r2, DATE_FORMAT(enroll_date, '%Y-%m-%d %H:%m:%s') enroll_date FROM scrt_zone_tb";
+            let query ="select zone_id, zone_name, zone_long, zone_lat, c1_long, c1_lat, c1_r1, c1_r2, c2_long, c2_lat, c2_r1 , c2_r2, DATE_FORMAT(enroll_date, '%Y-%m-%d %H:%i:%s') enroll_date FROM scrt_zone_tb";
             const [rows] = await connection.query(query);
             connection.release();
       
@@ -103,7 +103,7 @@ const search = async(keyword) => {
     try {
         const connection = await pool.getConnection(async conn => conn);
         try {
-            let query = "select zone_id, zone_name, zone_long, zone_lat, c1_long, c1_lat, c1_r1, c1_r2, c2_long, c2_lat, c2_r1 , c2_r2, DATE_FORMAT(enroll_date, '%Y-%m-%d %H:%m:%s') enroll_date from scrt_zone_tb where zone_name like '%' ? '%' or zone_id=? ";
+            let query = "select zone_id, zone_name, zone_long, zone_lat, c1_long, c1_lat, c1_r1, c1_r2, c2_long, c2_lat, c2_r1 , c2_r2, DATE_FORMAT(enroll_date, '%Y-%m-%d %H:%i:%s') enroll_date from scrt_zone_tb where zone_name like '%' ? '%' or zone_id=? ";
             const [rows] = await connection.query(query, [keyword, keyword]);
             connection.release();
 
